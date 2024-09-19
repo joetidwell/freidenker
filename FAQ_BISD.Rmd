@@ -1,0 +1,317 @@
+---
+title: Boerne ISD Tax FAQs
+---
+
+<script src="lib/core-js-2.5.3/shim.min.js"></script>
+<script src="lib/react-18.2.0/react.min.js"></script>
+<script src="lib/react-18.2.0/react-dom.min.js"></script>
+<script src="lib/reactwidget-1.0.0/react-tools.js"></script>
+<script src="lib/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="lib/reactable-0.4.4/reactable.css" rel="stylesheet"/>
+<script src="lib/reactable-binding-0.4.4/reactable.js"></script>
+
+<div class="FAQ">
+
+```{r plotly_hack, include = FALSE, echo=FALSE, message=FALSE, warning=FALSE}
+# Both plot_ly and reactable require javascript and css libraries to be
+# included in the HTML head. RMarkdown doesn't do this propoerly if the
+# first use of these functions is in a loop or otehrwise nested. Loading
+# These libraries and 'displaying' hidden output guarantees the correct
+# libraries are included.
+
+library(htmltools)
+library(plotly)
+library(reactable)
+library(htmltools)
+library(data.table)
+source("assets/r/funcs_tables.R")
+htmltools::tagList(plot_ly(x = rnorm(10), type = "histogram"))
+print_table(data.table(a=1,b=2),"COW")
+```
+
+
+
+```{r init, echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+library(stringr)
+library(fontawesome)
+library(xml2)
+library(dplyr)
+library(plotly)
+
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(cache = FALSE)
+
+path.data <- file.path('data')
+
+
+###
+### Load Data
+###
+
+finance_summary <- read_excel(file.path(path.data,'2007-2023-summarized-financial-data-0.xlsx')) %>%
+	data.table
+
+tax_rates <- read_excel(file.path(path.data,'school-district-adopted-tax-rates.xlsx')) %>%
+	data.table
+
+jwt_taxes <- read_excel(file.path(path.data,'jwt_property_tax_history.xlsx')) %>%
+	data.table 
+
+levies_2023 <- read_excel(file.path(path.data,'2023-school-district-rates-levies.xlsx')) %>%
+	data.table 
+
+###
+### Munge Data
+###
+
+tmp <- t(tax_rates[`School District`=="BOERNE ISD"])
+tmp <- tmp[3:nrow(tmp),]
+BISD_tax_rates <- data.table(label=names(tmp),value=as.numeric(tmp))
+BISD_tax_rates[,`Tax Year`:=as.integer(substr(label,6,9))-1]
+BISD_tax_rates[,`School Year`:=paste0(`Tax Year`,'-',`Tax Year`+1),by=`Tax Year`]
+BISD_combined_tax_rate <- BISD_tax_rates[,.(`Combined Tax Rate`=sum(value)),by=.(`Tax Year`,`School Year`)]
+BISD_combined_tax_rate <- rbind(BISD_combined_tax_rate,
+																list(`Tax Year`=2023, 
+																		 `School Year`='2023-2024',
+																		 `Combined Tax Rate`=levies_2023[`Taxing Unit Name`=="Boerne ISD"]$`Total Tax Rate`[1]))
+
+
+
+
+
+###
+### Data Substitutions
+###
+
+tags_source <- list(
+								 BISD_tax = character()
+							 )
+
+# Cost of Recapture Since 2007
+tags_source[['BISD_tax']] <- c(tags_source[['BISD_tax']],
+															 `{{{TOTAL_RECAPTURE_2007_2023}}}` = finance_summary[`DISTRICT NAME`=="BOERNE ISD",
+															 																									 scales::dollar_format()(sum(`ALL FUNDS-EQUITY TRANSFERS`))])
+tags_source[['BISD_tax']] <- c(tags_source[['BISD_tax']],
+															 `{{{AVG_RECAPTURE_PROP_BUDGET}}}` = finance_summary[`DISTRICT NAME`=="BOERNE ISD",
+																								  								 scales::label_percent()(median(`ALL FUNDS-EQUITY TRANSFERS`/`GEN FUNDS-TOTAL OPERATING REVENUE`))])
+
+# Tax Burden on JWT owned properties
+tags_source[['BISD_tax']] <- c(tags_source[['BISD_tax']],
+															 `{{{JWT_TAX_MEDIAN}}}` = dcast(jwt_taxes, Address ~ `Appraisal Year`, value.var = "Real Tax Burden")[,(`2024`-`2016`)/`2016`] %>% median %>% round(.,2) %>% "*"(100) %>% paste0(.,"%"))
+tags_source[['BISD_tax']] <- c(tags_source[['BISD_tax']],
+															 `{{{JWT_TAX_LOW}}}` = dcast(jwt_taxes, Address ~ `Appraisal Year`, value.var = "Real Tax Burden")[,(`2024`-`2016`)/`2016`] %>% min %>% round(.,2) %>% "*"(100) %>% paste0(.,"%"))
+tags_source[['BISD_tax']] <- c(tags_source[['BISD_tax']],
+															 `{{{JWT_TAX_HIGH}}}` = dcast(jwt_taxes, Address ~ `Appraisal Year`, value.var = "Real Tax Burden")[,(`2024`-`2016`)/`2016`] %>% max %>% round(.,2) %>% "*"(100) %>% paste0(.,"%"))
+
+
+
+
+
+
+###
+### Load Questions
+###
+
+BISD_tax_questions <- as_list(read_xml(file.path(path.data,"FAQ_BoerneISD_Taxes.xml")))[[1]]
+
+###
+### Subsitute Tags
+###
+
+for (i in 1:length(BISD_tax_questions)) {
+	BISD_tax_questions[[i]]$title <- unlist(BISD_tax_questions[[i]]$title)
+	BISD_tax_questions[[i]]$answer <- unlist(BISD_tax_questions[[i]]$answer)
+	BISD_tax_questions[[i]]$details <- unlist(BISD_tax_questions[[i]]$details)
+
+	tags_dest <- unlist(str_extract_all(BISD_tax_questions[[i]]$answer, 
+																		  "(\\{\\{\\{\\w+\\}\\}\\})", 
+																		  simplify=FALSE))
+	if (length(tags_dest)>0) {
+		for (t in tags_dest) {
+			BISD_tax_questions[[i]]$answer <- gsub(t,
+																						 tags_source[['BISD_tax']][t],
+																						 BISD_tax_questions[[i]]$answer,
+																						 fixed=TRUE)
+		}	
+	}
+}
+
+
+
+# knitr::knit_hooks$set(drop2=function(before, options, envir) {
+#     if (before) {
+#         paste(
+#             '<p>',
+# 						'<a class="collapsed" data-toggle="collapse" href="#ce2">',
+# 						paste0('<span class="if-collapsed">',toString(fontawesome::fa("square-caret-down")),'</span>'),
+# 						'<span class="if-not-collapsed">-</span>',
+# 						'</a>',
+# 						'</p>',
+# 						'<div class="collapse" id="ce2">',
+# 						'<div class="card card-body">',  sep = "\n")
+#     } else {
+#         paste("</div>", "</div>", sep = "\n")
+#     }
+# })
+
+display_plot <- function(p) {
+	paste(
+		'<div style="padding: 30px;">',
+		htmltools::tagList(p),
+		'</div>'
+	)
+}
+
+display_question <- function(q,id,p=NULL,tab=NULL,tabwidth=700,rows=5) {
+	out <- paste(
+		paste0('<h3>',q$title,'</h3>'),
+		'<div class="answer_wrapper">',
+		q$answer,
+		ifelse(is.null(p), '', display_plot(p)),
+		'<p style="margin-top: 5px;">',
+		paste0('<a class="collapsed" data-toggle="collapse" href="#',id,'">'),
+		'<span class="if-collapsed">Show Details</span>',
+		'<span class="if-not-collapsed">Hide Details</span>',
+		'</a>',
+		'</p>',
+		paste0('<div class="collapse" id="',id,'">'),
+		'<div class="card card-body answer-details">',
+		q$details,
+		ifelse(is.null(tab),'',print_table_html(tab,paste0("table_",id,sep=""),width=tabwidth,pagesize=rows)),
+		'</div>',
+		'</div>',
+		'</div><br/>',
+		sep = "\n"
+	)
+	cat(out)
+}
+
+```
+
+
+```{r plots}
+figures <- vector(mode = "list", length = length(BISD_tax_questions))
+tables <- vector(mode = "list", length = length(BISD_tax_questions))
+
+###
+### How Much Does Boerne ISD Pay to the State of Texas in Recapture?
+###
+
+pdata <- finance_summary[`DISTRICT NAME`=="BOERNE ISD",
+												 .(`Recapture Payment`=`ALL FUNDS-EQUITY TRANSFERS`, 
+												 	 `% of Total Operating Revenue (Gen. Funds)` = `ALL FUNDS-EQUITY TRANSFERS`/`GEN FUNDS-TOTAL OPERATING REVENUE`),
+												 by=YEAR]
+tables[[7]] <- pdata
+figures[[7]] <- plot_ly(pdata, x = ~YEAR, y = ~`Recapture Payment`, 
+											  type = 'scatter', name="Recapture", mode = 'lines+markers',
+												title = "BISD Recapture Since 2007",
+												height=200)  %>%
+  layout(title = "BISD Recapture Since 2007", 
+  			 xaxis=list(title="Year"),
+ 	  		 yaxis = list(title="Recapture Payment"))
+
+
+###
+### How Has Boerne ISD’s Tax Rate Changed Over Time?
+###
+
+tables[[3]] <- BISD_combined_tax_rate
+figures[[3]] <- plot_ly(BISD_combined_tax_rate, x = ~`Tax Year`, y = ~`Combined Tax Rate`, 
+											  type = 'scatter', name="Combined Tax Rate", mode = 'lines+markers',
+												height=200)  %>%
+  layout(title = "BISD Combined M&O and I&S Tax Rate 2005-2022", 
+  			 xaxis=list(title="Year"),
+ 	  		 yaxis = list(title="Combined Tax Rate", 
+ 	  		 						  range=c(.75,2), 
+ 	  		 						  tickvals=list(.75,1,1.25,1.5,1.75,2),
+ 	  		 						  ticktext=list("0.75","1.00","1.25","1.50","1.75","2.00")))
+
+
+###
+### How Has the Tax Burden for Boerne ISD’s Homeowners Changed Over Time?
+###
+
+tables[[4]] <- jwt_taxes
+
+
+# Noax <- list(
+#   title = "",
+#   zeroline = FALSE,
+#   showline = FALSE,
+#   showticklabels = FALSE,
+#   showgrid = FALSE
+# )
+
+
+# mydata <- data.table(x=1:12, y=rnorm(10,mean=1:12, sd=2), y2=1:12) 
+
+
+# goal_1 <- list(
+#   xref = 'x',
+#   yref= 'y',
+#   x = 1,
+#   y = 1,
+#   xanchor = 'right',
+#   yanchor = 'middle',
+#   text = paste(2, '%'),
+#     font = list(family = 'Arial bold',
+#                 size = 12,
+#                 color = 'rgba(67,67,67,1)'),
+#   showarrow = FALSE)
+
+
+# goal_2 <- list(
+#   xref = 'x',
+#   yref= 'y',
+#   x = 12,
+#   y = 12,
+#   xanchor = 'left',
+#   yanchor = 'middle',
+#   text = paste(98, '%'),
+#     font = list(family = 'Arial bold',
+#                 size = 12,
+#                 color = 'rgba(67,67,67,1)'),
+#   showarrow = FALSE)
+
+
+
+# a <- plot_ly(mydata, x = ~x, width=225, height=125) %>%
+# 	add_trace(y=~y2, type = 'scatter', mode='lines', name='goal', line = list(color = 'black', width = 2))	%>%
+# 	add_trace(y = ~y, name='performance', type = 'scatter', mode='lines', line = list(color = 'forestgreen', width = 3)) %>%
+#   layout(paper_bgcolor = '#00000000',
+# 			   plot_bgcolor = '#00000000', 
+# 			   xaxis = Noax,
+# 			 	 yaxis = Noax,
+#  			 	 showlegend = FALSE,
+#  			 	 annotations = list(goal_1,goal_2))
+
+
+# ‘plot_bgcolor’: ‘rgba(0, 0, 0, 0)’,
+# ‘paper_bgcolor’: ‘rgba(0, 0, 0, 0)’,
+
+
+```
+
+
+```{r, results='asis'}
+i <- 0
+
+for(q in BISD_tax_questions) {
+	i <- i + 1
+	if(is.null(figures[[i]]) & is.null(tables[[i]])) {
+		display_question(q, paste0("Q",i))
+	} else if (!is.null(figures[[i]]) & is.null(tables[[i]])) {
+		display_question(q, paste0("Q",i),p=figures[[i]])			
+	} else if (is.null(figures[[i]]) & !is.null(tables[[i]])) {
+		display_question(q, paste0("Q",i),tab=tables[[i]],rows=nrow(tables[[i]]))			
+	} else {
+		display_question(q, paste0("Q",i),p=figures[[i]],tab=tables[[i]],rows=nrow(tables[[i]]))
+	}
+}
+```
+
+
+</div>

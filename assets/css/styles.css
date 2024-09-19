@@ -1,0 +1,57 @@
+/*SITE WIDE*/
+
+[data-toggle="collapse"].collapsed .if-not-collapsed {
+  display: none;
+}
+[data-toggle="collapse"]:not(.collapsed) .if-collapsed {
+  display: none;
+}
+
+/*FAQs*/
+
+.answer_wrapper {
+  background-color: #EFEFEF;
+  font-style: italic;
+  padding: 10px;
+  font-size: 1.25em;
+}
+
+.answer-details {
+  border: 1px solid #BCBCBC;
+  background-color: #FBFBFB;
+  padding: 5px;
+  font-style: normal;
+}
+
+/*Blog*/
+
+
+#blog_container {}
+
+#blog_container h2 {}
+
+.post_wrapper {
+  background-color: #EFEFEF;
+  padding: 20px;
+  font-size: 1.1em;
+  color: #555;
+}
+
+.post_wrapper ul li {
+  font-size: 1em;
+}
+
+.post_wrapper ul li li {
+  font-style: italic;
+  font-size: .95em;
+}
+
+
+/*Index*/
+
+
+.copyleft {
+  font-size: .75em;
+  color: #666;
+  font-style: italic;
+}

@@ -1,0 +1,50 @@
+name: "Freidenker"
+navbar:
+  title: "Freidenker"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Datasets"
+      menu:
+        - text: "Source Data"
+          menu:
+            - text: "Texas Public Schools"
+              menu:
+                - text: "All Datasets (long load time)"
+                  href: data_all_texas_public_school_data.html
+                - text: "Texas Public School Directory"
+                  href: data_texas_public_school_directory.html
+                - text: "Average and Weighted Daily Attendance"
+                  href: data_texas_public_school_ada_and_wada.html
+                - text: "Tax Rates"
+                  href: data_texas_public_school_tax_rates.html
+                - text: "Tax Levies"
+                  href: data_texas_public_school_tax_levies.html
+                - text: "Finances"
+                  href: data_texas_public_school_finances.html
+                - text: "Fast Growth Districts"
+                  href: data_texas_public_school_fast_growth.html
+            - text: "Texas Counties"
+            - text: "Texas Cities"
+        - text: "Refined Data"
+    - text: "FAQs"
+      menu:
+        - text: "Taxes"
+          menu:
+            - text: "Boerne ISD"
+              # href: FAQ_BISD.html
+            - text: "Comfort ISD"
+            - text: "City of Boerne"
+            - text: "City of Fair Oaks Ranch"
+            - text: "Kendall County"
+        - text: "Budgets"
+        - text: "Elections"
+output:
+  html_document:
+    toc: false
+    theme: flatly
+    include:
+      after_body: assets/html/footer.html
+    css: assets/css/styles.css
+
+

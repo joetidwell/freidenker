@@ -1,0 +1,34 @@
+---
+title: Texas Public School Finances
+output: html_document
+---
+
+```{r init, echo=FALSE, message=FALSE, warning=FALSE}
+source("assets/r/funcs_tables.R")
+source("assets/r/libs_data.R")
+path.data <- file.path('data')
+```
+
+## Description
+
+- Summary
+	- A `.xlsx` formatted file, provided by the Texas Education Agency (TEA), that provides summarized financial data from the Public Education Information Management System (PEIMS) for all Texas public schools for academic years 2007-2023.
+		- **PEIMS**: "The Public Education Information Management System (PEIMS) encompasses all data requested and received by TEA about public education, including student demographic and academic performance, personnel, financial, and organizational information."^[“Public Education Information Management System.” Texas Education Agency, Texas Education Agency, 18 Aug. 2019, [tea.texas.gov/reports-and-data/data-submission/peims](https://tea.texas.gov/reports-and-data/data-submission/peims). ]
+- Source
+	- “PEIMS Financial Data Downloads.” PEIMS Financial Data Downloads | Texas Education Agency, Texas Education Agency, 6 May 2024, [tea.texas.gov/finance-and-grants/state-funding/state-funding-reports-and-data/peims-financial-data-downloads](https://tea.texas.gov/finance-and-grants/state-funding/state-funding-reports-and-data/peims-financial-data-downloads).
+
+## Data
+
+```{r finance, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, eval=TRUE}
+# Read original source file
+peims_finance <- read_excel(file.path(path.data,
+																	'2007-2023-summarized-financial-data-0.xlsx')) %>%
+	data.table
+
+# Display interactive table
+print_table(peims_finance, 'ISD_financial_data_2007_to_2023')
+```
+
+
+
+

@@ -1,0 +1,32 @@
+```{r init, echo=FALSE, message=FALSE, warning=FALSE}
+source("assets/r/funcs_tables.R")
+source("assets/r/libs_data.R")
+path.data <- file.path('data')
+```
+
+## Description
+
+- Summary
+	- A `.xlsx` formatted file, provided by the Texas Education Agency (TEA), that provides the annual average daily attendance (ADA) and weighted average daily attendance (WADA) for all Texas public school districts for academic years 2006-2023.
+		- **ADA**: "[T]he number of students in average daily attendance, or the sum of attendance for each day of the minimum number of days of instruction as described under the TEC, §25.081(a), divided by the minimum number of days of instruction."^[Average Daily Attendance (ADA) and Weighted Ada (WADA), [tea.texas.gov/finance-and-grants/state-funding/foundation-school-program/fsp-manuals/ada-vs-wada-one-pager-2017.pdf](https://tea.texas.gov/finance-and-grants/state-funding/foundation-school-program/fsp-manuals/ada-vs-wada-one-pager-2017.pdf). Accessed 31 Aug. 2024.]
+		- **WADA**: "[T]he weighted average daily attendance figure used in several state funding formulas to calculate the amount of state and local funds a district is entitled to. ...A district's WADA is calculated by subtracting a district’s Transportation Allotment, High School Allotment, New Instructional Facilities Allotment (NIFA) and 50% of the CEI adjustment from the district's Tier I entitlement. The resulting amount is then divided by the district's basic allotment amount to arrive at a district's WADA."^[Average Daily Attendance (ADA) and Weighted Ada (WADA), [tea.texas.gov/finance-and-grants/state-funding/foundation-school-program/fsp-manuals/ada-vs-wada-one-pager-2017.pdf](https://tea.texas.gov/finance-and-grants/state-funding/foundation-school-program/fsp-manuals/ada-vs-wada-one-pager-2017.pdf). Accessed 31 Aug. 2024.]
+- Source
+	- “State Funding Reports and Data.” Texas Education Agency, Texas Education Agency, 1 Aug. 2024, [tea.texas.gov/finance-and-grants/state-funding/state-funding-reports-and-data](https://tea.texas.gov/sites/default/files/ada-and-wada.xlsx). 
+
+## Data
+
+```{r ada_wada, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, eval=TRUE}
+# Read original source file
+ada_wada <- read_excel(file.path(path.data,'ada-and-wada.xlsx')) %>% data.table
+
+# Remove \n and \r characters from field names
+names(ada_wada) <- gsub("\\r\\n", " ", names(ada_wada))
+
+# Display interactive table
+print_table(ada_wada, 'ADA_and_WADA_2006_to_2023')
+```
+
+
+
+
+

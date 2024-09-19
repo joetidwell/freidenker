@@ -1,0 +1,27 @@
+```{r init, echo=FALSE, message=FALSE, warning=FALSE}
+source("assets/r/funcs_tables.R")
+source("assets/r/libs_data.R")
+path.data <- file.path('data')
+```
+
+## Description
+
+- Summary
+	- A `.csv` formatted file, provided by the Texas Education Agency (TEA), that provides high-level contact information and general characteristics (e.g. district name, enrollment, county, district type, etc.) for all Texas public school districts. Current as of 2023 school year.
+- Source
+	- “School Data.” Texas Education Agency, Texas Education Agency, 29 Aug. 2024, [tea.texas.gov/reports-and-data/school-data](https://tea.texas.gov/reports-and-data/school-data). 
+
+## Data
+
+```{r directory, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, eval=TRUE}
+# Read original source file
+directory <- read.csv(file.path(path.data,'district_directory.csv')) %>%
+	data.table
+
+# Display interactive table
+print_table(directory, 'TEA_district_directory_2023')
+```
+
+
+
+

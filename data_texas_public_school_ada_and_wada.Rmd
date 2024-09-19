@@ -1,0 +1,12 @@
+---
+title: Texas Public School Average and Weighted Daily Attendance
+output: html_document
+---
+
+```{r, child="_data_texas_public_school_ada_and_wada.Rmd"}
+```
+
+
+
+
+

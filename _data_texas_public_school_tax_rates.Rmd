@@ -1,0 +1,30 @@
+```{r init, echo=FALSE, message=FALSE, warning=FALSE}
+source("assets/r/funcs_tables.R")
+source("assets/r/libs_data.R")
+path.data <- file.path('data')
+```
+
+## Description
+
+- Summary
+	- A `.xlsx` formatted file, provided by the Texas Education Agency (TEA), that provides the annual Maintenance and Operations (M&O) and Interest and Sinking (I&S) tax rates for all Texas public school districts for academic years 2006-2023.
+		- **M&O / I&S Taxes**: "A district's property tax rate consists of a maintenance and operations (M&O) tax rate and, if applicable, an interest and sinking (I&S) tax rate. The M&O tax rate provides funds for maintenance and operations. The I&S tax rate provides funds for payments on the debt that finances a district's facilities. The calculation of state funding for school districts is tied to tax effort; thus, tax rates provide an essential component in the state's school finance formulas."^[“School District Property Values and Tax Rates.” Texas Education Agency, Texas Education Agency, 9 Aug. 2024, [tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates](https://tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates#:~:text=A%20district's%20property%20tax%20rate,that%20finances%20a%20district's%20facilities).]
+- Source
+	- “School District Property Values and Tax Rates.” Texas Education Agency, Texas Education Agency, 9 Aug. 2024, [tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates](https://tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates). 
+
+## Data
+
+```{r tax, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, eval=TRUE}
+# Read original source file
+tax_rates <- read_excel(file.path(path.data,
+																	'school-district-adopted-tax-rates.xlsx')) %>%
+	data.table
+
+# Display interactive table
+print_table(tax_rates, 'ISD_tax_rates_2006_to_2023')
+```
+
+
+
+
+

@@ -1,0 +1,65 @@
+<posts>
+	<post>
+		<title>What is this place?</title>
+		<content><![CDATA[
+			<h3>Things that annoy me about "public" data and information</h3>
+			<ul>
+				<li>Good data is hard to find
+					<ul>
+						<li>Governmental entites typically lack the resources and/or motivation to make data easily accessible</li>
+						<li>Most people don't have the time or skills to collect and analyze raw data from many sources</li>
+					</ul>
+				</li>
+				<li>A lack of data doesn't imply a lack of opinions
+					<ul>
+						<li>Source data is often manipulated and obscured in ways to support an author's arguments and make them difficult to verify</li>
+						<li>Online and social media make it easy to spread misleading information</li>
+					</ul>
+				</li>
+				<li>Public data should belong to... the public
+					<ul>
+						<li>Its not enough for public data to be <span style="font-style: normal">available</span>, it should also be <u>accessible</u></li>
+						<li>Public data that is difficult to find, requires special privileges or formal FOIA processes to access, or is in difficult to use formats (e.g. providing financial tables as a .pdf rather than a xlsx, csv, json or other formats that are easy to analyze) is effectively <u>not public</u></li>
+					</ul>
+				</li>
+			</ul>
+			<h3>What I'm trying to do about it</h3>
+			<ul>
+				<li>Collect public data relevant to local government in Kendall County, Texas and make it easily accessible</li>
+				<li>Create data-centric FAQs relevant to local government which will:
+					<ul>
+						<li>Address common questions citizens have about their government (e.g. "How have tax rates changed in recent years?" or "How can I run for public office X?")</li>
+						<li><u><b>Never</b></u> provide opinion (e.g. "Here's why public official X is the greatest!" or "Here's why the city, county, school districts, etc are the worst!"). The whole point is to help citizens make up their own minds, not to tell people what to think...</li>
+						<li><u><b>Always</b></u> provide original raw data sources and references</li>
+					</ul>
+				</li>
+			</ul>
+		]]></content>
+		<date>2024-08-16</date>
+	</post> 
+	<post>
+		<title>We have (some) data</title>
+		<content><![CDATA[
+			<p>
+				I've collected various datasets relevant to public school finances and taxes. Descriptions of the datasets and data downloads are availbale from the <code>Datasets -> Source Data -> Texas Public Schools</code> menu option.
+			</p>
+			<p>
+				I've also started working on the first FAQ. Since public schools is what I know the most about and what I have the data for, I'll start with Boerne ISD and then Comfort ISD.  I'll post an update when the first FAQ is published.
+			</p>
+		]]></content>
+		<date>2024-09-01</date>
+	</post> 
+</posts>
+
+<!-- TEMPLATE  	
+	
+	<post>
+		<title>Template</title>
+		<content><![CDATA[
+
+		]]></content>
+		<date>Template</date>
+	</post> 
+
+
+-->

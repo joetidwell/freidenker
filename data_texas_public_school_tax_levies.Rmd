@@ -1,0 +1,64 @@
+---
+title: Texas Public School Tax Levies
+output: html_document
+---
+
+```{r init, echo=FALSE, message=FALSE, warning=FALSE}
+source("assets/r/funcs_tables.R")
+source("assets/r/libs_data.R")
+path.data <- file.path('data')
+```
+
+## Description
+
+- Summary
+	- A series of `.xlsx` formatted files, provided by the Texas Comptroller, that provides tax rates, taxable values, and calculated levies for 2017-2023. _Data for additional years prior to 2017 would be helpful to conduct better analysis_.
+- Sources
+	- “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2023-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2023-school-district-rates-levies.xlsx). 1 Sept. 2024. 
+	- “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2022-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2022-school-district-rates-levies.xlsx). 1 Sept. 2024. 
+	- “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2021-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2021-school-district-rates-levies.xlsx). 1 Sept. 2024. 
+	- “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2020-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2020-school-district-rates-levies.xlsx). 1 Sept. 2024. 
+	- “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2019-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2019-school-district-rates-levies.xlsx). 1 Sept. 2024. 
+	- “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2018-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2018-school-district-rates-levies.xlsx). 1 Sept. 2024. 
+	- “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2017-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2017-school-district-rates-levies.xlsx). 1 Sept. 2024. 
+- Data
+
+```{r levies, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, eval=TRUE}
+# Read original source files
+levies_2023 <- read_excel(file.path(path.data,
+					  												'2023-school-district-rates-levies.xlsx')) %>%
+	data.table
+levies_2022 <- read_excel(file.path(path.data,
+					  												'2022-school-district-rates-levies.xlsx')) %>%
+	data.table
+levies_2021 <- read_excel(file.path(path.data,
+					  												'2021-school-district-rates-levies.xlsx')) %>%
+	data.table
+levies_2020 <- read_excel(file.path(path.data,
+					  												'2020-school-district-rates-levies.xlsx')) %>%
+	data.table
+levies_2019 <- read_excel(file.path(path.data,
+					  												'2019-school-district-rates-levies.xlsx')) %>%
+	data.table
+levies_2018 <- read_excel(file.path(path.data,
+					  												'2018-school-district-rates-levies.xlsx')) %>%
+	data.table
+levies_2017 <- read_excel(file.path(path.data,
+					  												'2017-school-district-rates-levies.xlsx')) %>%
+	data.table
+
+# Display interactive tables
+print_table(levies_2023, 'ISD_tax_levies_2023')
+print_table(levies_2022, 'ISD_tax_levies_2022')
+print_table(levies_2021, 'ISD_tax_levies_2021')
+print_table(levies_2020, 'ISD_tax_levies_2020')
+print_table(levies_2019, 'ISD_tax_levies_2019')
+print_table(levies_2018, 'ISD_tax_levies_2018')
+print_table(levies_2017, 'ISD_tax_levies_2017')
+
+
+```
+
+
+
+

@@ -1,0 +1,19 @@
+# generated site files
+_site/
+
+# History files
+.Rhistory
+.Rapp.history
+
+# Session Data files
+.RData
+.RDataTmp
+
+# knitr and R markdown default cache directories
+*_cache/
+
+# SublimeText configuration
+*.sublime*
+
+# MacOS
+.DS_store

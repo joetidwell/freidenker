@@ -1,0 +1,34 @@
+---
+title: Texas Public School Data
+output: html_document
+---
+
+```{r init, echo=FALSE, message=FALSE, warning=FALSE}
+source("assets/r/funcs_tables.R")
+source("assets/r/libs_data.R")
+path.data <- file.path('data')
+```
+
+## Description
+
+- **Fast-Growth School District**: "To be identified as a fast-growth school district, the following criteria must be met:
+	- Enrollment of at least 2,500 students during the previous school year; and
+	- Enrollment growth over the last five years of at least 10%; or
+	- A net increase of 3,500 or more students."^[Armstrong, Emily. “Become a Member.” Become a Member, [www.fastgrowthtexas.org/become-a-member](https://www.fastgrowthtexas.org/become-a-member). Accessed 31 Aug. 2024. ] 
+- Source
+	- Armstrong, Emily. “Fast Growth Districts.” Fast Growth Districts, [www.fastgrowthtexas.org/fast-growth-districts](https://www.fastgrowthtexas.org/fast-growth-districts). Accessed 30 Aug. 2024. 
+	
+## Data
+
+```{r fast_growth, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, eval=TRUE}
+# Read original source file
+fast_growth <- read.csv(file.path(path.data,'fast_growth_districts.csv')) %>%
+	data.table
+
+# Display interactive table
+print_table(fast_growth, 'fast_growth')
+```
+
+
+
+
