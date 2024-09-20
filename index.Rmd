@@ -24,7 +24,7 @@ library(htmltools)
 library(data.table)
 source("assets/r/funcs_tables.R")
 htmltools::tagList(plot_ly(x = rnorm(10), type = "histogram"))
-print_table(data.table(a=1,b=2),"COW")
+print_table(data.table(a=1, b=2),"COW")
 
 library(readxl)
 library(stringr)
@@ -38,12 +38,13 @@ knitr::opts_chunk$set(message = FALSE)
 knitr::opts_chunk$set(warning = FALSE)
 knitr::opts_chunk$set(cache = FALSE)
 
-path.data <- file.path('data')
+path.data <- file.path("data")
 
 
-display_post <- function(p,id) {
+display_post <- function(p, id) {
 	out <- paste(
-		paste0('<h2 style="margin-bottom: 0px; padding-bottom: 0px;">',p$title,'</h2>'),
+		paste0('<h2 style="margin-bottom: 0px; padding-bottom: 0px;">',
+			   p$title,'</h2>'),
 		'<p style="font-style:italic; color:#BBB">&nbsp;&nbsp;',
 		p$date,
 		'</p>',
@@ -68,7 +69,7 @@ blog_posts <- as_list(read_xml(file.path(path.data,"blog.xml")))[[1]]
 
 <h3>Only the suppressed word is dangerous.</h3>
 <h4 style="font-style: italic;">Karl Ludwig Börne</h4>
-<span class="copyleft">Everything contained in this website, including text, data, analyses, and visualizations is available to download as reproducible source code from a public [GitHub repository](https://github.com)</span>
+<span class="copyleft">Everything contained in this website, including text, data, analyses, and visualizations is available to download as reproducible source code from a public [GitHub repository](https://github.com/joetidwell/freidenker)</span>
 <hr/>
 
 <div id="blog_container">
