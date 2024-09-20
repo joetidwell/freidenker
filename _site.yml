@@ -32,7 +32,7 @@ navbar:
         - text: "Taxes"
           menu:
             - text: "Boerne ISD"
-              # href: FAQ_BISD.html
+              href: FAQ_BISD.html
             - text: "Comfort ISD"
             - text: "City of Boerne"
             - text: "City of Fair Oaks Ranch"

@@ -63,6 +63,11 @@ jwt_taxes <- read_excel(file.path(path.data,'jwt_property_tax_history.xlsx')) %>
 levies_2023 <- read_excel(file.path(path.data,'2023-school-district-rates-levies.xlsx')) %>%
 	data.table 
 
+directory <- read.csv(file.path(path.data,'district_directory.csv')) %>%
+  data.table 
+
+
+
 ###
 ### Munge Data
 ###
@@ -86,17 +91,34 @@ BISD_combined_tax_rate <- rbind(BISD_combined_tax_rate,
 ### Data Substitutions
 ###
 
-tags_source <- list(
-								 BISD_tax = character()
-							 )
+tags_source <- list(BISD_tax = character())
 
 # Cost of Recapture Since 2007
-tags_source[['BISD_tax']] <- c(tags_source[['BISD_tax']],
+tags_source[["BISD_tax"]] <- c(tags_source[["BISD_tax"]],
 															 `{{{TOTAL_RECAPTURE_2007_2023}}}` = finance_summary[`DISTRICT NAME`=="BOERNE ISD",
 															 																									 scales::dollar_format()(sum(`ALL FUNDS-EQUITY TRANSFERS`))])
+tags_source[['BISD_tax']] <- c(tags_source[["BISD_tax"]],
+                               `{{{AVG_RECAPTURE_PROP_BUDGET}}}` = finance_summary[`DISTRICT NAME`=="BOERNE ISD",
+                               scales::label_percent()(median(`ALL FUNDS-EQUITY TRANSFERS`/`GEN FUNDS-TOTAL OPERATING REVENUE`))])
+
+
+# Levied Taxes
 tags_source[['BISD_tax']] <- c(tags_source[['BISD_tax']],
-															 `{{{AVG_RECAPTURE_PROP_BUDGET}}}` = finance_summary[`DISTRICT NAME`=="BOERNE ISD",
-																								  								 scales::label_percent()(median(`ALL FUNDS-EQUITY TRANSFERS`/`GEN FUNDS-TOTAL OPERATING REVENUE`))])
+                               `{{{2023_COMBINED_RATE}}}` = levies_2023[`Taxing Unit Name`=="Boerne ISD",`M & O Rate` + `I & S Rate`][1])
+tags_source[['BISD_tax']] <- c(tags_source[['BISD_tax']],
+                               `{{{2023_LEVY}}}` = scales::label_comma()(levies_2023[`Taxing Unit Name`=="Boerne ISD",sum(`Calculated Levy`)]))
+tags_source[['BISD_tax']] <- c(tags_source[['BISD_tax']],
+                               `{{{2023_MARKET_VALUE}}}` = scales::label_comma()(levies_2023[`Taxing Unit Name`=="Boerne ISD",sum(`Market Value`)]))
+
+
+
+# Enrollment
+tags_source[['BISD_tax']] <- c(tags_source[['BISD_tax']],
+                               `{{{2023_LEVY_PER_STUDENT}}}` = scales::label_comma()(round(round(levies_2023[`Taxing Unit Name`=="Boerne ISD",sum(`Calculated Levy`)]/directory[District.Name=="BOERNE ISD"]$`District.Enrollment.as.of.Oct.2023`[1]))))
+
+
+
+
 
 # Tax Burden on JWT owned properties
 tags_source[['BISD_tax']] <- c(tags_source[['BISD_tax']],
@@ -169,7 +191,7 @@ display_question <- function(q,id,p=NULL,tab=NULL,tabwidth=700,rows=5) {
 	out <- paste(
 		paste0('<h3>',q$title,'</h3>'),
 		'<div class="answer_wrapper">',
-		q$answer,
+		trimws(gsub('\\s+', ' ', q$answer)),
 		ifelse(is.null(p), '', display_plot(p)),
 		'<p style="margin-top: 5px;">',
 		paste0('<a class="collapsed" data-toggle="collapse" href="#',id,'">'),
@@ -179,8 +201,8 @@ display_question <- function(q,id,p=NULL,tab=NULL,tabwidth=700,rows=5) {
 		'</p>',
 		paste0('<div class="collapse" id="',id,'">'),
 		'<div class="card card-body answer-details">',
-		q$details,
-		ifelse(is.null(tab),'',print_table_html(tab,paste0("table_",id,sep=""),width=tabwidth,pagesize=rows)),
+    trimws(gsub('\\s+', ' ', q$details)),
+		ifelse(is.null(tab),'',print_table_html(tab, paste0("table_", id, sep=""), width=tabwidth, pagesize=rows)),
 		'</div>',
 		'</div>',
 		'</div><br/>',
@@ -195,6 +217,15 @@ display_question <- function(q,id,p=NULL,tab=NULL,tabwidth=700,rows=5) {
 ```{r plots}
 figures <- vector(mode = "list", length = length(BISD_tax_questions))
 tables <- vector(mode = "list", length = length(BISD_tax_questions))
+
+
+margins <- list(l = 50, r = 50,
+                b = 50, t = 50,
+                pad = 20)
+
+btns_exclude <- c('sendDataToCloud', 'autoScale2d', 'resetScale2d', 'toggleSpikelines',
+                  'hoverClosestCartesian', 'hoverCompareCartesian',
+                  'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d')
 
 ###
 ### How Much Does Boerne ISD Pay to the State of Texas in Recapture?
@@ -211,7 +242,10 @@ figures[[7]] <- plot_ly(pdata, x = ~YEAR, y = ~`Recapture Payment`,
 												height=200)  %>%
   layout(title = "BISD Recapture Since 2007", 
   			 xaxis=list(title="Year"),
- 	  		 yaxis = list(title="Recapture Payment"))
+ 	  		 yaxis = list(title="Recapture Payment"),
+         margin=margins) %>% 
+  config(displayModeBar = TRUE,
+         modeBarButtonsToRemove = btns_exclude)
 
 
 ###
@@ -227,7 +261,10 @@ figures[[3]] <- plot_ly(BISD_combined_tax_rate, x = ~`Tax Year`, y = ~`Combined 
  	  		 yaxis = list(title="Combined Tax Rate", 
  	  		 						  range=c(.75,2), 
  	  		 						  tickvals=list(.75,1,1.25,1.5,1.75,2),
- 	  		 						  ticktext=list("0.75","1.00","1.25","1.50","1.75","2.00")))
+ 	  		 						  ticktext=list("0.75","1.00","1.25","1.50","1.75","2.00")),
+         margin=margins) %>% 
+  config(displayModeBar = TRUE,
+         modeBarButtonsToRemove = btns_exclude)
 
 
 ###

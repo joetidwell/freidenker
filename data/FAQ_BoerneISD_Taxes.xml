@@ -2,17 +2,44 @@
 	<question>
 		<title>What Kinds of Taxes Does Boerne ISD Levy?</title>
 		<answer>Like most all Texas public school districts, Boerne ISD's tax revenue comes solely through ad valorem tax levies based on a "property tax rate [that] consists of a maintenance and operations (M&amp;O) tax rate and ... an interest and sinking (I&amp;S) tax rate. The M&amp;O tax rate provides funds for maintenance and operations. The I&amp;S tax rate provides funds for payments on the debt that finances a district's facilities."^[“School District Property Values and Tax Rates.” Texas Education Agency, Texas Education Agency, 9 Aug. 2024, [tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates](https://tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates).] </answer>
-		<details><![CDATA[<ul><li>The Kendall Appraisal District (KCAD) is responsible for assessing property values and for "collecting local property taxes levied by Boerne ISD, Comfort ISD, the City of Boerne, Kendall County, Kendall County WCID #1, Kendall County MUD #1, Miralomas MUD and Cow Creek Ground Water Conservation District^[“Important Information about Your Tax Bill.” Kendall AD, [kendallad.org/important-information-about-your-tax-bill/](https://kendallad.org/important-information-about-your-tax-bill/). Accessed 31 Aug. 2024. ].<li>Homeowners' Tax Example:</li></ul>The total tax rate is multiplied by every $100 of assessed taxable value for qualified properties within a district's boundaries. For example, if a homeowner's residence was valued by their tax appraisal district at $200,000 in a school district with a M&amp;O rate of 0.75 and a I&amp;S rate if 0.50 (total rate = 1.25), the annual property tax levied against their property would be $2,500. $$1.25 * \frac{200,000}{100} = $2,500$$]]></details>
+		<details><![CDATA[
+			<ul>
+				<li>
+					The Kendall Appraisal District (KCAD) is responsible for assessing property values and for "collecting local property taxes levied by Boerne ISD, Comfort ISD, the City of Boerne, Kendall County, Kendall County WCID #1, Kendall County MUD #1, Miralomas MUD and Cow Creek Ground Water Conservation District^[“Important Information about Your Tax Bill.” Kendall AD, [kendallad.org/important-information-about-your-tax-bill/](https://kendallad.org/important-information-about-your-tax-bill/). Accessed 31 Aug. 2024. ].
+				</li>
+				<li>Homeowners' Tax Example:</li>
+			</ul>
+
+			The total tax rate is multiplied by every $100 of assessed taxable value for qualified properties within a district's boundaries. For example, if a homeowner's residence was valued by their tax appraisal district at $200,000 in a school district with a M&amp;O rate of 0.75 and a I&amp;S rate if 0.50 (total rate = 1.25), the annual property tax levied against their property would be $2,500. $$1.25 * \frac{200,000}{100} = $2,500$$]]></details>
 	</question> 	
 	<question>
 		<title>How Much Does Boerne ISD Levy in Property Taxes?</title>
-		<answer>For 2023 (2023-2024 school year), Boerne ISD adopted a combined M&amp;O and I&amp;S tax rate of $0.9932 per $100 and had a taxable market value of $10,761,664,074, which resulted in a total tax levy of $106,884,848, or $9,796.96 per enrolled student.</answer>
-		<details>Details</details>
+		<answer>For 2023 (2023-2024 school year), Boerne ISD adopted a combined M&amp;O and I&amp;S tax rate of ${{{2023_COMBINED_RATE}}} per $100 and had a taxable market value of ${{{2023_MARKET_VALUE}}}, which resulted in a total tax levy of ${{{2023_LEVY}}}, or ${{{2023_LEVY_PER_STUDENT}}} per enrolled student.</answer>
+		<details><![CDATA[
+			<ul>
+				<li>Data Sources
+					<ul>
+						<li>Enrollment: [Texas Public School Directory](data_texas_public_school_directory.html)</li>
+						<li>2023 Tax Rates and Levies: [Texas Public School Tax Levies](data_texas_public_school_tax_levies.html)</li>
+					</ul>
+				</li>
+			</ul>
+		]]></details>
 	</question>
 	<question>
 		<title>How Has Boerne ISD's Tax Rate Changed Over Time?</title>
 		<answer></answer>
-		<details><![CDATA[<ul><li>Plot data included in table below.</li><li>Original source data and description from [Datasets](data_texas_public_school_tax_rates.html)</li></ul>]]></details>	</question>
+		<details><![CDATA[
+      <ul>
+        <li>Data Sources
+          <ul>
+            <li>Finances: [Texas Public School Tax Rates](data_texas_public_school_tax_rates.html)</li>
+            <li>Plot data included in table below</li>
+          </ul>
+        </li>
+      </ul>
+    ]]></details>	
+  </question>
 	<question>
 		<title>How Has the Tax Burden for Boerne ISD's Homeowners Changed Over Time?</title>
 		<answer><![CDATA[For a selected portfolio of real-estate (see details), from 2016-2024 the real (i.e. inflation adjusted) tax burden increased an average (median) of {{{JWT_TAX_MEDIAN}}} with an increase of {{{JWT_TAX_LOW}}} as the smallest change and {{{JWT_TAX_HIGH}}} as the largest.]]></answer>
@@ -31,7 +58,16 @@
 	<question>
 		<title>How Much Does Boerne ISD Pay to the State of Texas in Recapture?</title>
 		<answer><![CDATA[Recapture since 2007: {{{TOTAL_RECAPTURE_2007_2023}}}<br/>Average (median) proportion of BISD annual Total Operating Revenue (General Fund): {{{AVG_RECAPTURE_PROP_BUDGET}}}]]></answer>
-		<details><![CDATA[<ul><li>Plot data included in table below.</li><li>Original source data and description from [Datasets](data_texas_public_school_finances.html)</li></ul>]]></details>
+		<details><![CDATA[
+			<ul>
+        <li>Data Sources
+          <ul>
+            <li>Finances: [Texas Public School Finances](data_texas_public_school_finances.html)</li>
+            <li>Plot data included in table below</li>
+          </ul>
+        </li>
+      </ul>
+    ]]></details>
 	</question>
 	<question>
 		<title>How Does Boerne ISD's Taxes Compare to Similar Districts?</title>
