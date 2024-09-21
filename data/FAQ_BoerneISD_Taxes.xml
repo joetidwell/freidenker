@@ -41,11 +41,6 @@
     ]]></details>	
   </question>
 	<question>
-		<title>How Has the Tax Burden for Boerne ISD's Homeowners Changed Over Time?</title>
-		<answer><![CDATA[For a selected portfolio of real-estate (see details), from 2016-2024 the real (i.e. inflation adjusted) tax burden increased an average (median) of {{{JWT_TAX_MEDIAN}}} with an increase of {{{JWT_TAX_LOW}}} as the smallest change and {{{JWT_TAX_HIGH}}} as the largest.]]></answer>
-		<details>Many factors influence the average tax burden for homeowners beyond the tax rate, including the type of home people choose to purchase (size, quality, location, etc) and in particular changes in appraisal values which do not necessarily track inflation. While an "apples to apples" comparison across the district is not possible given the limited data publically available (i.e. free), I analyzed the change in tax burden from 2016-2024 (all years data that is available from the Kendall County Appraisal District Property Search website^[“Kendall Ad Property Search.” Kendall AD Property Search, [esearch.kendallad.org](https://esearch.kendallad.org). Accessed 17 Sept. 2024. ]) for the five properties I or my parents owned at some point since 1985. These properties include four residences within the City of Boerne and one rural property in Kendall County.</details>
-	</question>
-	<question>
 		<title>How Has Boerne ISD's Per-Student Funding Changed Over Time?</title>
 		<answer>Answer</answer>
 		<details>Details</details>
@@ -100,3 +95,12 @@
 
 
 -->
+
+<!-- BACKLOG
+  <question>
+    <title>How Has the Tax Burden for Boerne ISD's Homeowners Changed Over Time?</title>
+    <answer><![CDATA[For a selected portfolio of real-estate (see details), from 2016-2024 the real (i.e. inflation adjusted) tax burden increased an average (median) of {{{JWT_TAX_MEDIAN}}} with an increase of {{{JWT_TAX_LOW}}} as the smallest change and {{{JWT_TAX_HIGH}}} as the largest.]]></answer>
+    <details>Many factors influence the average tax burden for homeowners beyond the tax rate, including the type of home people choose to purchase (size, quality, location, etc) and in particular changes in appraisal values which do not necessarily track inflation. While an "apples to apples" comparison across the district is not possible given the limited data publically available (i.e. free), I analyzed the change in tax burden from 2016-2024 (all years data that is available from the Kendall County Appraisal District Property Search website^[“Kendall Ad Property Search.” Kendall AD Property Search, [esearch.kendallad.org](https://esearch.kendallad.org). Accessed 17 Sept. 2024. ]) for the five properties I or my parents owned at some point since 1985. These properties include four residences within the City of Boerne and one rural property in Kendall County.</details>
+  </question>
+
+ -->
