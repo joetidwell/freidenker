@@ -1,5 +1,5 @@
 ---
-title: Boerne ISD Tax FAQs
+title: Comfort ISD Tax FAQs
 ---
 
 <script src="lib/core-js-2.5.3/shim.min.js"></script>
@@ -82,16 +82,16 @@ cpi <- read.csv(file.path(path.data,'cpi.csv')) %>%
 
 # Tax Rates
 
-tmp <- t(tax_rates[`School District`=="BOERNE ISD"])
+tmp <- t(tax_rates[`School District`=="COMFORT ISD"])
 tmp <- tmp[3:nrow(tmp),]
-BISD_tax_rates <- data.table(label=names(tmp),value=as.numeric(tmp))
-BISD_tax_rates[,`Tax Year`:=as.integer(substr(label,6,9))-1]
-BISD_tax_rates[,`School Year`:=paste0(`Tax Year`,'-',`Tax Year`+1),by=`Tax Year`]
-BISD_combined_tax_rate <- BISD_tax_rates[,.(`Combined Tax Rate`=sum(value)),by=.(`Tax Year`,`School Year`)]
-BISD_combined_tax_rate <- rbind(BISD_combined_tax_rate,
+CISD_tax_rates <- data.table(label=names(tmp),value=as.numeric(tmp))
+CISD_tax_rates[,`Tax Year`:=as.integer(substr(label,6,9))-1]
+CISD_tax_rates[,`School Year`:=paste0(`Tax Year`,'-',`Tax Year`+1),by=`Tax Year`]
+CISD_combined_tax_rate <- CISD_tax_rates[,.(`Combined Tax Rate`=sum(value)),by=.(`Tax Year`,`School Year`)]
+CISD_combined_tax_rate <- rbind(CISD_combined_tax_rate,
 																list(`Tax Year`=2023, 
 																		 `School Year`='2023-2024',
-																		 `Combined Tax Rate`=levies_2023[`Taxing Unit Name`=="Boerne ISD"]$`Total Tax Rate`[1]))
+																		 `Combined Tax Rate`=levies_2023[`Taxing Unit Name`=="Comfort ISD"]$`Total Tax Rate`[1]))
 
 
 # Per Student Funding
@@ -101,7 +101,7 @@ cols <- c("YEAR",
           "GEN FUNDS-TOTAL OPERATING REVENUE AND OTHER REVENUE",
           "ALL FUNDS-EQUITY TRANSFERS",
           "GEN FUNDS-TOTAL OPERATING REVENUE AND OTHER REVENUE AND RECAPTUR")
-per_student_funding <- finance_summary[`DISTRICT NAME`=="BOERNE ISD",.SD,.SDcols=cols]
+per_student_funding <- finance_summary[`DISTRICT NAME`=="COMFORT ISD",.SD,.SDcols=cols]
 per_student_funding[,YEAR:=as.integer(YEAR)]
 setkey(per_student_funding,"YEAR")
 setkey(cpi,"factor_year")
@@ -122,8 +122,8 @@ per_student_funding <- cpi[per_student_funding]
 
 
 
-# kcad_values[year==2016,tax_rate:=BISD_combined_tax_rate[`Tax Year`==2016]$`Combined Tax Rate`]
-# kcad_values[year==2024,tax_rate:=BISD_combined_tax_rate[`Tax Year`==2023]$`Combined Tax Rate`]
+# kcad_values[year==2016,tax_rate:=CISD_combined_tax_rate[`Tax Year`==2016]$`Combined Tax Rate`]
+# kcad_values[year==2024,tax_rate:=CISD_combined_tax_rate[`Tax Year`==2023]$`Combined Tax Rate`]
 # kcad_values[year==2016,cpi:=1.3]
 # kcad_values[year==2024,cpi:=1]
 # kcad_values[,levy:=tax_rate*(appraisedValue/100)*cpi]
@@ -141,51 +141,51 @@ per_student_funding <- cpi[per_student_funding]
 ### Data Substitutions
 ###
 
-tags_source <- list(BISD_tax = character())
+tags_source <- list(CISD_tax = character())
 
 # Cost of Recapture Since 2007
-tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-															 `{{{TOTAL_RECAPTURE_2007_2023}}}` = finance_summary[`DISTRICT NAME`=="BOERNE ISD",
+tags_source[["CISD"]] <- c(tags_source[["CISD"]],
+															 `{{{TOTAL_RECAPTURE_2007_2023}}}` = finance_summary[`DISTRICT NAME`=="COMFORT ISD",
 															 																									 scales::dollar_format()(sum(`ALL FUNDS-EQUITY TRANSFERS`))])
-tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{AVG_RECAPTURE_PROP_BUDGET}}}` = finance_summary[`DISTRICT NAME`=="BOERNE ISD",
+tags_source[["CISD"]] <- c(tags_source[["CISD"]],
+                               `{{{AVG_RECAPTURE_PROP_BUDGET}}}` = finance_summary[`DISTRICT NAME`=="COMFORT ISD",
                                scales::label_percent()(median(`ALL FUNDS-EQUITY TRANSFERS`/`GEN FUNDS-TOTAL OPERATING REVENUE`))])
 
 
 # Levied Taxes
-tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{2023_COMBINED_RATE}}}` = levies_2023[`Taxing Unit Name`=="Boerne ISD",`M & O Rate` + `I & S Rate`][1])
-tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{2023_LEVY}}}` = scales::label_comma()(levies_2023[`Taxing Unit Name`=="Boerne ISD",sum(`Calculated Levy`)]))
-tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{2023_MARKET_VALUE}}}` = scales::label_comma()(levies_2023[`Taxing Unit Name`=="Boerne ISD",sum(`Market Value`)]))
+tags_source[["CISD"]] <- c(tags_source[["CISD"]],
+                               `{{{2023_COMBINED_RATE}}}` = levies_2023[`Taxing Unit Name`=="Comfort ISD",`M & O Rate` + `I & S Rate`][1])
+tags_source[["CISD"]] <- c(tags_source[["CISD"]],
+                               `{{{2023_LEVY}}}` = scales::label_comma()(levies_2023[`Taxing Unit Name`=="Comfort ISD",sum(`Calculated Levy`)]))
+tags_source[["CISD"]] <- c(tags_source[["CISD"]],
+                               `{{{2023_MARKET_VALUE}}}` = scales::label_comma()(levies_2023[`Taxing Unit Name`=="Comfort ISD",sum(`Market Value`)]))
 
 # Tax Rate
-tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{2005_TAX_RATE}}}` = BISD_combined_tax_rate[`Tax Year`==2005]$`Combined Tax Rate`)
-tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{2023_TAX_RATE}}}` = BISD_combined_tax_rate[`Tax Year`==2023]$`Combined Tax Rate`)
+tags_source[["CISD"]] <- c(tags_source[["CISD"]],
+                               `{{{2005_TAX_RATE}}}` = CISD_combined_tax_rate[`Tax Year`==2005]$`Combined Tax Rate`)
+tags_source[["CISD"]] <- c(tags_source[["CISD"]],
+                               `{{{2023_TAX_RATE}}}` = CISD_combined_tax_rate[`Tax Year`==2023]$`Combined Tax Rate`)
 
 # Enrollment
-tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{2023_LEVY_PER_STUDENT}}}` = scales::label_comma()(round(round(levies_2023[`Taxing Unit Name`=="Boerne ISD",sum(`Calculated Levy`)]/directory[District.Name=="BOERNE ISD"]$`District.Enrollment.as.of.Oct.2023`[1]))))
+tags_source[["CISD"]] <- c(tags_source[["CISD"]],
+                               `{{{2023_LEVY_PER_STUDENT}}}` = scales::label_comma()(round(round(levies_2023[`Taxing Unit Name`=="Comfort ISD",sum(`Calculated Levy`)]/directory[District.Name=="COMFORT ISD"]$`District.Enrollment.as.of.Oct.2023`[1]))))
 
 # Per-Student Funding 
 tmp <- per_student_funding[,funding:=`GEN FUNDS-TOTAL OPERATING REVENUE AND OTHER REVENUE AND RECAPTUR`/`FALL SURVEY ENROLLMENT`*factor]
-tags_source[["BISD"]] <- c(tags_source[["BISD"]],
+tags_source[["CISD"]] <- c(tags_source[["CISD"]],
                                `{{{2007_REVENUE_PER_STUDENT}}}` = scales::dollar_format()(tmp[factor_year==2007]$funding))
-tags_source[["BISD"]] <- c(tags_source[["BISD"]],
+tags_source[["CISD"]] <- c(tags_source[["CISD"]],
                                `{{{2023_REVENUE_PER_STUDENT}}}` = scales::dollar_format()(tmp[factor_year==2023]$funding))
 
 # finance_summary[,.SD,.SDcols=cols]
 # names(finance_summary)
 
 # # Tax Burden on JWT owned properties
-# tags_source[["BISD"]] <- c(tags_source[["BISD"]],
+# tags_source[["CISD"]] <- c(tags_source[["CISD"]],
 # 															 `{{{JWT_TAX_MEDIAN}}}` = dcast(jwt_taxes, Address ~ `Appraisal Year`, value.var = "Real Tax Burden")[,(`2024`-`2016`)/`2016`] %>% median %>% round(.,2) %>% "*"(100) %>% paste0(.,"%"))
-# tags_source[["BISD"]] <- c(tags_source[["BISD"]],
+# tags_source[["CISD"]] <- c(tags_source[["CISD"]],
 # 															 `{{{JWT_TAX_LOW}}}` = dcast(jwt_taxes, Address ~ `Appraisal Year`, value.var = "Real Tax Burden")[,(`2024`-`2016`)/`2016`] %>% min %>% round(.,2) %>% "*"(100) %>% paste0(.,"%"))
-# tags_source[["BISD"]] <- c(tags_source[["BISD"]],
+# tags_source[["CISD"]] <- c(tags_source[["CISD"]],
 # 															 `{{{JWT_TAX_HIGH}}}` = dcast(jwt_taxes, Address ~ `Appraisal Year`, value.var = "Real Tax Burden")[,(`2024`-`2016`)/`2016`] %>% max %>% round(.,2) %>% "*"(100) %>% paste0(.,"%"))
 
 
@@ -197,25 +197,25 @@ tags_source[["BISD"]] <- c(tags_source[["BISD"]],
 ### Load Questions
 ###
 
-BISD_tax_questions <- as_list(read_xml(file.path(path.data,"FAQ_BoerneISD_Taxes.xml")))[[1]]
+CISD_tax_questions <- as_list(read_xml(file.path(path.data,"FAQ_ComfortISD_Taxes.xml")))[[1]]
 
 ###
 ### Subsitute Tags
 ###
 
-for (i in 1:length(BISD_tax_questions)) {
-	BISD_tax_questions[[i]]$title <- unlist(BISD_tax_questions[[i]]$title)
-	BISD_tax_questions[[i]]$answer <- unlist(BISD_tax_questions[[i]]$answer)
-	BISD_tax_questions[[i]]$details <- unlist(BISD_tax_questions[[i]]$details)
+for (i in 1:length(CISD_tax_questions)) {
+	CISD_tax_questions[[i]]$title <- unlist(CISD_tax_questions[[i]]$title)
+	CISD_tax_questions[[i]]$answer <- unlist(CISD_tax_questions[[i]]$answer)
+	CISD_tax_questions[[i]]$details <- unlist(CISD_tax_questions[[i]]$details)
 
-	tags_dest <- unlist(str_extract_all(BISD_tax_questions[[i]]$answer, 
+	tags_dest <- unlist(str_extract_all(CISD_tax_questions[[i]]$answer, 
 																		  "(\\{\\{\\{\\w+\\}\\}\\})", 
 																		  simplify=FALSE))
 	if (length(tags_dest)>0) {
 		for (t in tags_dest) {
-			BISD_tax_questions[[i]]$answer <- gsub(t,
-																						 tags_source[["BISD"]][t],
-																						 BISD_tax_questions[[i]]$answer,
+			CISD_tax_questions[[i]]$answer <- gsub(t,
+																						 tags_source[["CISD"]][t],
+																						 CISD_tax_questions[[i]]$answer,
 																						 fixed=TRUE)
 		}	
 	}
@@ -275,8 +275,8 @@ display_question <- function(q,id,p=NULL,tab=NULL,tabwidth=700,rows=5) {
 
 
 ```{r plots}
-figures <- vector(mode = "list", length = length(BISD_tax_questions))
-tables <- vector(mode = "list", length = length(BISD_tax_questions))
+figures <- vector(mode = "list", length = length(CISD_tax_questions))
+tables <- vector(mode = "list", length = length(CISD_tax_questions))
 
 
 margins <- list(l = 50, r = 50,
@@ -287,36 +287,16 @@ btns_exclude <- c('sendDataToCloud', 'autoScale2d', 'resetScale2d', 'toggleSpike
                   'hoverClosestCartesian', 'hoverCompareCartesian',
                   'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d')
 
-###
-### How Much Does Boerne ISD Pay to the State of Texas in Recapture?
-###
-
-pdata <- finance_summary[`DISTRICT NAME`=="BOERNE ISD",
-												 .(`Recapture Payment`=`ALL FUNDS-EQUITY TRANSFERS`, 
-												 	 `% of Total Operating Revenue (Gen. Funds)` = `ALL FUNDS-EQUITY TRANSFERS`/`GEN FUNDS-TOTAL OPERATING REVENUE`),
-												 by=YEAR]
-tables[[6]] <- pdata
-figures[[6]] <- plot_ly(pdata, x = ~YEAR, y = ~`Recapture Payment`, 
-											  type = 'scatter', name="Recapture", mode = 'lines+markers',
-												title = "BISD Recapture Since 2007",
-												height=200)  %>%
-  layout(title = "BISD Recapture Since 2007", 
-  			 xaxis=list(title="Year"),
- 	  		 yaxis = list(title="Recapture Payment"),
-         margin=margins) %>% 
-  config(displayModeBar = TRUE,
-         modeBarButtonsToRemove = btns_exclude)
-
 
 ###
-### How Has Boerne ISD’s Tax Rate Changed Over Time?
+### How Has Comfort ISD’s Tax Rate Changed Over Time?
 ###
 
-tables[[3]] <- BISD_combined_tax_rate
-figures[[3]] <- plot_ly(BISD_combined_tax_rate, x = ~`Tax Year`, y = ~`Combined Tax Rate`, 
+tables[[3]] <- CISD_combined_tax_rate
+figures[[3]] <- plot_ly(CISD_combined_tax_rate, x = ~`Tax Year`, y = ~`Combined Tax Rate`, 
 											  type = 'scatter', name="Combined Tax Rate", mode = 'lines+markers',
 												height=200)  %>%
-  layout(title = "BISD Combined M&O and I&S Tax Rate 2005-2023", 
+  layout(title = "CISD Combined M&O and I&S Tax Rate 2005-2023", 
   			 xaxis=list(title="Year"),
  	  		 yaxis = list(title="Combined Tax Rate", 
  	  		 						  range=c(.75,2), 
@@ -328,27 +308,24 @@ figures[[3]] <- plot_ly(BISD_combined_tax_rate, x = ~`Tax Year`, y = ~`Combined 
 
 
 ###
-### How Has the Tax Burden for Boerne ISD’s Homeowners Changed Over Time?
+### How Has the Tax Burden for Comfort ISD’s Homeowners Changed Over Time?
 ###
 
 # tables[[4]] <- jwt_taxes
 
 
 ###
-### How Has Boerne ISD’s Revenue Per-Student Changed Over Time?
+### How Has Comfort ISD’s Revenue Per-Student Changed Over Time?
 ###
 
 tables[[4]] <- per_student_funding
 
 pdata <- per_student_funding
-pdata[,per_student_with_recap:=`GEN FUNDS-TOTAL OPERATING REVENUE AND OTHER REVENUE AND RECAPTUR`/`FALL SURVEY ENROLLMENT`*factor]
-pdata[,per_student_no_recap:=`GEN FUNDS-TOTAL OPERATING REVENUE AND OTHER REVENUE`/`FALL SURVEY ENROLLMENT`*factor]
-figures[[4]] <- plot_ly(pdata, x = ~factor_year, y = ~per_student_with_recap, 
+pdata[,per_student_rev:=`GEN FUNDS-TOTAL OPERATING REVENUE AND OTHER REVENUE`/`FALL SURVEY ENROLLMENT`*factor]
+figures[[4]] <- plot_ly(pdata, x = ~factor_year, y = ~per_student_rev, 
                         type = 'scatter', name="Including\nRecapture", mode = 'lines+markers',
                         height=200)  %>%
-  add_trace(y=~per_student_no_recap, 
-            type = 'scatter', mode='lines+markers', name='Excluding\nRecapture') %>%
-  layout(title = "BISD Revenue Per Student (General Funds) 2007-2023", 
+  layout(title = "CISD Revenue Per Student (General Funds) 2007-2023", 
          xaxis=list(title="Year"),
          yaxis = list(title="Revenue Per Student\n(In 2024 Dollars)"),
          margin=margins) %>% 
@@ -419,7 +396,7 @@ figures[[4]] <- plot_ly(pdata, x = ~factor_year, y = ~per_student_with_recap,
 ```{r, results='asis'}
 i <- 0
 
-for(q in BISD_tax_questions) {
+for(q in CISD_tax_questions) {
 	i <- i + 1
 	if(is.null(figures[[i]]) & is.null(tables[[i]])) {
 		display_question(q, paste0("Q",i))

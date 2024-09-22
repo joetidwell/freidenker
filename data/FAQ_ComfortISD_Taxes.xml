@@ -1,7 +1,7 @@
 <questions>
 	<question>
-		<title>What Kinds of Taxes Does Boerne ISD Levy?</title>
-		<answer>Like most all Texas public school districts, Boerne ISD's tax revenue comes solely through ad valorem tax levies based on a "property tax rate [that] consists of a maintenance and operations (M&amp;O) tax rate and ... an interest and sinking (I&amp;S) tax rate. The M&amp;O tax rate provides funds for maintenance and operations. The I&amp;S tax rate provides funds for payments on the debt that finances a district's facilities."^[“School District Property Values and Tax Rates.” Texas Education Agency, Texas Education Agency, 9 Aug. 2024, [tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates](https://tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates).] </answer>
+		<title>What Kinds of Taxes Does Comfort ISD Levy?</title>
+		<answer>Like most all Texas public school districts, Comfort ISD's tax revenue comes solely through ad valorem tax levies based on a "property tax rate [that] consists of a maintenance and operations (M&amp;O) tax rate and ... an interest and sinking (I&amp;S) tax rate. The M&amp;O tax rate provides funds for maintenance and operations. The I&amp;S tax rate provides funds for payments on the debt that finances a district's facilities."^[“School District Property Values and Tax Rates.” Texas Education Agency, Texas Education Agency, 9 Aug. 2024, [tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates](https://tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates).] </answer>
 		<details><![CDATA[
 			<ul>
 				<li>
@@ -13,8 +13,8 @@
 			The total tax rate is multiplied by every $100 of assessed taxable value for qualified properties within a district's boundaries. For example, if a homeowner's residence was valued by their tax appraisal district at $200,000 in a school district with a M&amp;O rate of 0.75 and a I&amp;S rate if 0.50 (total rate = 1.25), the annual property tax levied against their property would be $2,500. $$1.25 * \frac{200,000}{100} = $2,500$$]]></details>
 	</question> 	
 	<question>
-		<title>How Much Does Boerne ISD Levy in Property Taxes?</title>
-		<answer>For 2023 (2023-2024 school year), Boerne ISD adopted a combined M&amp;O and I&amp;S tax rate of ${{{2023_COMBINED_RATE}}} per $100 and had a taxable market value of ${{{2023_MARKET_VALUE}}}, which resulted in a total tax levy of ${{{2023_LEVY}}}, or ${{{2023_LEVY_PER_STUDENT}}} per enrolled student.</answer>
+		<title>How Much Does Comfort ISD Levy in Property Taxes?</title>
+		<answer>For 2023 (2023-2024 school year), Comfort ISD adopted a combined M&amp;O and I&amp;S tax rate of ${{{2023_COMBINED_RATE}}} per $100 and had a taxable market value of ${{{2023_MARKET_VALUE}}}, which resulted in a total tax levy of ${{{2023_LEVY}}}, or ${{{2023_LEVY_PER_STUDENT}}} per enrolled student.</answer>
 		<details><![CDATA[
 			<ul>
 				<li>Data Sources
@@ -27,9 +27,9 @@
 		]]></details>
 	</question>
 	<question>
-		<title>How Has Boerne ISD's Tax Rate Changed Over Time?</title>
+		<title>How Has Comfort ISD's Tax Rate Changed Over Time?</title>
 		<answer><![CDATA[
-      Boerne ISD's combined tax rate decreased from {{{2005_TAX_RATE}}} per $100 in 2005 to {{{2023_TAX_RATE}}} per $100 in 2023.
+      Comfort ISD's combined tax rate decreased from {{{2005_TAX_RATE}}} per $100 in 2005 to {{{2023_TAX_RATE}}} per $100 in 2023.
     ]]></answer>
 		<details><![CDATA[
       <ul>
@@ -43,9 +43,9 @@
     ]]></details>	
   </question>
 	<question>
-		<title>How Has Boerne ISD's Revenue Per-Student Changed Over Time?</title>
+		<title>How Has Comfort ISD's Revenue Per-Student Changed Over Time?</title>
 		<answer><![CDATA[
-      In inflation adjusted dollars (2023 base year), Boerne ISD's revenue (General Funds) decreased from {{{2007_REVENUE_PER_STUDENT}}} per student in 2007 to {{{2023_REVENUE_PER_STUDENT}}} per student in 2023.
+      In inflation adjusted dollars (2023 base year), Comfort ISD's revenue (General Funds) decreased from {{{2007_REVENUE_PER_STUDENT}}} per student in 2007 to {{{2023_REVENUE_PER_STUDENT}}} per student in 2023.
     ]]></answer>
 		<details><![CDATA[
       <ul>
@@ -58,30 +58,6 @@
       </ul>
     ]]></details>
 	</question>
-	<question>
-		<title>What Is Recapture, AKA "Robin Hood"?</title>
-		<answer><![CDATA[
-      Chapter 48, Texas Education Code^[Texas Education Code, [statutes.capitol.texas.gov/Docs/ED/htm/ED.1.htm](https://statutes.capitol.texas.gov/Docs/ED/htm/ED.1.htm). Accessed 21 Sept. 2024. ], Section 48.257: "...makes provisions for certain school districts to share their local tax revenue with other school districts. These provisions are sometimes referred to as “share the wealth” or “Robin Hood” plan because recaptured funds are redistributed by the school finance system to assist with the financing of public education for all school districts."^[“Excess Local Revenue.” Texas Education Agency, Texas Education Agency, 30 Aug. 2024, [tea.texas.gov/finance-and-grants/state-funding/excess-local-revenue](https://tea.texas.gov/finance-and-grants/state-funding/excess-local-revenue).]
-    ]]></answer>
-		<details><![CDATA[
-      The state collects tax revenue levied by local school districts and then distributes these monies back to local public schools through a combination of various funding formulas.  Local tax dollars <u>do not</u> fund local schools, they fund the state, who then decides how much money each district should receive.  Formulas defined by state law (Texas Education Code Chapters 48-49) determine what funding level each district is entitled to receive, and which districts have "Excess Local Revenue," i.e. what the state considers property values so high that the local district's tax revenue should be redistributed to less property wealthy public school districts.
-    ]]></details>
-	</question>
-	<question>
-		<title>How Much Does Boerne ISD Pay to the State of Texas in Recapture?</title>
-		<answer><![CDATA[Recapture since 2007: {{{TOTAL_RECAPTURE_2007_2023}}}<br/>Average (median) proportion of BISD annual Total Operating Revenue (General Fund): {{{AVG_RECAPTURE_PROP_BUDGET}}}]]></answer>
-		<details><![CDATA[
-			<ul>
-        <li>Data Sources
-          <ul>
-            <li>Finances: [Texas Public School Finances](data_texas_public_school_finances.html)</li>
-            <li>Plot data included in table below</li>
-          </ul>
-        </li>
-      </ul>
-    ]]></details>
-	</question>
-
 </questions>
 <!-- TEMPLATE  	
 	
