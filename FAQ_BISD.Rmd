@@ -38,6 +38,8 @@ library(fontawesome)
 library(xml2)
 library(dplyr)
 library(plotly)
+library(foreach)
+library(RColorBrewer)
 
 knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(message = FALSE)
@@ -45,7 +47,14 @@ knitr::opts_chunk$set(warning = FALSE)
 knitr::opts_chunk$set(cache = FALSE)
 
 path.data <- file.path('data')
-
+neighbor_districts <- data.table(CDN = c("130901", # Boerne ISD
+                                         "016902", # Blanco ISD
+                                         "046902", # Comal ISD
+                                         "015915", # North Side ISD
+                                         "015910", # North East ISD
+                                         "010902", # Bandera ISD
+                                         "130902") # Comfort ISD
+                      )
 
 ###
 ### Load Data
@@ -72,6 +81,8 @@ directory <- read.csv(file.path(path.data,'district_directory.csv')) %>%
 cpi <- read.csv(file.path(path.data,'cpi.csv')) %>%
   data.table 
 
+neighbor_districts[,County:=directory[District.Number %in% paste0("'",CDN)]$County.Name[1],by=CDN]
+neighbor_districts[,Name:=directory[District.Number %in% paste0("'",CDN)]$District.Name[1],by=CDN]
 
 ###
 ### Munge Data
@@ -93,6 +104,23 @@ BISD_combined_tax_rate <- rbind(BISD_combined_tax_rate,
 																		 `School Year`='2023-2024',
 																		 `Combined Tax Rate`=levies_2023[`Taxing Unit Name`=="Boerne ISD"]$`Total Tax Rate`[1]))
 
+tmp <- tax_rates[CDN %in% neighbor_districts$CDN]
+years <- substr(names(tmp)[3:length(tmp)],1,4) %>% unique
+BISD_neighbors_combined_tax_rate <- foreach(year=years, .combine='rbind') %do% {  
+                                            cols <- grep(paste0("^",year),names(tmp),value=TRUE)
+                                            tmp[,.(`Tax Year` = year, `Combined Tax Rate` = sum(.SD)), 
+                                                .SD=cols, by="School District"]
+}
+BISD_neighbors_combined_tax_rate <- rbind(BISD_neighbors_combined_tax_rate,
+                                          neighbor_districts[,.(`School District` = Name,
+                                                                `Tax Year` = "2023",
+                                                                `Combined Tax Rate` = levies_2023[toupper(`Taxing Unit Name`) == Name & toupper(`County Name`) == County]$`Total Tax Rate`[1]),
+                                                             by=CDN][,.(`School District`,`Tax Year`,`Combined Tax Rate`)])
+BISD_neighbors_combined_tax_rate <- rbind(BISD_neighbors_combined_tax_rate[`School District` != "BOERNE ISD"],
+                                          BISD_neighbors_combined_tax_rate[`School District` == "BOERNE ISD"])
+
+
+BISD_neighbors_combined_tax_rate[,Rank:=rank(-`Combined Tax Rate`),by=`Tax Year`]
 
 # Per Student Funding
 
@@ -165,6 +193,14 @@ tags_source[["BISD"]] <- c(tags_source[["BISD"]],
                                `{{{2005_TAX_RATE}}}` = BISD_combined_tax_rate[`Tax Year`==2005]$`Combined Tax Rate`)
 tags_source[["BISD"]] <- c(tags_source[["BISD"]],
                                `{{{2023_TAX_RATE}}}` = BISD_combined_tax_rate[`Tax Year`==2023]$`Combined Tax Rate`)
+tags_source[["BISD"]] <- c(tags_source[["BISD"]],
+                               `{{{MEDIAN_TAX_RANK}}}` = BISD_neighbors_combined_tax_rate[`School District`=="BOERNE ISD", median(Rank)])
+tags_source[["BISD"]] <- c(tags_source[["BISD"]],
+                               `{{{2023_TAX_RANK}}}` = BISD_neighbors_combined_tax_rate[`School District`=="BOERNE ISD" & `Tax Year` == 2023]$Rank)
+
+
+
+
 
 # Enrollment
 tags_source[["BISD"]] <- c(tags_source[["BISD"]],
@@ -312,7 +348,7 @@ figures[[6]] <- plot_ly(pdata, x = ~YEAR, y = ~`Recapture Payment`,
 ### How Has Boerne ISD’s Tax Rate Changed Over Time?
 ###
 
-tables[[3]] <- BISD_combined_tax_rate
+tables[[3]] <- copy(BISD_combined_tax_rate)
 figures[[3]] <- plot_ly(BISD_combined_tax_rate, x = ~`Tax Year`, y = ~`Combined Tax Rate`, 
 											  type = 'scatter', name="Combined Tax Rate", mode = 'lines+markers',
 												height=200)  %>%
@@ -328,6 +364,52 @@ figures[[3]] <- plot_ly(BISD_combined_tax_rate, x = ~`Tax Year`, y = ~`Combined 
 
 
 ###
+### How Does Boerne ISD’s Tax Rate Compare to Neighboring Districts?
+###
+
+
+pdata <- copy(BISD_neighbors_combined_tax_rate)
+pdata <- dcast(pdata, `Tax Year` ~ `School District`, value.var = "Combined Tax Rate")
+ISDs <- names(pdata)[-1]
+ISDs <- c(ISDs[ISDs!="BOERNE ISD"],"BOERNE ISD")
+colors <- brewer.pal(n=7,"Set1")
+colors[4] <- colors[7]
+colors[7] <- "#8968CD" 
+colors <- data.table(ISD=ISDs,color=colors)
+setkey(colors, ISD)
+fig <- plot_ly(pdata,
+         type = "scatter",
+         mode = "lines+markers",
+         height = 300
+       )  %>%
+  layout(title = "BISD and Neighboring District's Tax Rates 2005-2023", 
+         xaxis = list(title = "Year"),
+         yaxis = list(title = "Combined Tax Rate", 
+                      range = c(.75,2), 
+                      tickvals = list(.75,1,1.25,1.5,1.75,2),
+                      ticktext = list("0.75","1.00","1.25","1.50","1.75","2.00")),
+         margin=margins,
+         hovermode = 'x unified') %>% 
+  config(displayModeBar = TRUE,
+         modeBarButtonsToRemove = btns_exclude)
+for (ISD in names(pdata)[-1]) {
+  fig <- add_trace(fig, 
+      y = pdata[[ISD]],
+      x = ~`Tax Year`,
+      name = ISD,
+      mode = 'lines+markers',
+      line = list( width = if(ISD=="BOERNE ISD") 5 else 2,
+                   color = colors[ISD]$color ),
+      marker = list( size = if(ISD=="BOERNE ISD") 12 else 7,
+                     color = colors[ISD]$color,
+                     line = list( width = 1, color="#999") ),
+      opacity = if(ISD=="BOERNE ISD") 1 else .35
+    )
+}
+figures[[4]] <- fig
+tables[[4]] <- copy(pdata)
+
+###
 ### How Has the Tax Burden for Boerne ISD’s Homeowners Changed Over Time?
 ###
 
@@ -338,12 +420,12 @@ figures[[3]] <- plot_ly(BISD_combined_tax_rate, x = ~`Tax Year`, y = ~`Combined 
 ### How Has Boerne ISD’s Revenue Per-Student Changed Over Time?
 ###
 
-tables[[4]] <- per_student_funding
+tables[[5]] <- per_student_funding
 
 pdata <- per_student_funding
 pdata[,per_student_with_recap:=`GEN FUNDS-TOTAL OPERATING REVENUE AND OTHER REVENUE AND RECAPTUR`/`FALL SURVEY ENROLLMENT`*factor]
 pdata[,per_student_no_recap:=`GEN FUNDS-TOTAL OPERATING REVENUE AND OTHER REVENUE`/`FALL SURVEY ENROLLMENT`*factor]
-figures[[4]] <- plot_ly(pdata, x = ~factor_year, y = ~per_student_with_recap, 
+figures[[5]] <- plot_ly(pdata, x = ~factor_year, y = ~per_student_with_recap, 
                         type = 'scatter', name="Including\nRecapture", mode = 'lines+markers',
                         height=200)  %>%
   add_trace(y=~per_student_no_recap, 

@@ -47,6 +47,16 @@ knitr::opts_chunk$set(cache = FALSE)
 path.data <- file.path('data')
 
 
+neighbor_districts <- data.table(CDN = c("130902", # Comfort ISD
+                                         "130901", # Boerne ISD
+                                         "010902", # Bandera ISD
+                                         "133901", # Center Point ISD
+                                         "133903", # Kerrville ISD
+                                         "086901", # Fredericksburg ISD,
+                                         "016902") # Blanco ISD
+                                )
+
+
 ###
 ### Load Data
 ###
@@ -73,6 +83,9 @@ cpi <- read.csv(file.path(path.data,'cpi.csv')) %>%
   data.table 
 
 
+neighbor_districts[,County:=directory[District.Number %in% paste0("'",CDN)]$County.Name[1],by=CDN]
+neighbor_districts[,Name:=directory[District.Number %in% paste0("'",CDN)]$District.Name[1],by=CDN]
+
 ###
 ### Munge Data
 ###
@@ -92,6 +105,24 @@ CISD_combined_tax_rate <- rbind(CISD_combined_tax_rate,
 																list(`Tax Year`=2023, 
 																		 `School Year`='2023-2024',
 																		 `Combined Tax Rate`=levies_2023[`Taxing Unit Name`=="Comfort ISD"]$`Total Tax Rate`[1]))
+
+tmp <- tax_rates[CDN %in% neighbor_districts$CDN]
+years <- substr(names(tmp)[3:length(tmp)],1,4) %>% unique
+CISD_neighbors_combined_tax_rate <- foreach(year=years, .combine='rbind') %do% {  
+                                            cols <- grep(paste0("^",year),names(tmp),value=TRUE)
+                                            tmp[,.(`Tax Year` = year, `Combined Tax Rate` = sum(.SD)), 
+                                                .SD=cols, by="School District"]
+}
+CISD_neighbors_combined_tax_rate <- rbind(CISD_neighbors_combined_tax_rate,
+                                          neighbor_districts[,.(`School District` = Name,
+                                                                `Tax Year` = "2023",
+                                                                `Combined Tax Rate` = levies_2023[toupper(`Taxing Unit Name`) == Name & toupper(`County Name`) == County]$`Total Tax Rate`[1]),
+                                                             by=CDN][,.(`School District`,`Tax Year`,`Combined Tax Rate`)])
+CISD_neighbors_combined_tax_rate <- rbind(CISD_neighbors_combined_tax_rate[`School District` != "COMFORT ISD"],
+                                          CISD_neighbors_combined_tax_rate[`School District` == "COMFORT ISD"])
+
+
+CISD_neighbors_combined_tax_rate[,Rank:=rank(-`Combined Tax Rate`),by=`Tax Year`]
 
 
 # Per Student Funding
@@ -165,6 +196,10 @@ tags_source[["CISD"]] <- c(tags_source[["CISD"]],
                                `{{{2005_TAX_RATE}}}` = CISD_combined_tax_rate[`Tax Year`==2005]$`Combined Tax Rate`)
 tags_source[["CISD"]] <- c(tags_source[["CISD"]],
                                `{{{2023_TAX_RATE}}}` = CISD_combined_tax_rate[`Tax Year`==2023]$`Combined Tax Rate`)
+tags_source[["CISD"]] <- c(tags_source[["CISD"]],
+                               `{{{MEDIAN_TAX_RANK}}}` = CISD_neighbors_combined_tax_rate[`School District`=="COMFORT ISD", median(Rank)])
+tags_source[["CISD"]] <- c(tags_source[["CISD"]],
+                               `{{{2023_TAX_RANK}}}` = CISD_neighbors_combined_tax_rate[`School District`=="COMFORT ISD" & `Tax Year` == 2023]$Rank)
 
 # Enrollment
 tags_source[["CISD"]] <- c(tags_source[["CISD"]],
@@ -307,6 +342,54 @@ figures[[3]] <- plot_ly(CISD_combined_tax_rate, x = ~`Tax Year`, y = ~`Combined 
          modeBarButtonsToRemove = btns_exclude)
 
 
+
+###
+### How Does Comfort ISD’s Tax Rate Compare to Neighboring Districts?
+###
+
+
+pdata <- copy(CISD_neighbors_combined_tax_rate)
+pdata <- dcast(pdata, `Tax Year` ~ `School District`, value.var = "Combined Tax Rate")
+ISDs <- names(pdata)[-1]
+ISDs <- c(ISDs[ISDs!="COMFORT ISD"],"COMFORT ISD")
+colors <- brewer.pal(n=7,"Set1")
+colors[6] <- colors[7]
+colors[7] <- "#D4AF37"
+colors <- data.table(ISD=ISDs,color=colors)
+setkey(colors, ISD)
+fig <- plot_ly(pdata,
+         type = "scatter",
+         mode = "lines+markers",
+         height = 300
+       )  %>%
+  layout(title = "CISD and Neighboring District's Tax Rates 2005-2023", 
+         xaxis = list(title = "Year"),
+         yaxis = list(title = "Combined Tax Rate", 
+                      range = c(.75,2), 
+                      tickvals = list(.75,1,1.25,1.5,1.75,2),
+                      ticktext = list("0.75","1.00","1.25","1.50","1.75","2.00")),
+         margin=margins,
+         hovermode = 'x unified') %>% 
+  config(displayModeBar = TRUE,
+         modeBarButtonsToRemove = btns_exclude)
+for (ISD in names(pdata)[-1]) {
+  fig <- add_trace(fig, 
+      y = pdata[[ISD]],
+      x = ~`Tax Year`,
+      name = ISD,
+      mode = 'lines+markers',
+      line = list( width = if(ISD=="COMFORT ISD") 5 else 2,
+                   color = colors[ISD]$color ),
+      marker = list( size = if(ISD=="COMFORT ISD") 12 else 7,
+                     color = colors[ISD]$color,
+                     line = list( width = 1, color="#999") ),
+      opacity = if(ISD=="COMFORT ISD") 1 else .35
+    )
+}
+figures[[4]] <- fig
+tables[[4]] <- copy(pdata)
+
+
 ###
 ### How Has the Tax Burden for Comfort ISD’s Homeowners Changed Over Time?
 ###
@@ -318,11 +401,11 @@ figures[[3]] <- plot_ly(CISD_combined_tax_rate, x = ~`Tax Year`, y = ~`Combined 
 ### How Has Comfort ISD’s Revenue Per-Student Changed Over Time?
 ###
 
-tables[[4]] <- per_student_funding
+tables[[5]] <- per_student_funding
 
 pdata <- per_student_funding
 pdata[,per_student_rev:=`GEN FUNDS-TOTAL OPERATING REVENUE AND OTHER REVENUE`/`FALL SURVEY ENROLLMENT`*factor]
-figures[[4]] <- plot_ly(pdata, x = ~factor_year, y = ~per_student_rev, 
+figures[[5]] <- plot_ly(pdata, x = ~factor_year, y = ~per_student_rev, 
                         type = 'scatter', name="Including\nRecapture", mode = 'lines+markers',
                         height=200)  %>%
   layout(title = "CISD Revenue Per Student (General Funds) 2007-2023", 
