@@ -1,0 +1,263 @@
+---
+title: Budgets - Kendall County Local Governments
+---
+
+<script src="lib/core-js-2.5.3/shim.min.js"></script>
+<script src="lib/react-18.2.0/react.min.js"></script>
+<script src="lib/react-18.2.0/react-dom.min.js"></script>
+<script src="lib/reactwidget-1.0.0/react-tools.js"></script>
+<script src="lib/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="lib/reactable-0.4.4/reactable.css" rel="stylesheet"/>
+<script src="lib/reactable-binding-0.4.4/reactable.js"></script>
+
+
+### Rating the Quality of Available Budget Information
+
+The accessibility, transparency, and format (i.e. how easy the source data is for citizens to use) of budget information can vary considerably between government entities.  I've attempted to create a clear rubric for scoring the quality of available budget information to both give people an idea of how easy or difficult it may be for them to use these data, as well as to be able to point out easy changes that local government entities could make to improve the quality of the budget information they make publicly available.
+
+<details>
+<summary style="font-size: 1.25em;">Rubric</summary>
+
+Each publicly available budget is scored from 0 to 2 on its Accessibility, Transparency, and Format.  The minimum possible score is 0, indicating the lowest quality budget information. The maximum possible score is 6, indicating the highest quality budget information. 
+
+<div style="width:700px; margin:0 auto;">
+
+#### Accessibility
+
+<table style="text-align: center; background-color: #EEE;"><thead>
+  <tr>
+    <th width="100px">Score</th>
+    <th width="500px">Description</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td>0</td>
+    <td>Not Available online</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Available online</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Easily found via search engines</td>
+  </tr>
+</tbody>
+</table>
+
+<br/>
+
+
+#### Transparency
+
+<table style="text-align: center; background-color: #EEE;"><thead>
+  <tr>
+    <th width="100px">Score</th>
+    <th width="500px">Description</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td>0</td>
+    <td>Documents only overall revenue and expenses</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Includes budgetary detail at the function/department level</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Includes budgetary detail within functions/departments</td>
+  </tr>
+</tbody>
+</table>
+
+<br/>
+
+#### Format
+
+<table style="text-align: center; background-color: #EEE;"><thead>
+  <tr>
+    <th width="100px">Score</th>
+    <th width="500px">Description</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td>0</td>
+    <td>Available as image-only PDFs (can't search text) or as webpage objects</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Available as text searchable PDFs (OCR or True PDF)</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Available as tabular data (json, .csv, .xlsx, etc.)</td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+
+</details>
+
+<br/>
+<br/>
+
+
+## Budget Information By Entity
+
+<hr>
+
+Budget Information Quality Scores and direct sources (e.g. links to pdf downloads or websites containing budget information) are presented for each major governmental entity in Kendall county.
+
+<br/>
+
+### Kendall County
+
+
+<details>
+<summary style="font-size: 1.25em;">Budget Information Quality <span style="background-color: #98FB98;"> **5/6** </span></summary>
+
+- **2/2** - Accessibility
+	- *Direct link to budgets returned as second result for Google search term "Kendall County Texas budget"*
+- **2/2** - Transparency
+	- *Very detailed and comprehensive information by department*
+- **1/2** - Format
+	- *Well formatted text-searchable pdf*
+
+</details>
+<details>
+<summary style="font-size: 1.25em;">Sources</summary>
+
+<div style="font-size: 1.25em;">
+
+- Budgets: [Website](https://www.co.kendall.tx.us/167/Budgets)
+- FY 2025 Budget: [PDF](https://www.co.kendall.tx.us/DocumentCenter/View/2236/Adopted-Budget-FY25?bidId=)
+- Annual Financial Reports: [Website](https://www.co.kendall.tx.us/Archive.aspx?AMID=38) 
+- FY 2023 Annual Financial Report: [PDF](https://www.co.kendall.tx.us/ArchiveCenter/ViewFile/Item/889)
+
+</div>
+</details>
+
+<br/>
+
+
+### Boerne ISD
+
+
+
+<details>
+<summary style="font-size: 1.25em;">Budget Information Quality <span style="background-color: #FEF569;"> **4/6** </span></summary>
+
+- **2/2** - Accessibility
+	- *Direct link to budgets returned as top result for Google search term "Boerne ISD budget"*
+- **1/2** - Transparency
+	- *Includes revenue and expenses by fund and function*
+- **1/2** - Format
+	- *Well formatted text-searchable pdf*
+
+</details>
+<details>
+<summary style="font-size: 1.25em;">Sources</summary>
+
+<div style="font-size: 1.25em;">
+
+- Budgets: [Website](https://www.boerneisd.net/Page/9305)
+- 2024-2025 Adopted Budget: [PDF](https://www.boerneisd.net/site/handlers/filedownload.ashx?moduleinstanceid=14684&dataid=46721&FileName=Adopted%20Budget%202024%20-%202025%20v2.pdf)
+- Annual Financial Reports: [Website](https://www.boerneisd.net/Page/9309)
+- FY 2023 Annual Financial Report: [PDF](https://www.boerneisd.net/site/handlers/filedownload.ashx?moduleinstanceid=14708&dataid=45410&FileName=ACFR-2023%2011-09-23%20draft.pdf)
+
+</div>
+
+</details>
+<br/>
+
+
+### Comfort ISD
+
+
+<details>
+<summary style="font-size: 1.25em;">Budget Information Quality <span style="background-color: #FFA500;"> **3/6** </span></summary>
+
+- **2/2** - Accessibility
+	- *Direct link to budgets returned as second result for Google search term "Comfort ISD budget"*
+- **0/2** - Transparency
+	- *Current adopted budget not available. Available budgets contain minimal detail: 3/4 of a single page long, refers to various funds by code rather than name (e.g. '199' versus 'General Fund'), no revenue detail. Missing 2022 Annual Financial Report.*
+- **1/2** - Format
+	- *text-searchable pdf*
+	- *html table in webpage*
+
+</details>
+<details>
+<summary style="font-size: 1.25em;">Sources</summary>
+
+<div style="font-size: 1.25em;">
+
+- Budgets: [Website](https://www.comfort.txed.net/33306_3)
+- 2023-2024 Adopted Budget: [PDF](https://files.smartsites.parentsquare.com/4592/2023-2024_adopted_budget.pdf)
+- Annual Financial Reports: [Website](https://www.comfort.txed.net/33305_3)
+- FY 2023 Annual Financial Report: [Website](https://www.comfort.txed.net/11395_4)
+
+</div>
+
+</details>
+<br/>
+
+### City of Boerne
+
+
+<details>
+<summary style="font-size: 1.25em;">Budget Information Quality <span style="background-color: #FEF569;"> **4/6** </span></summary>
+
+- **2/2** - Accessibility
+	- *Direct link to budgets returned as top result for Google search term "City of Boerne budget"*
+- **2/2** - Transparency
+	- *Detailed information by department available through web application*
+- **0/2** - Format
+	- *No available direct download. Web application is intuitive and well-designed, but is intended for web-based viewing only. Not intuitively, the web application includes a 'print' button that brings up a menu to select areas of the budget you would like to download, then asks for an email address to send you a link. I submitted a request for a link using this method, but never received a link so I could download the report.*
+
+</details>
+<details>
+<summary style="font-size: 1.25em;">Sources</summary>
+
+<div style="font-size: 1.25em;">
+
+- Budgets: [Website](https://www.ci.boerne.tx.us/304/City-Budget)
+- 2024-2025 Budget: [Web Application](https://city-boerne-tx-budget-book.cleargov.com/17188/introduction/transmittal-letter)
+- Annual Financial Reports: [Website](https://www.ci.boerne.tx.us/305/Comprehensive-Annual-Financial-Report) 
+- FY 2023 Annual Financial Report: [PDF](https://www.ci.boerne.tx.us/DocumentCenter/View/23880/City-of-Boerne-Texas-ACFR-YE-9-30-23)
+
+</div>
+</details>
+<br/>
+
+### City of Fair Oaks Ranch
+
+<details>
+<summary style="font-size: 1.25em;">Budget Information Quality <span style="background-color: #FEF569;"> **4/6** </span></summary>
+
+- **2/2** - Accessibility
+	- *Direct link to budgets returned as top result for Google search term "City of Fair Oaks Ranch budget"*
+- **2/2** - Transparency
+	- *Detailed information by department available through web application*
+- **1/2** - Format
+	- *Well formatted text-searchable pdf* 
+  - *Same well-designed web application as City of Boerne*
+
+</details>
+<details>
+<summary style="font-size: 1.25em;">Sources</summary>
+
+<div style="font-size: 1.25em;">
+
+- Budgets: [Website](https://www.fairoaksranchtx.org/142/Budget)
+- 2024-2025 Budget: [Web Application](https://city-fair-oaks-ranch-tx-budget-book.cleargov.com/15343/introduction/title-page)
+- 2024-2025 Budget: [PDF](https://www.fairoaksranchtx.org/DocumentCenter/View/5915/Adopted-FY-2024-25-Budget?bidId=)
+- Annual Financial Reports: [Website](https://www.fairoaksranchtx.org/513/Financial-Transparency) 
+- FY 2023 Annual Financial Report: [PDF](https://fairoaksranchtx.org/DocumentCenter/View/5347/City-of-Fair-Oaks-Ranch-ACFR-YE-9-30-23?bidId=)
+
+</div>
+</details>
+
+
+
