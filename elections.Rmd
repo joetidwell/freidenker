@@ -540,8 +540,29 @@ This particular part of the website is my effort to try and help more people who
 <hr>
 
 
-Some text
+I will update this with detail later, but long story short....
 
+- Figure out about how many votes you need
+	- Given generally low voter turnout, some races (e.g. CoB City Council) may only have a few hundred people vote 
+- Figure out who votes
+	- You can get the data from the county elections office
+	- Determine who you know, that regularly vote, and make sure to talk to them about why you're the best candidate
+	- Determine who you know, that <span style="font-style: italic; text-decoration: underline;">do not</span> regularly vote, and make sure to talk to them about why they should
+- Determine where the registered voters are... AND GO TALK TO THEM
+	- This really is the most important part, and it costs nothing but your own effort and whoever might want to help you
+		- Knock on doors
+			- It's not fun, but it helps
+			- BE RESPECTUL
+				- Don't bother people who clearly don't want to talk (e.g. "No Solicitation" sign, closed gates, etc)
+				- If someone wants to chat, chat but if they don't... GO AWAY
+		- Have friends host "meet the candidate" events at their house
+		- Participate in any forum and talk to any group that will have you
+			- Tea party
+			- Political Parties
+			- Boerne Star
+			- Rotary
+			- etc...
+	- My own opinion here, but it's a candidates obligation to make the case why they should be elected to the people. The people deserve to know, and it will help you get elected anyway.
 
 <hr>
 <ol>
