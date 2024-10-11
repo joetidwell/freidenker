@@ -62,7 +62,7 @@
 	<question>
 		<title>How Has Comfort ISD's Revenue Per-Student Changed Over Time?</title>
 		<answer><![CDATA[
-      In inflation adjusted dollars (2023 base year), Comfort ISD's revenue (General Funds) decreased from {{{2007_REVENUE_PER_STUDENT}}} per student in 2007 to {{{2023_REVENUE_PER_STUDENT}}} per student in 2023.
+      In inflation adjusted dollars (2023 base year), Comfort ISD's revenue (General Funds) increased from {{{2007_REVENUE_PER_STUDENT}}} per student in 2007 to {{{2023_REVENUE_PER_STUDENT}}} per student in 2023.
     ]]></answer>
 		<details><![CDATA[
       <ul>
