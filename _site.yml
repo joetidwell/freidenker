@@ -27,18 +27,30 @@ navbar:
             - text: "Texas Counties"
             - text: "Texas Cities"
         - text: "Refined Data"
+    - text: "Resources"
+      menu:
+        - text: "Budgets"
+          href: budgets.html
+        - text: "Elections"
+          href: elections.html
     - text: "FAQs"
       menu:
         - text: "Taxes"
           menu:
             - text: "Boerne ISD"
-              href: FAQ_BISD.html
+              href: FAQ_Tax_BISD.html
             - text: "Comfort ISD"
-              href: FAQ_CISD.html
+              href: FAQ_Tax_CISD.html
             - text: "City of Boerne"
             - text: "City of Fair Oaks Ranch"
             - text: "Kendall County"
         - text: "Budgets"
+          menu:
+            - text: "Boerne ISD"
+            - text: "Comfort ISD"
+            - text: "City of Boerne"
+            - text: "City of Fair Oaks Ranch"
+            - text: "Kendall County"
         - text: "Elections"
 output:
   html_document:

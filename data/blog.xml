@@ -6,7 +6,7 @@
 			<ul>
 				<li>Good data is hard to find
 					<ul>
-						<li>Governmental entites typically lack the resources and/or motivation to make data easily accessible</li>
+						<li>Governmental entites typically lack the resources (and sometimes motivation...) to make data easily accessible</li>
 						<li>Most people don't have the time or skills to collect and analyze raw data from many sources</li>
 					</ul>
 				</li>
@@ -14,11 +14,12 @@
 					<ul>
 						<li>Source data is often manipulated and obscured in ways to support an author's arguments and make them difficult to verify</li>
 						<li>Limited access to source data makes it easier for those that <u>do</u> have the access to present a biased narrative</li>
+						<li>Limited access to source data doesn't stop people from forming and expressing strong opinions based on invalid assumptions or understanding</li>
 					</ul>
 				</li>
 				<li>Public data should belong to... the public
 					<ul>
-						<li>Its not enough for public data to be <span style="font-style: normal">available</span>, it should also be <u>accessible</u></li>
+						<li>It's not enough for public data to be <span style="font-style: normal">available</span>, it should also be <u>accessible</u></li>
 						<li>Public data that is difficult to find, requires special privileges or formal FOIA processes to access, or is in difficult to use formats (e.g. providing financial tables as a .pdf rather than a xlsx, csv, json or other formats that are easy to analyze) is effectively <u>not public</u></li>
 					</ul>
 				</li>
@@ -29,11 +30,13 @@
 				<li>Create data-centric FAQs relevant to local government which will:
 					<ul>
 						<li>Address common questions citizens have about their government (e.g. "How have tax rates changed in recent years?" or "How can I run for public office X?")</li>
-						<li><u><b>Never</b></u> provide opinion (e.g. "Here's why public official X is the greatest!" or "Here's why the city, county, school districts, etc are the worst!"). The whole point is to help citizens make up their own minds, not to tell people what to think...</li>
+						<li><u><b>Never</b></u> provide opinion on local politics (e.g. "Here's why public official X is the greatest!" or "Here's why the city, county, school districts, etc are the worst!"). The whole point is to help citizens make up their own minds, not to tell people what to think... However, I will give my opinion on political and civic processes, e.g. that information like taxes and budgets should be easily and publically available.</li>
 						<li><u><b>Always</b></u> provide original raw data sources and references</li>
 					</ul>
 				</li>
 			</ul>
+
+			<i>- Joe</i>
 		]]></content>
 		<date>2024-08-16</date>
 	</post> 
@@ -55,8 +58,33 @@
 			<p>
 				I've published the initial Tax FAQs for Boerne and Comfort ISDs. This initial set of questions is small, but I will be adding to them over time.  There's a useful set of questions I'd like to address that require public data from the Kendall County Appraisal District (KCAD).  I'll be requesting these data from them next week. Assuming I can obtain the data, it will likely take a couple of weeks for me to analyze it and publish additional questions in the FAQ.
 			</p>
+			<p style="font-style: italic;">
+				<u>Update 2024-10-10</u> - I'm putting KCAD efforts on the backburner for a bit. There's plenty of other questions that folks could find helpful that I can answer with data I already have or can easily obtain. This is also another example of things that annoy me about "public" data... if it's not easy to get, it's not public.]
+			</p>
 		]]></content>
 		<date>2024-09-22</date>
+	</post> 
+	<post>
+		<title>Budgets and Elections</title>
+		<content><![CDATA[
+			<h4>New Resources</h4>
+			<p>
+				I've added sections for <code>Budgets</code> and <code>Elections</code> under a new <code>Resources</code> tab.  
+        <ul>
+          <li>
+            The <code>Budgets</code> page contains links to budget information for all major governmental entities in the county, as well as a "Quality" rating of how accessible, transparent, and useful their publicly available data is.  
+          </li>
+          <li>
+            The <code>Elections</code> page is just getting started, but is intended to eventually be a "one stop shop" for anyone interested in learning more about running for public office, including what positions are up for election, how to file for them, and what it takes to run a campaign.
+          </li>
+        </ul>
+			</p>
+			<h4>New <code>Taxes</code> FAQ item for BISD and CISD</h4>
+			<ul>
+				<li><code>How Does [Boerne/Comfort] ISD’s Tax Rate Compare to Neighboring Districts?</code></li>
+			</ul>
+		]]></content>
+		<date>2024-10-11</date>
 	</post> 
 </posts>
 
