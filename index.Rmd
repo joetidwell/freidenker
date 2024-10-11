@@ -70,6 +70,8 @@ blog_posts <- as_list(read_xml(file.path(path.data,"blog.xml")))[[1]]
 <h3>Only the suppressed word is dangerous.</h3>
 <h4 style="font-style: italic;">Karl Ludwig Börne</h4>
 <span class="copyleft">Everything contained in this website, including text, data, analyses, and visualizations is available to download as reproducible source code from a public [GitHub repository](https://github.com/joetidwell/freidenker)</span>
+<br>
+<span class="copyleft">This site is best viewed in a desktop browser</span>
 <hr/>
 
 <div id="blog_container">
