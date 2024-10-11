@@ -1,0 +1,579 @@
+---
+title: Elections - Kendall County Local Governments
+---
+
+<script src="lib/core-js-2.5.3/shim.min.js"></script>
+<script src="lib/react-18.2.0/react.min.js"></script>
+<script src="lib/react-18.2.0/react-dom.min.js"></script>
+<script src="lib/reactwidget-1.0.0/react-tools.js"></script>
+<script src="lib/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="lib/reactable-0.4.4/reactable.css" rel="stylesheet"/>
+<script src="lib/reactable-binding-0.4.4/reactable.js"></script>
+
+<br>
+
+## Some Editorial Comments...
+
+<hr>
+
+Like many other places, relatively few citizens choose to run for public office in Kendall County. While, unsurprisingly, well-salaried elected positions often have multiple people line up to run, those positions with nominal stipends (e.g. city council) or which are entirely unpaid (e.g. school board) often go uncontested, sometimes even when the candidate has never previously held office. My opinion is that this runs counter to the democratic principles that underpin our form of government and can make it difficult for our local institutions to be representative of our community. 
+
+I believe some of the reasons that so few people run for local public office are:
+
+- They don't understand the bureaucracy of the election process or think it's difficult to navigate (It's not)
+- They think the positions they might be interested in would take a burdensome amount of time (Some do, most don't)
+- They think it costs a ton of money to run (Some do, most don't)
+- They think they're not qualified (Only qualification is to get the most votes)
+- They think running a campaign is stressful and awkward (Well, unless you're a sociopath, this one is definitely true...)
+
+This particular part of the website is my effort to try and help more people who want to run for office... actually do it.  I'm starting out by listing upcoming elections and providing the information someone would need to file for that office. Eventually, I'd like to add a "Campaigning 101" section that would help demystify what it takes to run a campaign.  I'm awkward, aggressive, and generally anti-social, yet I managed to get elected multiple times. If I can do it, anybody can.
+
+<br>
+<br>
+
+## Upcoming Elections to File For Candidacy
+
+<hr/>
+
+### 03 May 2025 Local Elections
+<br>
+
+#### Boerne ISD
+<details>
+<summary style="font-size: 1.15em;">Trustee, Place 4</summary>
+
+- Current Office Holder: Maritza Gonzalez-Cooper<sup>[1](#fn1)</sup>
+- First Gained Office: 11 May 2013 Election
+- Election History
+	- 11 May 2013 Election (Unopposed)<sup>[2](#fn2)</sup>
+	- 07 May 2016 Election (Unopposed)<sup>[3](#fn3)</sup>
+	- 04 May 2019 Election (Unopposed)<sup>[4](#fn4)</sup>
+	- 07 May 2022 Election<sup>[5](#fn5)</sup>
+		- Opposed by Armando Trevino
+		- Won 63.8% (3,135 votes) to 36.2% (1,796 votes)
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Trustee, Place 5</summary>
+
+- Current Office Holder: Garrett Wilson<sup>[1](#fn1)</sup>
+- First Gained Office: 09 Aug 2021 - Appointed to fill vacant seat<sup>[6](#fn6)</sup>
+- Election History
+	- 07 May 2022 Election (Unopposed)<sup>[5](#fn5)</sup>
+
+</details>
+
+<br>
+
+#### City of Boerne
+
+<details>
+<summary style="font-size: 1.15em;">Mayor</summary>
+
+- Current Office Holder: Frank Ritchie<sup>[7](#fn7)</sup>
+- First Gained Office: 06 May 2023 Election
+- Election History
+	- 06 May 2023 Election<sup>[8](#fn8)</sup>
+		- Opposed by Nina Woolard
+		- Won 75.96% (1,577 votes) to 24.04% (499 votes)
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Council Member, District 2</summary>
+
+- Current Office Holder: Sharon D. Wright<sup>[9](#fn9)</sup>
+- First Gained Office: 06 May 2023 Election
+- Election History
+	- 06 May 2023 Election<sup>[8](#fn8)</sup>
+		- Opposed by Joe Bateman
+		- Won 52.17% (252 votes) to 47.83% (231 votes)
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Council Member, District 4</summary>
+
+- Current Office Holder: Bret Bunker<sup>[9](#fn9)</sup>
+- First Gained Office: 10 Oct 2023 - Appointed to fill vacant seat<sup>[10](#fn10)</sup>
+
+</details>
+
+<br>
+
+#### City of Fair Oaks Ranch
+<details>
+<summary style="font-size: 1.15em;">Council Member, Place 3</summary>
+
+- Current Office Holder: Ruben J. Olvera<sup>[11](#fn11)</sup>
+- First Gained Office: 09 Dec 2023 Election
+- Election History
+	- 09 Dec 2023 Election (Special Election to Fill Vacant Seat)<sup>[12](#fn12)</sup>
+		- Opposed by Vincent Caldarola
+		- Won 85.79% (489 votes) to 14.21% (81 votes)
+
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Council Member, Place 4</summary>
+
+- Current Office Holder: Laura Koerner<sup>[11](#fn11)</sup>
+- First Gained Office: 
+- Election History
+	- 07 May 2022 Election (Unopposed)<sup>[14](#fn14)</sup>
+	- 06 May 2019 Election (Unopposed)<sup>[13](#fn13)</sup>
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Council Member, Place 5</summary>
+
+- Current Office Holder: Scott Parker<sup>[11](#fn11)</sup>
+- First Gained Office: 
+- Election History
+	- 07 May 2022 Election (Unopposed)<sup>[14](#fn14)</sup>
+	- 01 May 2021 Election (Special Election to Fill Vacant Seat)<sup>[15](#fn15)</sup>
+	 	- Opposed by J.C. Taylor and Tim Corey
+		- Obtained 37.73% (907 votes) to Taylor's 49.42% (1,188 votes) and Corey's 12.85% (309 votes)
+		- Since no candidate obtained 50% of the vote, result triggered a runoff election
+		- Taylor withdrew his candidacy from the runoff election
+		- Per Texas Election Code, if a runoff candidate withdraws, the remaining candidate is considered to be elected
+
+</details>
+
+
+<br>
+<br>
+
+## Election Details by Entity
+
+<hr/>
+
+### Kendall County
+
+<details>
+  <summary style="font-size: 1.25em;">Important Election Dates</summary>
+
+- November 5th, 2024 General Election
+	- <span style="font-style: italic;">&ast;&ast;&ast;It is past the allowable time to file as a candidate for any county race for the November General Election.&ast;&ast;&ast;</span>
+	- <span style="font-style: italic;">I will update county elections for 2025 sometime after the 2024 General Election.</span>
+</details>
+
+<details>
+  <summary style="font-size: 1.25em;">Process to File</summary>
+</details>
+
+<details>
+  <summary style="font-size: 1.25em;">Positions Up for Election</summary>
+</details>
+
+
+<br/>
+
+### Boerne ISD
+
+
+<details>
+  <summary style="font-size: 1.25em;">Important Election Dates</summary>
+
+- **15 Jan 2025** - First Day to File for Place on Ballot  
+- **Feb 2025** - Boerne ISD typically holds a Board Candidate Workshop in early February for prospective candidates to learn about the process. Notices for all BISD public meetings are posted to [BoardBook](https://meetings.boardbook.org/Public/Organization/1350). 
+- **14 Feb 2025** - Last Day to File for Candidacy
+- **21 Apr 2025** - First Day of Early Voting by Personal Appearance
+- **29 Apr 2025** - Last Day of Early Voting by Personal Appearance
+- **03 May 2025** - Local Election
+</details>
+<details>
+  <summary style="font-size: 1.25em;">Process to File</summary>
+
+- Ensure you meet eligibility requirements: [Secretary of State - Qualifications](https://www.sos.state.tx.us/elections/laws/qualifications.shtml)
+	- Basically...
+		- Be a U.S. citizen living in the state for at least 12 months
+		- Lived in the district at least 6 months
+		- Don't be a felon or mentally incapacitated
+- Complete a physical copy of the application: [Secretary of State - PDF](https://www.sos.state.tx.us/elections/forms/pol-sub/2-49f.pdf)
+- Deliver completed application to Boerne ISD no later than <span style="text-decoration: underline;">**5:00pm, 14 Feb 2025**</span>.
+	- Address: 235 Johns Rd, Boerne, TX 78006
+- Contact for Questions:
+	- Phone: 830-357-2000
+	- Email: bisdelection@boerneisd.net
+
+</details> 
+<details>
+  <summary style="font-size: 1.25em;">Positions Up for Election</summary>
+
+<div style="margin-left:20px">
+<br>
+<span style="font-style: italic; font-size: 1.25em;">May 2025</span>
+
+<details>
+<summary style="font-size: 1.15em;">Trustee, Place 4</summary>
+
+- Current Office Holder: Maritza Gonzalez-Cooper<sup>[1](#fn1)</sup>
+- First Gained Office: 11 May 2013 Election
+- Election History
+	- 11 May 2013 Election (Unopposed)<sup>[2](#fn2)</sup>
+	- 07 May 2016 Election (Unopposed)<sup>[3](#fn3)</sup>
+	- 04 May 2019 Election (Unopposed)<sup>[4](#fn4)</sup>
+	- 07 May 2022 Election<sup>[5](#fn5)</sup>
+		- Opposed by Armando Trevino
+		- Won 63.8% (3,135 votes) to 36.2% (1,796 votes)
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Trustee, Place 5</summary>
+
+- Current Office Holder: Garrett Wilson<sup>[1](#fn1)</sup>
+- First Gained Office: 09 Aug 2021 - Appointed to fill vacant seat<sup>[6](#fn6)</sup>
+- Election History
+	- 07 May 2022 Election (Unopposed)<sup>[5](#fn5)</sup>
+
+</details>
+
+<br>
+<span style="font-style: italic; font-size: 1.25em;">May 2026</span>
+<details>
+<summary style="font-size: 1.15em;">Trustee, Place 6</summary>
+
+- Current Office Holder: Kristi Schmidt<sup>[1](#fn1)</sup>
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Trustee, Place 7</summary>
+
+- Current Office Holder: Rich Sena<sup>[1](#fn1)</sup>
+
+</details>
+
+<br>
+<span style="font-style: italic; font-size: 1.25em;">May 2027</span>
+<details>
+<summary style="font-size: 1.15em;">Trustee, Place 1</summary>
+
+- Current Office Holder: Carlin Friar<sup>[1](#fn1)</sup>
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Trustee, Place 2</summary>
+
+- Current Office Holder: Dallas Pipes<sup>[1](#fn1)</sup>
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Trustee, Place 3</summary>
+
+- Current Office Holder: Courtney Darter-Bruce<sup>[1](#fn1)</sup>
+
+</details>
+
+
+</details>
+</div>
+
+<br>
+
+### Comfort ISD
+
+<details>
+  <summary style="font-size: 1.25em;">Important Election Dates</summary>
+
+- *Trustee Elections are held on the first Tuesday in November of even-numbered years.*
+- <span style="font-style: italic;">&ast;&ast;&ast;It is past the allowable time to file as a candidate for trustee for the November Local Election.&ast;&ast;&ast;</span>
+- *None of the three trustee positions up for election were contested, so no election is being held in 2024.*
+- *I will update Comfort ISD elections county elections for 2026 sometime after the 2024 General Election.*
+</details>
+
+<details>
+  <summary style="font-size: 1.25em;">Process to File</summary>
+</details>
+
+<details>
+  <summary style="font-size: 1.25em;">Positions Up for Election</summary>
+
+
+- Nov 2026
+	- District 1
+		- Current Office Holder - Larry Thayn
+	- District 2
+		- Current Office Holder - Alison Judkins
+	- District 3
+		- Current Office Holder - Lilly Edwards
+	- District 7
+		- Current Office Holder - Wesley Holekamp
+
+</details>
+
+<br/>
+
+### City of Boerne
+
+<details>
+  <summary style="font-size: 1.25em;">Important Election Dates</summary>
+
+- **15 Jan 2025** - First Day to File for Place on Ballot  
+- **14 Feb 2025** - Last Day to File for Candidacy
+- **21 Apr 2025** - First Day of Early Voting by Personal Appearance
+- **29 Apr 2025** - Last Day of Early Voting by Personal Appearance
+- **03 May 2025** - Local Election
+
+</details>
+
+<details>
+  <summary style="font-size: 1.25em;">Process to File</summary>
+
+- Review the [CoB Elections page](https://www.ci.boerne.tx.us/326/Elections)
+	- This is by far the most informative and detailed elections page of any local government
+	- Includes everything from previous election returns to publicly posted campaign finance reports from previous campaigns
+	- Includes everything you need to file for candidacy 
+- Determine if you live within the district boundaries of the position you would like to run for: [City of Boerne Council Districts](https://boerne.maps.arcgis.com/apps/dashboards/7ea9626985f345c1b882cb413b299c3b)
+- Ensure you meet eligibility requirements: 
+	- [Secretary of State - Qualifications](https://www.sos.state.tx.us/elections/laws/qualifications.shtml)
+	- [City of Boerne Eligibility Requirements](https://www.ci.boerne.tx.us/326/Elections)
+	- Basically...
+		- Be at least 21
+		- For city council, have lived in the district you're running for, for at least 6 months
+		- For mayor, have lived in the city for at least 12 months
+		- Be a U.S. citizen
+		- Don't be a felon or mentally incapacitated
+- Download a [Candidate Packet](https://www.ci.boerne.tx.us/DocumentCenter/View/23572/Candidate-Packet-General-Election) and/or [Application for Ballot](https://www.ci.boerne.tx.us/DocumentCenter/View/23579/Application-for-a-place-on-the-ballot---english) from the CoB website 
+- Deliver completed application to CoB no later than <span style="text-decoration: underline;">**5:00pm, 14 Feb 2025**</span>.
+	- Lori A. Carroll, City Secretary
+	- City Hall, 447 N. Main St.
+	- Phone: (830) 248-1525
+	- Fax: (830) 249-9264
+	- Email: lcarroll@ci.boerne.tx.us
+
+</details> 
+
+<details>
+  <summary style="font-size: 1.25em;">Positions Up for Election</summary>
+
+<div style="margin-left:20px">
+<br>
+<span style="font-style: italic; font-size: 1.25em;">May 2025</span>
+
+
+<details>
+<summary style="font-size: 1.15em;">Mayor</summary>
+
+- Current Office Holder: Frank Ritchie<sup>[7](#fn7)</sup>
+- First Gained Office: 06 May 2023 Election
+- Election History
+	- 06 May 2023 Election<sup>[8](#fn8)</sup>
+		- Opposed by Nina Woolard
+		- Won 75.96% (1,577 votes) to 24.04% (499 votes)
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Council Member, District 2</summary>
+
+- Current Office Holder: Sharon D. Wright<sup>[9](#fn9)</sup>
+- First Gained Office: 06 May 2023 Election
+- Election History
+	- 06 May 2023 Election<sup>[8](#fn8)</sup>
+		- Opposed by Joe Bateman
+		- Won 52.17% (252 votes) to 47.83% (231 votes)
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Council Member, District 4</summary>
+
+- Current Office Holder: Bret Bunker<sup>[9](#fn9)</sup>
+- First Gained Office: 10 Oct 2023 - Appointed to fill vacant seat<sup>[10](#fn10)</sup>
+
+</details>
+
+<br>
+<span style="font-style: italic; font-size: 1.25em;">May 2026</span>
+
+<details>
+<summary style="font-size: 1.15em;">Council Member, District 1</summary>
+
+- Current Office Holder: Ty Wolosin<sup>[9](#fn9)</sup>
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Council Member, District 3</summary>
+
+- Current Office Holder: Quinten Scott<sup>[9](#fn9)</sup>
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Council Member, District 5</summary>
+
+- Current Office Holder: Joseph Macaluso<sup>[9](#fn9)</sup>
+
+</details>
+
+
+
+</div>
+
+
+
+</details>
+
+<br/>
+
+### City of Fair Oaks Ranch
+
+<details>
+  <summary style="font-size: 1.25em;">Important Election Dates</summary>
+
+- **15 Jan 2025** - First Day to File for Place on Ballot  
+- **14 Feb 2025** - Last Day to File for Candidacy
+- **21 Apr 2025** - First Day of Early Voting by Personal Appearance
+- **29 Apr 2025** - Last Day of Early Voting by Personal Appearance
+- **03 May 2025** - Local Election
+
+</details>
+
+<details>
+  <summary style="font-size: 1.25em;">Process to File</summary>
+
+- Review the [CoFOR Elections page](https://www.fairoaksranchtx.org/134/City-Elections)
+	- Includes required forms and publicly posted campaign finance reports from previous campaigns
+- Ensure you meet eligibility requirements: 
+	- [Secretary of State - Qualifications](https://www.sos.state.tx.us/elections/laws/qualifications.shtml)
+	- [City of Fair Oaks Ranch Eligibility Requirements](https://www.fairoaksranchtx.org/134/City-Elections)
+	- Basically...
+		- Have lived in the city for at least 12 months
+		- Be a U.S. citizen
+		- Don't be a felon or mentally incapacitated
+- Download a [Application for Ballot](https://fairoaksranchtx.org/DocumentCenter/View/5070/23-10-16-Application-for-a-Place-on-the-General-Election-Ballot-English) from the CoFOR website 
+- Deliver completed application to CoFOR no later than <span style="text-decoration: underline;">**5:00pm, 14 Feb 2025**</span>.
+	- 7286 Dietz Elkhorn Rd, Fair Oaks Ranch, TX 78015
+	- Phone: (210) 698-0900
+	- Fax: (210) 698-3565
+	- Email: citysec@fairoaksranchtx.org
+
+</details> 
+
+<details>
+  <summary style="font-size: 1.25em;">Positions Up for Election</summary>
+
+<div style="margin-left:20px">
+
+<br>
+<span style="font-style: italic; font-size: 1.25em;">May 2025</span>
+
+<details>
+<summary style="font-size: 1.15em;">Council Member, Place 3</summary>
+
+- Current Office Holder: Ruben J. Olvera<sup>[11](#fn11)</sup>
+- First Gained Office: 09 Dec 2023 Election
+- Election History
+	- 09 Dec 2023 Election (Special Election to Fill Vacant Seat)<sup>[12](#fn12)</sup>
+		- Opposed by Vincent Caldarola
+		- Won 85.79% (489 votes) to 14.21% (81 votes)
+
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Council Member, Place 4</summary>
+
+- Current Office Holder: Laura Koerner<sup>[11](#fn11)</sup>
+- First Gained Office: 
+- Election History
+	- 07 May 2022 Election (Unopposed)<sup>[14](#fn14)</sup>
+	- 06 May 2019 Election (Unopposed)<sup>[13](#fn13)</sup>
+
+</details>
+<details>
+<summary style="font-size: 1.15em;">Council Member, Place 5</summary>
+
+- Current Office Holder: Scott Parker<sup>[11](#fn11)</sup>
+- First Gained Office: 
+- Election History
+	- 07 May 2022 Election (Unopposed)<sup>[14](#fn14)</sup>
+	- 01 May 2021 Election (Special Election to Fill Vacant Seat)<sup>[15](#fn15)</sup>
+	 	- Opposed by J.C. Taylor and Tim Corey
+		- Obtained 37.73% (907 votes) to Taylor's 49.42% (1,188 votes) and Corey's 12.85% (309 votes)
+		- Since no candidate obtained 50% of the vote, result triggered a runoff election
+		- Taylor withdrew his candidacy from the runoff election
+		- Per Texas Election Code, if a runoff candidate withdraws, the remaining candidate is considered to be elected
+
+</details>
+
+<br>
+<span style="font-style: italic; font-size: 1.25em;">May 2026</span>
+
+<details>
+<summary style="font-size: 1.15em;">Council Member, Place 2</summary>
+
+- Current Office Holder: Keith Rhoden<sup>[11](#fn11)</sup>
+	
+</details>
+<details>
+<summary style="font-size: 1.15em;">Council Member, Place 6</summary>
+
+- Current Office Holder: Chesley Muenchow<sup>[11](#fn11)</sup>
+	
+</details>
+
+
+<br>
+<span style="font-style: italic; font-size: 1.25em;">May 2027</span>
+
+
+<details>
+<summary style="font-size: 1.15em;">Mayor</summary>
+
+- Current Office Holder: Greg Maxton<sup>[11](#fn11)</sup>
+	
+</details>
+<details>
+<summary style="font-size: 1.15em;">Council Member, Place 1</summary>
+
+- Current Office Holder: Emily Stroup<sup>[11](#fn11)</sup>
+	
+</details>
+
+</div>
+
+</details>
+
+
+
+
+
+<br>
+<br>
+<h2>Campaigning 101</h2>
+<hr>
+
+
+Some text
+
+
+<hr>
+<ol>
+<li id="fn1"><p>“School Board & Leadership / Board Members.” Boerne Independent School District, [www.boerneisd.net/Page/5226](https://www.boerneisd.net/Page/5226). Accessed 10 Oct. 2024.</p></li>
+<li id="fn2"><p>“May 11th, 2013 General and Special Bond Election (Boerne ISD).” Kendall County - Election Results, [results.enr.clarityelections.com/TX/Kendall/46346/117159/en/summary.html](https://results.enr.clarityelections.com/TX/Kendall/46346/117159/en/summary.html). Accessed 10 Oct. 2024. </p></li>
+<li id="fn3"><p>“May 7th, 2016 Local Election (City of Boerne, Boerne ISD, Kendall Co. MUD Number 1).” Kendall County - Election Results, [results.enr.clarityelections.com/TX/Kendall/61566/167242/en/summary.html](https://results.enr.clarityelections.com/TX/Kendall/61566/167242/en/summary.html). Accessed 10 Oct. 2024. </p></li>
+<li id="fn4"><p>“Custom Minutes for May 20, 2019 at 5:00 Pm - Regular Meeting.” Custom Minutes for May 20, 2019 at 5:00 PM - Regular Meeting - BoardBook Premier, [meetings.boardbook.org/Documents/CustomMinutesForMeeting/1350?meeting=218253](https://meetings.boardbook.org/Documents/CustomMinutesForMeeting/1350?meeting=218253). Accessed 10 Oct. 2024. </p></li>
+<li id="fn5"><p>“May 7th, 2022 Joint Election (Constitutional Amendments and Boerne ISD).” Kendall County - Election Results, [results.enr.clarityelections.com/TX/Kendall/113357/web.285569/#/summary](https://results.enr.clarityelections.com/TX/Kendall/113357/web.285569/#/summary). Accessed 10 Oct. 2024. </p></li>
+<li id="fn6"><p>“Boerne ISD Board of Trustees Appoint Wilson to Place 5 Seat.” Boerne Independent School District, [www.boerneisd.net/site/Default.aspx?PageType=3&DomainID=4&PageID=1&ViewID=6446ee88-d30c-497e-9316-3f8874b3e108&FlexDataID=32615](https://www.boerneisd.net/site/Default.aspx?PageType=3&DomainID=4&PageID=1&ViewID=6446ee88-d30c-497e-9316-3f8874b3e108&FlexDataID=32615). Accessed 10 Oct. 2024.</p></li>
+<li id="fn7"><p>“Office of the Mayor.” Office of the Mayor | Boerne, TX - Official Website, [www.ci.boerne.tx.us/76/Office-of-the-Mayor](https://www.ci.boerne.tx.us/76/Office-of-the-Mayor). Accessed 10 Oct. 2024. 
+</p></li>
+<li id="fn8"><p>“May 6th, 2023 Joint Election (City of Boerne / City of Fair Oaks Ranch)” Kendall County - Election Results, [results.enr.clarityelections.com/TX/Kendall/117803/web.317647/#/summary](https://results.enr.clarityelections.com/TX/Kendall/117803/web.317647/#/summary). Accessed 10 Oct. 2024. 
+</p></li>
+<li id="fn9"><p>“City Council.” City Council | Boerne, TX - Official Website, [www.ci.boerne.tx.us/77/City-Council](https://www.ci.boerne.tx.us/77/City-Council). Accessed 10 Oct. 2024. 
+</p></li>
+<li id="fn10"><p>“City Council Appoints Bret Bunker as District 4 Replacement.” Boerne, TX, [www.ci.boerne.tx.us/CivicAlerts.aspx?AID=1461&ARC=3220](https://www.ci.boerne.tx.us/CivicAlerts.aspx?AID=1461&ARC=3220). Accessed 10 Oct. 2024.
+</p></li>
+<li id="fn11"><p>“City Council.” City Council | Fair Oaks Ranch, TX - Official Website, [www.fairoaksranchtx.org/63/City-Council](https://www.fairoaksranchtx.org/63/City-Council). Accessed 10 Oct. 2024. 
+</p></li>
+<li id="fn12"><p>“December 9th, 2023 Special Election (City of Fair Oaks Ranch)” Kendall County - Election Results, [results.enr.clarityelections.com/TX/Kendall/119273/web.317647/#/summary](https://results.enr.clarityelections.com/TX/Kendall/119273/web.317647/#/summary). Accessed 10 Oct. 2024. 
+</p></li>
+<li id="fn13"><p>“May 4th, 2019 Local Election (City of Boerne and Boerne ISD)” Kendall County - Election Results, [results.enr.clarityelections.com/TX/Kendall/95297/Web02.226438/#/](https://results.enr.clarityelections.com/TX/Kendall/95297/Web02.226438/#/). Accessed 10 Oct. 2024. 
+</p></li>
+<li id="fn14"><p>"Resolution 2022-07 Declaring Unopposed Candidates" City of Fair Oaks, [www.fairoaksranchtx.org/DocumentCenter/View/4112/Res-2022-07-Unopposed-Candidates-and-Canceling-Election](https://
+	www.fairoaksranchtx.org/DocumentCenter/View/4112/Res-2022-07-Unopposed-Candidates-and-Canceling-Election]). Accessed 11 Oct. 2024. 
+</p></li>
+<li id="fn15"><p>City of Fair Oaks Ranch CITY COUNCIL SPECIAL MEETING Tuesday, May 11, 2021, [mccmeetings.blob.core.usgovcloudapi.net/fairoaktx-pubu/MEET-Packet-8b19512e7e9f4cf797642e7bc4688318.pdf](https://mccmeetings.blob.core.usgovcloudapi.net/fairoaktx-pubu/MEET-Packet-8b19512e7e9f4cf797642e7bc4688318.pdf). Accessed 11 Oct. 2024. 
+</p></li>
+</ol>
+
+
+
+
+<div>
+</div>
