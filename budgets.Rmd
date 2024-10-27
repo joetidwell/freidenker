@@ -234,7 +234,7 @@ Budget Information Quality Scores and direct sources (e.g. links to pdf download
 ### City of Fair Oaks Ranch
 
 <details>
-<summary style="font-size: 1.25em;">Budget Information Quality <span style="background-color: #FEF569;"> **4/6** </span></summary>
+<summary style="font-size: 1.25em;">Budget Information Quality <span style="background-color: #98FB98;"> **5/6** </span></summary>
 
 - **2/2** - Accessibility
 	- *Direct link to budgets returned as top result for Google search term "City of Fair Oaks Ranch budget"*
