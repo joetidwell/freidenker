@@ -1,0 +1,16 @@
+<questions>
+	<question>
+		<title>Title</title>
+		<answer>Answer</answer>
+		<details>Details</details>
+	</question>
+</questions>
+<!-- TEMPLATE  	
+	
+	<question>
+		<title>Template</title>
+		<answer>Template</answer>
+		<details>Template</details>
+	</question> 
+
+-->

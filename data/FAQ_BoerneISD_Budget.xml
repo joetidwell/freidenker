@@ -1,0 +1,34 @@
+<questions>
+	<question>
+		<title>What Is Recapture, AKA "Robin Hood"?</title>
+		<answer><![CDATA[
+      Chapter 48, Texas Education Code^[Texas Education Code, [statutes.capitol.texas.gov/Docs/ED/htm/ED.1.htm](https://statutes.capitol.texas.gov/Docs/ED/htm/ED.1.htm). Accessed 21 Sept. 2024. ], Section 48.257: "...makes provisions for certain school districts to share their local tax revenue with other school districts. These provisions are sometimes referred to as “share the wealth” or “Robin Hood” plan because recaptured funds are redistributed by the school finance system to assist with the financing of public education for all school districts."^[“Excess Local Revenue.” Texas Education Agency, Texas Education Agency, 30 Aug. 2024, [tea.texas.gov/finance-and-grants/state-funding/excess-local-revenue](https://tea.texas.gov/finance-and-grants/state-funding/excess-local-revenue).]
+    ]]></answer>
+		<details><![CDATA[
+      The state collects tax revenue levied by local school districts and then distributes these monies back to local public schools through a combination of various funding formulas.  Local tax dollars <u>do not</u> fund local schools, they fund the state, who then decides how much money each district should receive.  Formulas defined by state law (Texas Education Code Chapters 48-49) determine what funding level each district is entitled to receive, and which districts have "Excess Local Revenue," i.e. what the state considers property values so high that the local district's tax revenue should be redistributed to less property wealthy public school districts.
+    ]]></details>
+	</question>
+	<question>
+		<title>How Much Does Boerne ISD Pay to the State of Texas in Recapture?</title>
+		<answer><![CDATA[Recapture since 2007: {{{TOTAL_RECAPTURE_2007_2023}}}<br/>Average (median) proportion of BISD annual Total Operating Revenue (General Fund): {{{AVG_RECAPTURE_PROP_BUDGET}}}]]></answer>
+		<details><![CDATA[
+			<ul>
+        <li>Data Sources
+          <ul>
+            <li>Finances: [Texas Public School Finances](data_texas_public_school_finances.html)</li>
+            <li>Plot data included in table below</li>
+          </ul>
+        </li>
+      </ul>
+    ]]></details>
+	</question>
+</questions>
+<!-- TEMPLATE  	
+	
+	<question>
+		<title>Template</title>
+		<answer>Template</answer>
+		<details>Template</details>
+	</question> 
+
+-->

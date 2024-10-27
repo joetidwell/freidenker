@@ -1,0 +1,191 @@
+---
+title: Boerne ISD Budget FAQs
+---
+
+<script src="lib/core-js-2.5.3/shim.min.js"></script>
+<script src="lib/react-18.2.0/react.min.js"></script>
+<script src="lib/react-18.2.0/react-dom.min.js"></script>
+<script src="lib/reactwidget-1.0.0/react-tools.js"></script>
+<script src="lib/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="lib/reactable-0.4.4/reactable.css" rel="stylesheet"/>
+<script src="lib/reactable-binding-0.4.4/reactable.js"></script>
+
+<div class="FAQ">
+
+```{r plotly_hack, include = FALSE, echo=FALSE, message=FALSE, warning=FALSE}
+# Both plot_ly and reactable require javascript and css libraries to be
+# included in the HTML head. RMarkdown doesn't do this propoerly if the
+# first use of these functions is in a loop or otehrwise nested. Loading
+# These libraries and 'displaying' hidden output guarantees the correct
+# libraries are included.
+
+library(htmltools)
+library(plotly)
+library(reactable)
+library(htmltools)
+library(data.table)
+source("assets/r/funcs_tables.R")
+htmltools::tagList(plot_ly(x = rnorm(10), type = "histogram"))
+print_table(data.table(a=1,b=2),"COW")
+```
+
+
+
+```{r init, echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+library(stringr)
+library(fontawesome)
+library(xml2)
+library(dplyr)
+library(plotly)
+library(foreach)
+library(RColorBrewer)
+
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(cache = FALSE)
+
+path.data <- file.path('data')
+neighbor_districts <- data.table(CDN = c("130901", # Boerne ISD
+                                         "016902", # Blanco ISD
+                                         "046902", # Comal ISD
+                                         "015915", # North Side ISD
+                                         "015910", # North East ISD
+                                         "010902", # Bandera ISD
+                                         "130902") # Comfort ISD
+                      )
+
+###
+### Load Data
+###
+
+
+directory <- read.csv(file.path(path.data,'district_directory.csv')) %>%
+  data.table 
+
+cpi <- read.csv(file.path(path.data,'cpi.csv')) %>%
+  data.table 
+
+neighbor_districts[,County:=directory[District.Number %in% paste0("'",CDN)]$County.Name[1],by=CDN]
+neighbor_districts[,Name:=directory[District.Number %in% paste0("'",CDN)]$District.Name[1],by=CDN]
+
+###
+### Munge Data
+###
+
+
+
+###
+### Data Substitutions
+###
+
+tags_source <- list(BISD_budget = character())
+
+# # Cost of Recapture Since 2007
+# tags_source[["BISD"]] <- c(tags_source[["BISD"]],
+# 															 `{{{TOTAL_RECAPTURE_2007_2023}}}` = finance_summary[`DISTRICT NAME`=="BOERNE ISD",
+# 															 																									 scales::dollar_format()(sum(`ALL FUNDS-EQUITY TRANSFERS`))])
+
+
+###
+### Load Questions
+###
+
+BISD_budget_questions <- as_list(read_xml(file.path(path.data,"FAQ_BoerneISD_Budget.xml")))[[1]]
+
+###
+### Subsitute Tags
+###
+
+# for (i in 1:length(BISD_budget_questions)) {
+# 	BISD_budget_questions[[i]]$title <- unlist(BISD_budget_questions[[i]]$title)
+# 	BISD_budget_questions[[i]]$answer <- unlist(BISD_budget_questions[[i]]$answer)
+# 	BISD_budget_questions[[i]]$details <- unlist(BISD_budget_questions[[i]]$details)
+
+# 	tags_dest <- unlist(str_extract_all(BISD_budget_questions[[i]]$answer, 
+# 																		  "(\\{\\{\\{\\w+\\}\\}\\})", 
+# 																		  simplify=FALSE))
+# 	if (length(tags_dest)>0) {
+# 		for (t in tags_dest) {
+# 			BISD_budget_questions[[i]]$answer <- gsub(t,
+# 																						 tags_source[["BISD"]][t],
+# 																						 BISD_budget_questions[[i]]$answer,
+# 																						 fixed=TRUE)
+# 		}	
+# 	}
+# }
+
+
+display_plot <- function(p) {
+	paste(
+		'<div style="padding: 30px;">',
+		htmltools::tagList(p),
+		'</div>'
+	)
+}
+
+display_question <- function(q,id,p=NULL,tab=NULL,tabwidth=700,rows=5) {
+	out <- paste(
+		paste0('<h3>',q$title,'</h3>'),
+		'<div class="answer_wrapper">',
+		trimws(gsub('\\s+', ' ', q$answer)),
+		ifelse(is.null(p), '', display_plot(p)),
+		'<p style="margin-top: 5px;">',
+		paste0('<a class="collapsed" data-toggle="collapse" href="#',id,'">'),
+		'<span class="if-collapsed">Show Details</span>',
+		'<span class="if-not-collapsed">Hide Details</span>',
+		'</a>',
+		'</p>',
+		paste0('<div class="collapse" id="',id,'">'),
+		'<div class="card card-body answer-details">',
+    trimws(gsub('\\s+', ' ', q$details)),
+		ifelse(is.null(tab),'',print_table_html(tab, paste0("table_", id, sep=""), width=tabwidth, pagesize=rows)),
+		'</div>',
+		'</div>',
+		'</div><br/>',
+		sep = "\n"
+	)
+	cat(out)
+}
+
+```
+
+
+```{r plots}
+figures <- vector(mode = "list", length = length(BISD_budget_questions))
+tables <- vector(mode = "list", length = length(BISD_budget_questions))
+
+
+margins <- list(l = 50, r = 50,
+                b = 50, t = 50,
+                pad = 20)
+
+btns_exclude <- c('sendDataToCloud', 'autoScale2d', 'resetScale2d', 'toggleSpikelines',
+                  'hoverClosestCartesian', 'hoverCompareCartesian',
+                  'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d')
+
+
+
+```
+
+
+```{r, results='asis'}
+i <- 0
+
+for(q in BISD_budget_questions) {
+	i <- i + 1
+	if(is.null(figures[[i]]) & is.null(tables[[i]])) {
+		display_question(q, paste0("Q",i))
+	} else if (!is.null(figures[[i]]) & is.null(tables[[i]])) {
+		display_question(q, paste0("Q",i),p=figures[[i]])			
+	} else if (is.null(figures[[i]]) & !is.null(tables[[i]])) {
+		display_question(q, paste0("Q",i),tab=tables[[i]],rows=nrow(tables[[i]]))			
+	} else {
+		display_question(q, paste0("Q",i),p=figures[[i]],tab=tables[[i]],rows=nrow(tables[[i]]))
+	}
+}
+```
+
+
+</div>
