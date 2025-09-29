@@ -60,19 +60,43 @@ neighbor_districts <- data.table(CDN = c("130901", # Boerne ISD
 ### Load Data
 ###
 
-finance_summary <- read_excel(file.path(path.data,'2007-2023-summarized-financial-data-0.xlsx')) %>%
+
+finance_summary <- read_excel(file.path(path.data,'2008-2024-summarized-financial-data-03-17-2025.xlsx')) %>%
 	data.table
 
-tax_rates <- read_excel(file.path(path.data,'school-district-adopted-tax-rates.xlsx')) %>%
-	data.table
-
-jwt_taxes <- read_excel(file.path(path.data,'jwt_property_tax_history.xlsx')) %>%
+levies_2024 <- read_excel(file.path(path.data,'2024-school-district-rates-levies.xlsx')) %>%
 	data.table 
 
 levies_2023 <- read_excel(file.path(path.data,'2023-school-district-rates-levies.xlsx')) %>%
 	data.table 
 
-directory <- read.csv(file.path(path.data,'district_directory.csv')) %>%
+tax_rates <- read_excel(file.path(path.data,'school-district-adopted-tax-rates.xlsx')) %>%
+	data.table
+
+
+# Have to add in 23 & 24 tax rates from different file cause public data stinks..
+
+tmp <- levies_2023[,.(`School District`=toupper(`Taxing Unit Name`[1]),
+					  `2023-2024 M&O Tax Rate`=`M & O Rate`[1],
+					  `2023-2024 I&S Tax Rate`=`I & S Rate`[1]),by=`Taxing Unit Name`]
+setkey(tmp, `School District`)
+setkey(tax_rates,`School District`)
+tax_rates <- tax_rates[tmp[,.(`School District`,`2023-2024 M&O Tax Rate`,`2023-2024 I&S Tax Rate`)]]
+
+tmp <- levies_2024[,.(`School District`=toupper(`TAXING UNIT NAME`[1]),
+					  `2024-2025 M&O Tax Rate`=`M&O RATE`[1],
+					  `2024-2025 I&S Tax Rate`=`I&S RATE`[1]),by=`TAXING UNIT NAME`]
+
+
+setkey(tmp, `School District`)
+setkey(tax_rates,`School District`)
+tax_rates <- tax_rates[tmp[,.(`School District`,`2024-2025 M&O Tax Rate`,`2024-2025 I&S Tax Rate`)]]
+
+
+jwt_taxes <- read_excel(file.path(path.data,'jwt_property_tax_history.xlsx')) %>%
+	data.table 
+
+directory <- read.csv(file.path(path.data,'district_directory_2025.csv')) %>%
   data.table 
 
 # kcad_values <- read.csv(file.path(path.data,'KCAD_values.csv')) %>%
@@ -99,10 +123,15 @@ BISD_tax_rates <- data.table(label=names(tmp),value=as.numeric(tmp))
 BISD_tax_rates[,`Tax Year`:=as.integer(substr(label,6,9))-1]
 BISD_tax_rates[,`School Year`:=paste0(`Tax Year`,'-',`Tax Year`+1),by=`Tax Year`]
 BISD_combined_tax_rate <- BISD_tax_rates[,.(`Combined Tax Rate`=sum(value)),by=.(`Tax Year`,`School Year`)]
-BISD_combined_tax_rate <- rbind(BISD_combined_tax_rate,
-																list(`Tax Year`=2023, 
-																		 `School Year`='2023-2024',
-																		 `Combined Tax Rate`=levies_2023[`Taxing Unit Name`=="Boerne ISD"]$`Total Tax Rate`[1]))
+# BISD_combined_tax_rate <- rbind(BISD_combined_tax_rate,
+# 																list(`Tax Year`=2023, 
+# 																		 `School Year`='2023-2024',
+# 																		 `Combined Tax Rate`=levies_2023[`Taxing Unit Name`=="Boerne ISD"]$`Total Tax Rate`[1]))
+# BISD_combined_tax_rate <- rbind(BISD_combined_tax_rate,
+# 																list(`Tax Year`=2024, 
+# 																		 `School Year`='2024-2025',
+# 																		 `Combined Tax Rate`=levies_2024[`TAXING UNIT NAME`=="Boerne ISD"]$`TOTAL TAX RATE`[1]))
+
 
 tmp <- tax_rates[CDN %in% neighbor_districts$CDN]
 years <- substr(names(tmp)[3:length(tmp)],1,4) %>% unique
@@ -111,11 +140,12 @@ BISD_neighbors_combined_tax_rate <- foreach(year=years, .combine='rbind') %do% {
                                             tmp[,.(`Tax Year` = year, `Combined Tax Rate` = sum(.SD)), 
                                                 .SD=cols, by="School District"]
 }
-BISD_neighbors_combined_tax_rate <- rbind(BISD_neighbors_combined_tax_rate,
-                                          neighbor_districts[,.(`School District` = Name,
-                                                                `Tax Year` = "2023",
-                                                                `Combined Tax Rate` = levies_2023[toupper(`Taxing Unit Name`) == Name & toupper(`County Name`) == County]$`Total Tax Rate`[1]),
-                                                             by=CDN][,.(`School District`,`Tax Year`,`Combined Tax Rate`)])
+
+# BISD_neighbors_combined_tax_rate <- rbind(BISD_neighbors_combined_tax_rate,
+#                                           neighbor_districts[,.(`School District` = Name,
+#                                                                 `Tax Year` = "2024",
+#                                                                 `Combined Tax Rate` = levies_2024[toupper(`TAXING UNIT NAME`) == Name & toupper(`COUNTY NAME`) == County]$`TOTAL TAX RATE`[1]),
+#                                                              by=CDN][,.(`School District`,`Tax Year`,`Combined Tax Rate`)])
 BISD_neighbors_combined_tax_rate <- rbind(BISD_neighbors_combined_tax_rate[`School District` != "BOERNE ISD"],
                                           BISD_neighbors_combined_tax_rate[`School District` == "BOERNE ISD"])
 
@@ -171,10 +201,11 @@ per_student_funding <- cpi[per_student_funding]
 
 tags_source <- list(BISD_tax = character())
 
+
 # Cost of Recapture Since 2007
 tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-															 `{{{TOTAL_RECAPTURE_2007_2023}}}` = finance_summary[`DISTRICT NAME`=="BOERNE ISD",
-															 																									 scales::dollar_format()(sum(`ALL FUNDS-EQUITY TRANSFERS`))])
+						   `{{{TOTAL_RECAPTURE_2008_2024}}}` = finance_summary[`DISTRICT NAME`=="BOERNE ISD",
+						   scales::dollar_format()(sum(`ALL FUNDS-EQUITY TRANSFERS`))])
 tags_source[["BISD"]] <- c(tags_source[["BISD"]],
                                `{{{AVG_RECAPTURE_PROP_BUDGET}}}` = finance_summary[`DISTRICT NAME`=="BOERNE ISD",
                                scales::label_percent()(median(`ALL FUNDS-EQUITY TRANSFERS`/`GEN FUNDS-TOTAL OPERATING REVENUE`))])
@@ -182,36 +213,33 @@ tags_source[["BISD"]] <- c(tags_source[["BISD"]],
 
 # Levied Taxes
 tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{2023_COMBINED_RATE}}}` = levies_2023[`Taxing Unit Name`=="Boerne ISD",`M & O Rate` + `I & S Rate`][1])
+                               `{{{2024_COMBINED_RATE}}}` = levies_2024[`TAXING UNIT NAME`=="Boerne ISD",`M&O RATE` + `I&S RATE`][1])
 tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{2023_LEVY}}}` = scales::label_comma()(levies_2023[`Taxing Unit Name`=="Boerne ISD",sum(`Calculated Levy`)]))
+                               `{{{2024_LEVY}}}` = scales::label_comma()(levies_2024[`TAXING UNIT NAME`=="Boerne ISD",sum(`CALCULATED LEVY`)]))
 tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{2023_MARKET_VALUE}}}` = scales::label_comma()(levies_2023[`Taxing Unit Name`=="Boerne ISD",sum(`Market Value`)]))
+                               `{{{2024_MARKET_VALUE}}}` = scales::label_comma()(levies_2024[`TAXING UNIT NAME`=="Boerne ISD",sum(`MARKET VALUE`)]))
 
 # Tax Rate
 tags_source[["BISD"]] <- c(tags_source[["BISD"]],
                                `{{{2005_TAX_RATE}}}` = BISD_combined_tax_rate[`Tax Year`==2005]$`Combined Tax Rate`)
 tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{2023_TAX_RATE}}}` = BISD_combined_tax_rate[`Tax Year`==2023]$`Combined Tax Rate`)
+                               `{{{2024_TAX_RATE}}}` = BISD_combined_tax_rate[`Tax Year`==2024]$`Combined Tax Rate`)
 tags_source[["BISD"]] <- c(tags_source[["BISD"]],
                                `{{{MEDIAN_TAX_RANK}}}` = BISD_neighbors_combined_tax_rate[`School District`=="BOERNE ISD", median(Rank)])
 tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{2023_TAX_RANK}}}` = BISD_neighbors_combined_tax_rate[`School District`=="BOERNE ISD" & `Tax Year` == 2023]$Rank)
-
-
-
+                               `{{{2024_TAX_RANK}}}` = BISD_neighbors_combined_tax_rate[`School District`=="BOERNE ISD" & `Tax Year` == 2024]$Rank)
 
 
 # Enrollment
 tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{2023_LEVY_PER_STUDENT}}}` = scales::label_comma()(round(round(levies_2023[`Taxing Unit Name`=="Boerne ISD",sum(`Calculated Levy`)]/directory[District.Name=="BOERNE ISD"]$`District.Enrollment.as.of.Oct.2023`[1]))))
+                               `{{{2024_LEVY_PER_STUDENT}}}` = scales::label_comma()(round(round(levies_2024[`TAXING UNIT NAME`=="Boerne ISD",sum(`CALCULATED LEVY`)]/directory[District.Name=="BOERNE ISD"]$`District.Enrollment.as.of.Oct.2024`[1]))))
 
 # Per-Student Funding 
 tmp <- per_student_funding[,funding:=`GEN FUNDS-TOTAL OPERATING REVENUE AND OTHER REVENUE AND RECAPTUR`/`FALL SURVEY ENROLLMENT`*factor]
 tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{2007_REVENUE_PER_STUDENT}}}` = scales::dollar_format()(tmp[factor_year==2007]$funding))
+                               `{{{2008_REVENUE_PER_STUDENT}}}` = scales::dollar_format()(tmp[factor_year==2008]$funding))
 tags_source[["BISD"]] <- c(tags_source[["BISD"]],
-                               `{{{2023_REVENUE_PER_STUDENT}}}` = scales::dollar_format()(tmp[factor_year==2023]$funding))
+                               `{{{2024_REVENUE_PER_STUDENT}}}` = scales::dollar_format()(tmp[factor_year==2024]$funding))
 
 # finance_summary[,.SD,.SDcols=cols]
 # names(finance_summary)
@@ -331,13 +359,14 @@ pdata <- finance_summary[`DISTRICT NAME`=="BOERNE ISD",
 												 .(`Recapture Payment`=`ALL FUNDS-EQUITY TRANSFERS`, 
 												 	 `% of Total Operating Revenue (Gen. Funds)` = `ALL FUNDS-EQUITY TRANSFERS`/`GEN FUNDS-TOTAL OPERATING REVENUE`),
 												 by=YEAR]
+
 tables[[6]] <- pdata
 figures[[6]] <- plot_ly(pdata, x = ~YEAR, y = ~`Recapture Payment`, 
 											  type = 'scatter', name="Recapture", mode = 'lines+markers',
 												title = "BISD Recapture Since 2007",
 												height=200)  %>%
-  layout(title = "BISD Recapture Since 2007", 
-  			 xaxis=list(title="Year"),
+  layout(title = "BISD Recapture Since Class Year 2008", 
+  			 xaxis=list(title="Class Year"),
  	  		 yaxis = list(title="Recapture Payment"),
          margin=margins) %>% 
   config(displayModeBar = TRUE,
@@ -432,7 +461,7 @@ figures[[5]] <- plot_ly(pdata, x = ~factor_year, y = ~per_student_with_recap,
             type = 'scatter', mode='lines+markers', name='Excluding\nRecapture') %>%
   layout(title = "BISD Revenue Per Student (General Funds) 2007-2023", 
          xaxis=list(title="Year"),
-         yaxis = list(title="Revenue Per Student\n(In 2024 Dollars)"),
+         yaxis = list(title="Revenue Per Student\n(In 2025 Dollars)"),
          margin=margins) %>% 
   config(displayModeBar = TRUE,
          modeBarButtonsToRemove = btns_exclude)

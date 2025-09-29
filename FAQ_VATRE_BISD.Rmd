@@ -1,0 +1,886 @@
+---
+title: "FAQ: Nov 2025 Election Property Tax Measures" 
+---
+
+<script src="lib/core-js-2.5.3/shim.min.js"></script>
+<script src="lib/react-18.2.0/react.min.js"></script>
+<script src="lib/react-18.2.0/react-dom.min.js"></script>
+<script src="lib/reactwidget-1.0.0/react-tools.js"></script>
+<script src="lib/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="lib/reactable-0.4.4/reactable.css" rel="stylesheet"/>
+<script src="lib/reactable-binding-0.4.4/reactable.js"></script>
+
+<div class="FAQ">
+
+
+<p>
+    <ul>
+        <li>This FAQ is intended to provide transparent and well sourced information about ballot measures in the November 2025 election that could affect a Kendall County or Boerne ISD voter's property taxes, particularly the Boerne ISD Voter-Approval Tax Rate Election (VATRE).</li>
+        <li>Everything contained in this website (including text, data, analyses, visualizations, etc.) is available to download as reproducible source code from a public [GitHub repository](https://github.com/joetidwell/freidenker).</li>
+        <li>This site is best viewed in a desktop browser.</li>
+    </ul>
+</p>
+
+
+```{r plotly_hack, include = FALSE, echo=FALSE, message=FALSE, warning=FALSE}
+# Both plot_ly and reactable require javascript and css libraries to be
+# included in the HTML head. RMarkdown doesn't do this propoerly if the
+# first use of these functions is in a loop or otehrwise nested. Loading
+# These libraries and 'displaying' hidden output guarantees the correct
+# libraries are included.
+
+library(htmltools)
+library(plotly)
+library(reactable)
+library(htmltools)
+library(data.table)
+source("assets/r/funcs_tables.R")
+htmltools::tagList(plot_ly(x = rnorm(10), type = "histogram"))
+print_table(data.table(a=1,b=2),"COW")
+```
+
+
+
+```{r init, echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+library(stringr)
+library(fontawesome)
+library(xml2)
+library(dplyr)
+library(plotly)
+library(foreach)
+library(RColorBrewer)
+library(scales)
+library(waffle)
+
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(cache = FALSE)
+
+
+###
+### Globals
+###
+
+path.data <- file.path('data')
+neighbor_districts <- data.table(CDN = c("130901",  # Boerne ISD
+                                         "016902",  # Blanco ISD
+                                         "046902",  # Comal ISD
+                                         "015915",  # Northside ISD
+                                         "015910",  # North East ISD
+                                         "010902",  # Bandera ISD
+                                         "130902"), # Comfort ISD
+							 	 `DISTRICT NAME` = toupper(c("Boerne ISD",
+        							 	 					 "Blanco ISD",
+        							 	 					 "Comal ISD",
+        							 	 					 "Northside ISD (Bexar)",
+        							 	 					 "North East ISD",
+        							 	 					 "Bandera ISD",
+        							 	 					 "Comfort ISD")),
+							 	 `TAXING UNIT ID PREFIX` = c("130-901-02-",
+							 	 							 "016-902-02-",
+							 	 							 "046-902-02-",
+							 	 							 "015-915-02-",
+							 	 							 "015-910-02-",
+							 	 							 "010-902-02-",
+							 	 							 "130-902-02-"))
+
+duplicated_districts <- data.table(`DISTRICT NAME`=toupper(c("Big Sandy ISD (Upshur)",
+                                                             "Big Sandy ISD (Polk)",
+                                                             "Centerville ISD (Trinity)",
+                                                             "Centerville ISD (Leon)",
+                                                             "Chapel Hill ISD (Titus)",
+                                                             "Chapel Hill ISD (Smith)",
+                                                             "Dawson ISD (Dawson)",
+                                                             "Dawson ISD (Navarro)",
+                                                             "Edgewood ISD (Van Zandt)",
+                                                             "Edgewood ISD (Bexar)",
+                                                             "Highland Park ISD (Potter)",
+                                                             "Highland Park ISD (Dallas)",
+                                                             "Hubbard ISD (Hill)",
+                                                             "Hubbard ISD (Bowie)",
+                                                             "Midway ISD (Clay)",
+                                                             "Midway ISD (McLennan)",
+                                                             "Northside ISD (Bexar)",
+                                                             "Northside ISD (Wilbarger)",
+                                                             "Valley View ISD (Hidalgo)",
+                                                             "Valley View ISD (Cooke)",
+                                                             "Wylie ISD (Taylor)",
+                                                             "Wylie ISD (Collin)")),
+                                   `CDN`=c('230901',
+                                           '187901',
+                                           '228904',
+                                           '145902',
+                                           '225906',
+                                           '212909',
+                                           '058902',
+                                           '175904',
+                                           '234903',
+                                           '015905',
+                                           '188903',
+                                           '057911',
+                                           '109905',
+                                           '019913',
+                                           '039905',
+                                           '161903',
+                                           '015915',
+                                           '244905',
+                                           '108916',
+                                           '049903',
+                                           '221912',
+                                           '043914')) 
+
+comp_size <- c('top'=12000,'bottom'=9000)
+BISD_district_num = "130901"
+
+###
+### Load Data
+###
+
+# Finance Summaries
+finance_summary_2008_to_2024 <- read_excel(file.path(path.data,
+													 '2008-2024-summarized-financial-data-03-17-2025.xlsx')) %>%
+  data.table
+finance_summary_2007_to_2023 <- read_excel(file.path(path.data,
+													 '2007-2023-summarized-financial-data-0.xlsx')) %>%
+  data.table
+
+# Tax Levies
+levies_2024 <- read_excel(file.path(path.data,'2024-school-district-rates-levies.xlsx')) %>%
+  data.table 
+
+# Economically Disadvantaged
+ecodis_2024 <- read.csv(file.path(path.data, "Economically Disadvantaged Report_Statewide_Districts_2023-2024.csv")) %>% data.table
+
+# 2024-2025 Neighoboring District Salaries
+## Compiled from https://rptsvr1.tea.texas.gov/adhocrpt/adpeb.html
+staff_salaries <- read_excel(file.path(path.data,'staff_salaries_2024_2025.xlsx')) %>%
+  data.table 
+
+
+# TAPR Teacher Turnover Data
+## 2023-2024 data hand compiled from individual pdf reports since TAPR data download didn't include 
+## turnover data for that year
+
+t_2015 <- read_excel(file.path(path.data,'TAPR_Staff_2014-15.xlsx')) %>% data.table
+t_2015[,year:=2015]
+t_2016 <- read_excel(file.path(path.data,'TAPR_Staff_2015-16.xlsx')) %>% data.table
+t_2016[,year:=2016]
+t_2017 <- read_excel(file.path(path.data,'TAPR_Staff_2016-17.xlsx')) %>% data.table
+t_2017[,year:=2017]
+t_2018 <- read_excel(file.path(path.data,'TAPR_Staff_2017-18.xlsx')) %>% data.table
+t_2018[,year:=2018]
+t_2019 <- read_excel(file.path(path.data,'TAPR_Staff_2018-19.xlsx')) %>% data.table
+t_2019[,year:=2019]
+t_2020 <- read_excel(file.path(path.data,'TAPR_Staff_2019-20.xlsx')) %>% data.table
+t_2020[,year:=2020]
+t_2021 <- read_excel(file.path(path.data,'TAPR_Staff_2020-21.xlsx')) %>% data.table
+t_2021[,year:=2021]
+t_2022 <- read_excel(file.path(path.data,'TAPR_Staff_2021-22.xlsx')) %>% data.table
+t_2022[,year:=2022]
+t_2023 <- read_excel(file.path(path.data,'TAPR_Staff_2022-23.xlsx')) %>% data.table
+t_2023[,year:=2023]
+t_2024 <- data.table(DISTRICT=c('130901','016902','130902','015915','015910','010902','046902'),
+                     DPSTURNR=c(19.5,28.2,24.2,14.4,18.6,20,17.9),
+                     year=2024)
+
+turnover_teacher <- rbind(t_2015[,.(DISTRICT,year,DPSTURNR)],
+                          t_2016[,.(DISTRICT,year,DPSTURNR)],
+                          t_2017[,.(DISTRICT,year,DPSTURNR)],
+                          t_2018[,.(DISTRICT,year,DPSTURNR)],
+                          t_2019[,.(DISTRICT,year,DPSTURNR)],
+                          t_2020[,.(DISTRICT,year,DPSTURNR)],
+                          t_2021[,.(DISTRICT,year,DPSTURNR)],
+                          t_2022[,.(DISTRICT,year,DPSTURNR)],
+                          t_2023[,.(DISTRICT,year,DPSTURNR)],
+                          t_2024[,.(DISTRICT,year,DPSTURNR)])
+
+
+# Tax Rates
+tax_rates <- read_excel(file.path(path.data,'school-district-adopted-tax-rates.xlsx')) %>%
+    data.table
+
+
+
+###
+### Munge Data
+###
+
+# Add 2024 rates
+tmp <- levies_2024[,.(`School District`=toupper(`TAXING UNIT NAME`[1]),
+                      `2024-2025 M&O Tax Rate`=`M&O RATE`[1],
+                      `2024-2025 I&S Tax Rate`=`I&S RATE`[1]),by=`TAXING UNIT NAME`]
+setkey(tmp, `School District`)
+setkey(tax_rates,`School District`)
+tax_rates <- tax_rates[tmp[,.(`School District`,`2024-2025 M&O Tax Rate`,`2024-2025 I&S Tax Rate`)]]
+
+
+# Create table for neighboring districts tax rates
+tmp <- tax_rates[CDN %in% neighbor_districts$CDN]
+years <- substr(names(tmp)[3:length(tmp)],1,4) %>% unique
+BISD_neighbors_combined_tax_rate <- foreach(year=years, .combine='rbind') %do% {  
+                                            cols <- grep(paste0("^",year),names(tmp),value=TRUE)
+                                            tmp[,.(`Tax Year` = year, `Combined Tax Rate` = sum(.SD)), 
+                                                .SD=cols, by="School District"]
+}
+
+# Remove ' from District Number
+turnover_teacher[,`DISTRICT NUMBER`:=gsub("'","",DISTRICT)]
+turnover_teacher[,DISTRICT:=NULL]
+turnover_teacher[,TURNOVER:=DPSTURNR]
+turnover_teacher[,DPSTURNR:=NULL]
+turnover_teacher[,TURNOVER:=as.numeric(TURNOVER)]
+
+# Remove whitespace from names
+ecodis_2024[,District.Name:=trimws(District.Name)]
+ecodis_2024[,Charter.Status:=trimws(Charter.Status)]
+ecodis_2024[,County.Name:=trimws(County.Name)]
+
+# Convert district numbers to text
+ecodis_2024[,District.Number:=as.character(District.Number)]
+ecodis_2024[,District.Number:=paste0(paste0(rep("0",6-nchar(District.Number)),collapse=""),District.Number,collapse=""),
+            by=District.Number]
+
+# Combine finance summary files
+finance_summary <- rbind(finance_summary_2007_to_2023[YEAR==2007],finance_summary_2008_to_2024)
+finance_summary[,`DISTRICT NUMBER`:=gsub("'","",`DISTRICT NUMBER`)]
+
+# De-duplicate `DISTRICT NAME` to later join on finance_summary
+for(i in 1:nrow(duplicated_districts)) {
+    finance_summary[`DISTRICT NUMBER`==duplicated_districts[i]$CDN,
+                    `DISTRICT NAME`:=duplicated_districts[i]$`DISTRICT NAME`]
+}
+
+# Convert tax levy data to one row per district
+levies_2024 <- levies_2024[,.(`TAXING UNIT NAME`,
+                              `COUNTY NAME`,
+							  `TAXING UNIT ID PREFIX` = substr(`TAXING UNIT ID`,1,11),
+                              `MARKET VALUE`,
+                              `TAXABLE VALUE M&O`,
+                              `TAXABLE VALUE I&S`,
+                              `NO-NEW-REVENUE RATE`,
+                              `VOTER-APPROVAL RATE`,
+                              `M&O RATE`,
+                              `I&S RATE`,
+                              `TOTAL TAX RATE`,
+                              `CALCULATED LEVY`)]
+setkey(levies_2024,`MARKET VALUE`)
+levies_2024 <- levies_2024[,
+                           .(`TAXING UNIT NAME`=`TAXING UNIT NAME`[1],
+                             `COUNTY NAME`=`COUNTY NAME`[.N],
+                           	 `MARKET VALUE` = sum(`MARKET VALUE`),
+                             `TAXABLE VALUE M&O` = sum(`TAXABLE VALUE M&O`),
+                             `TAXABLE VALUE I&S` = sum(`TAXABLE VALUE I&S`),
+                             `M&O RATE` = `M&O RATE`[1],
+                             `I&S RATE` = `I&S RATE`[1],
+                             `TOTAL TAX RATE` = `TOTAL TAX RATE`[1],
+                             `CALCULATED LEVY` = sum(`CALCULATED LEVY`)
+                             ),
+                           by=.(`TAXING UNIT ID PREFIX`)]
+setkey(levies_2024, `TAXING UNIT NAME`)
+
+# De-duplicate `TAXING UNIT NAME` to later join on finance_summary
+levies_2024[,`TAXING UNIT NAME`:=toupper(`TAXING UNIT NAME`)]
+dup_names <- levies_2024$`TAXING UNIT NAME`[duplicated(levies_2024$`TAXING UNIT NAME`)]
+levies_2024[`TAXING UNIT NAME`%in%dup_names, `TAXING UNIT NAME`:=toupper(paste(`TAXING UNIT NAME`,paste0("(",`COUNTY NAME`,")")))]
+
+# Calculate levy per student
+tmp <- finance_summary[YEAR==2024,.(`TAXING UNIT NAME`=`DISTRICT NAME`,
+                                    `FALL SURVEY ENROLLMENT`)]
+setkey(tmp,`TAXING UNIT NAME`)
+setkey(levies_2024,`TAXING UNIT NAME`)
+levies_2024 <- tmp[levies_2024]
+levies_2024[,`LEVY PER STUDENT`:=`CALCULATED LEVY`/`FALL SURVEY ENROLLMENT`]
+
+
+###
+### Tables
+###
+
+tables <- list()
+
+# Cost of Recapture since 2006-2007 School Year
+tables[['Q12']] <- finance_summary[`DISTRICT NUMBER`==BISD_district_num,
+                                   .(YEAR, `DISTRICT NAME`, `ALL FUNDS-EQUITY TRANSFERS`)]
+
+# How does Boerne ISD’s combined tax rate compare to other districts?
+tables[['Q18']] <- levies_2024[`TAXING UNIT NAME` %in% neighbor_districts$`DISTRICT NAME`,
+                               .(`TAXING UNIT NAME`,
+                                 `TOTAL TAX RATE`)][order(`TOTAL TAX RATE`)]
+
+# How do Boerne ISD teacher salaries compare to neighboring districts?
+tables[['Q27']] <- staff_salaries
+
+# How do Boerne ISD administrator salaries compare to neighboring districts?
+tables[['Q28']] <- staff_salaries
+
+
+###
+### Plots
+###                                   
+
+plots <- list()
+margins <- list(l = 50, r = 50,
+                b = 50, t = 50,
+                pad = 20)
+btns_exclude <- c('sendDataToCloud', 'autoScale2d', 'resetScale2d', 'toggleSpikelines',
+                  'hoverClosestCartesian', 'hoverCompareCartesian',
+                  'zoom2d','pan2d','select2d','lasso2d','zoomIn2d','zoomOut2d')
+
+
+
+# BISD and Neighbors Tax Rates
+pdata <- copy(BISD_neighbors_combined_tax_rate[`Tax Year` > 2014])
+pdata <- dcast(pdata, `Tax Year` ~ `School District`, value.var = "Combined Tax Rate")
+ISDs <- names(pdata)[-1]
+ISDs <- c(ISDs[ISDs!="BOERNE ISD"],"BOERNE ISD")
+colors <- brewer.pal(n=7,"Set1")
+colors[4] <- colors[7]
+colors[7] <- "#8968CD" 
+colors <- data.table(ISD=ISDs,color=colors)
+setkey(colors, ISD)
+fig <- plot_ly(pdata,
+         type = "scatter",
+         mode = "lines+markers",
+         height = 300
+       )  %>%
+  layout(title = "BISD and Neighboring District's Tax Rates 2015-2024", 
+         xaxis = list(title = "Year"),
+         yaxis = list(title = "Combined Tax Rate", 
+                      range = c(.5,1.75), 
+                      tickvals = list(.5, .75,1,1.25,1.5,1.75),
+                      ticktext = list("0.5", "0.75","1.00","1.25","1.50","1.75")),
+         margin=margins,
+         hovermode = 'x unified') %>% 
+  config(displayModeBar = TRUE,
+         modeBarButtonsToRemove = btns_exclude)
+for (ISD in names(pdata)[-1]) {
+  fig <- add_trace(fig, 
+      y = pdata[[ISD]],
+      x = ~`Tax Year`,
+      name = ISD,
+      mode = 'lines+markers',
+      line = list( width = if(ISD=="BOERNE ISD") 5 else 2,
+                   color = colors[ISD]$color ),
+      marker = list( size = if(ISD=="BOERNE ISD") 12 else 7,
+                     color = colors[ISD]$color,
+                     line = list( width = 1, color="#999") ),
+      opacity = if(ISD=="BOERNE ISD") 1 else .35
+    )
+}
+plots[['Q18']] <- fig
+# tables[[4]] <- copy(pdata)
+
+
+# BISD Teacher Turnover Rates 2015-2024
+
+pdata <- turnover_teacher[`DISTRICT NUMBER`%in%neighbor_districts$CDN]
+setkey(pdata, `DISTRICT NUMBER`)
+setkey(neighbor_districts,CDN)
+pdata <- copy(pdata[neighbor_districts][,.(year,`DISTRICT NAME`,TURNOVER)])
+pdata <- dcast(pdata, year ~ `DISTRICT NAME`, value.var = "TURNOVER")
+ISDs <- names(pdata)[-1]
+ISDs <- c(ISDs[ISDs!="BOERNE ISD"],"BOERNE ISD")
+colors <- brewer.pal(n=7,"Set1")
+colors[4] <- colors[7]
+colors[7] <- "#8968CD" 
+colors <- data.table(ISD=ISDs,color=colors)
+setkey(colors, ISD)
+
+
+
+
+fig <- plot_ly(pdata,
+         type = "scatter",
+         mode = "lines+markers",
+         height = 300
+       )  %>%
+  layout(title = "BISD Teacher Turnover Rate 2015-2024", 
+         xaxis = list(title = "Year"),
+         yaxis = list(title = "Teacher Turnover Rate (%)", 
+                      range = c(0,40), 
+                      tickvals = seq(5,35,by=5),
+                      ticktext = as.character(seq(5,35,by=5))),
+         margin=margins,
+         hovermode = 'x unified') %>% 
+  config(displayModeBar = TRUE,
+         modeBarButtonsToRemove = btns_exclude)
+fig <- add_trace(fig, 
+  y = pdata[["BOERNE ISD"]],
+  x = ~`year`,
+  name = "BOERNE ISD",
+  mode = 'lines+markers',
+  line = list( width = 5,
+               color = colors["BOERNE ISD"]$color),
+  marker = list( size = 12 ,
+                 color = colors["BOERNE ISD"]$color,
+                 line = list( width = 1, color="#999") ),
+  opacity = 1
+)
+
+plots[['Q32']] <- fig
+tables[['Q32']] <- pdata
+
+
+# BISD and Neighboring District's Teacher Turnover Rates 2015-2024
+
+
+fig <- plot_ly(pdata,
+         type = "scatter",
+         mode = "lines+markers",
+         height = 300
+       )  %>%
+  layout(title = "BISD and Neighboring District's Teacher Turnover Rates 2015-2024", 
+         xaxis = list(title = "Year"),
+         yaxis = list(title = "Teacher Turnover Rate (%)", 
+                      range = c(0,40), 
+                      tickvals = seq(5,35,by=5),
+                      ticktext = as.character(seq(5,35,by=5))),
+         margin=margins,
+         hovermode = 'x unified') %>% 
+  config(displayModeBar = TRUE,
+         modeBarButtonsToRemove = btns_exclude)
+
+for (ISD in names(pdata)[-1]) {
+  fig <- add_trace(fig, 
+      y = pdata[[ISD]],
+      x = ~`year`,
+      name = ISD,
+      mode = 'lines+markers',
+      line = list( width = if(ISD=="BOERNE ISD") 5 else 2,
+                   color = colors[ISD]$color ),
+      marker = list( size = if(ISD=="BOERNE ISD") 12 else 7,
+                     color = colors[ISD]$color,
+                     line = list( width = 1, color="#999") ),
+      opacity = if(ISD=="BOERNE ISD") 1 else .35
+    )
+}
+
+plots[['Q33']] <- fig
+tables[['Q33']] <- pdata
+
+
+###
+### Data Substitutions
+###
+
+tags_source <- list()
+
+# Cost of Recapture since 2007-2008 School Year
+tags_source['{{{TOTAL_RECAPTURE}}}'] <- dollar(finance_summary[`DISTRICT NUMBER`==BISD_district_num,sum(`ALL FUNDS-EQUITY TRANSFERS`)])
+
+# How much does Boerne ISD levy in property taxes?
+tags_source['{{{TOTAL_TAX_RATE_BISD}}}'] <- paste0('$',levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`TOTAL TAX RATE`)
+tags_source['{{{TAXABLE_VALUE_BISD}}}'] <- dollar(levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`TAXABLE VALUE M&O`)
+tags_source['{{{2024_TAX_LEVY_BISD}}}'] <- dollar(levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`CALCULATED LEVY`)
+tags_source['{{{2024_TAX_LEVY_PER_STUDENT_BISD}}}'] <- dollar(round(levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`CALCULATED LEVY`/finance_summary[`DISTRICT NUMBER`==BISD_district_num & YEAR==2024]$`FALL SURVEY ENROLLMENT`))
+  
+# How does Boerne ISD’s tax levy per-student compare to other districts?
+tags_source['{{{2024_TAX_LEVY_PER_STUDENT_BISD}}}'] <- levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`LEVY PER STUDENT` %>% dollar
+ecdf_levy_per_student <- ecdf(levies_2024$`LEVY PER STUDENT`)
+tags_source['{{{LEVY_PER_STUDENT_PERCENTILE_BISD}}}'] <- ordinal(100*round(ecdf_levy_per_student(levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`LEVY PER STUDENT`),2))
+ecdf_levy_per_student_comp <- ecdf(levies_2024[`FALL SURVEY ENROLLMENT` <= comp_size['top'] & `FALL SURVEY ENROLLMENT` >= comp_size['bottom']]$`LEVY PER STUDENT`)
+tags_source['{{{LEVY_PER_STUDENT_PERCENTILE_BISD_COMP}}}'] <- ordinal(100*round(ecdf_levy_per_student_comp(levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`LEVY PER STUDENT`),2))
+ecdf_levy_per_student_neighbor <- ecdf(levies_2024[`TAXING UNIT NAME` %in% neighbor_districts$`DISTRICT NAME`]$`LEVY PER STUDENT`)
+tags_source['{{{LEVY_PER_STUDENT_PERCENTILE_BISD_NEIGHBOR}}}'] <- ordinal(100*round(ecdf_levy_per_student_neighbor(levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`LEVY PER STUDENT`),2))
+
+dists_above <- levies_2024[`TAXING UNIT NAME` %in% neighbor_districts$`DISTRICT NAME` & `LEVY PER STUDENT` > levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`LEVY PER STUDENT`]$`TAXING UNIT NAME` %>% str_to_title
+dists_below <- levies_2024[`TAXING UNIT NAME` %in% neighbor_districts$`DISTRICT NAME` & `LEVY PER STUDENT` < levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`LEVY PER STUDENT`]$`TAXING UNIT NAME` %>% str_to_title
+dists_above <- gsub("Isd","ISD",dists_above)
+dists_below <- gsub("Isd","ISD",dists_below)
+tags_source['{{{LEVY_NEIGHBOR_HIGHER}}}'] <- paste(dists_below, collapse=", ")
+tags_source['{{{LEVY_NEIGHBOR_LOWER}}}'] <- paste(dists_above, collapse=", ")
+
+# How does Boerne ISD’s combined tax rate compare to other districts?
+ecdf_tax_rate <- ecdf(levies_2024$`TOTAL TAX RATE`)
+tags_source['{{{TAX_RATE_PERCENTILE_BISD}}}'] <- ordinal(100*round(ecdf_tax_rate(levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`TOTAL TAX RATE`),2))
+ecdf_tax_rate_comp <- ecdf(levies_2024[`FALL SURVEY ENROLLMENT` <= comp_size['top'] & `FALL SURVEY ENROLLMENT` >= comp_size['bottom']]$`TOTAL TAX RATE`)
+tags_source['{{{TAX_RATE_PERCENTILE_BISD_COMP}}}'] <- ordinal(100*round(ecdf_tax_rate_comp(levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`TOTAL TAX RATE`),2))
+ecdf_tax_rate_neighbor <- ecdf(levies_2024[`TAXING UNIT NAME` %in% neighbor_districts$`DISTRICT NAME`]$`TOTAL TAX RATE`)
+tags_source['{{{TAX_RATE_PERCENTILE_BISD_NEIGHBOR}}}'] <- ordinal(100*round(ecdf_tax_rate_neighbor(levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`TOTAL TAX RATE`),2))
+
+dists_below <- levies_2024[`TAXING UNIT NAME` %in% neighbor_districts$`DISTRICT NAME` & `TOTAL TAX RATE` > levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`TOTAL TAX RATE`]$`TAXING UNIT NAME` %>% str_to_title
+dists_above <- levies_2024[`TAXING UNIT NAME` %in% neighbor_districts$`DISTRICT NAME` & `TOTAL TAX RATE` < levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`TOTAL TAX RATE`]$`TAXING UNIT NAME` %>% str_to_title
+dists_above <- gsub("Isd","ISD",dists_above)
+dists_below <- gsub("Isd","ISD",dists_below)
+tags_source['{{{TAX_RATE_NEIGHBOR_HIGHER}}}'] <- paste(dists_below, collapse=", ")
+tags_source['{{{TAX_RATE_NEIGHBOR_LOWER}}}'] <- paste(dists_above, collapse=", ")
+
+# How does the state's funding method affect Boerne ISD?
+ecdf_wealth <- ecdf(levies_2024$`TAXABLE VALUE M&O`/levies_2024$`FALL SURVEY ENROLLMENT`)
+tags_source['{{{WEALTH_PER_STUDENT_BISD}}}'] <- dollar(round(levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`TAXABLE VALUE M&O`/levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`FALL SURVEY ENROLLMENT`))
+tags_source['{{{WEALTH_PER_STUDENT_EISD}}}'] <- dollar(round(levies_2024[`TAXING UNIT NAME`=="EDGEWOOD ISD (BEXAR)"]$`TAXABLE VALUE M&O`/levies_2024[`TAXING UNIT NAME`=="EDGEWOOD ISD (BEXAR)"]$`FALL SURVEY ENROLLMENT`))
+tags_source['{{{WEALTH_PERCENTILE_BISD_COMP}}}'] <- ordinal(100*round(ecdf_wealth(levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`TAXABLE VALUE M&O`/levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`FALL SURVEY ENROLLMENT`), 2))
+tags_source['{{{WEALTH_PERCENTILE_EISD_COMP}}}'] <- ordinal(100*round(ecdf_wealth(levies_2024[`TAXING UNIT NAME`=="EDGEWOOD ISD (BEXAR)"]$`TAXABLE VALUE M&O`/levies_2024[`TAXING UNIT NAME`=="EDGEWOOD ISD (BEXAR)"]$`FALL SURVEY ENROLLMENT`), 2))
+
+ecdf_enrollment <- ecdf(finance_summary[YEAR==2024]$`FALL SURVEY ENROLLMENT`)
+tags_source['{{{1000_ENROLLMENT_PERCENTILE}}}'] <- round(ecdf_enrollment(1000)*100)
+tags_source['{{{ENROLLMENT_CISD}}}'] <- levies_2024[`TAXING UNIT NAME`=="COMFORT ISD"]$`FALL SURVEY ENROLLMENT` %>% comma
+tags_source['{{{ENROLLMENT_BISD}}}'] <- levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`FALL SURVEY ENROLLMENT` %>% comma
+tags_source['{{{ENROLLMENT_NISD}}}'] <- levies_2024[`TAXING UNIT NAME`=="NORTHSIDE ISD (BEXAR)"]$`FALL SURVEY ENROLLMENT` %>% comma
+tags_source['{{{ENROLLMENT_PERCENTILE_CISD_COMP}}}'] <- ordinal(100*round(ecdf_enrollment(finance_summary[YEAR==2024 & `DISTRICT NAME`=="COMFORT ISD"]$`FALL SURVEY ENROLLMENT`), 2))
+tags_source['{{{ENROLLMENT_PERCENTILE_BISD_COMP}}}'] <- ordinal(100*round(ecdf_enrollment(finance_summary[YEAR==2024 & `DISTRICT NAME`=="BOERNE ISD"]$`FALL SURVEY ENROLLMENT`), 2))
+tags_source['{{{ENROLLMENT_PERCENTILE_NISD_COMP}}}'] <- ordinal(100*round(ecdf_enrollment(finance_summary[YEAR==2024 & `DISTRICT NAME`=="NORTHSIDE ISD (BEXAR)"]$`FALL SURVEY ENROLLMENT`), 2))
+
+
+ecdf_ecodis <- ecdf(100-ecodis_2024[Not.Economically.Disadvantaged.Percent!=-999]$Not.Economically.Disadvantaged.Percent)
+tags_source['{{{ECODIS_PERCENTILE_BISD_COMP}}}'] <- ordinal(100*round(ecdf_ecodis(100-ecodis_2024[District.Name=="BOERNE ISD"]$Not.Economically.Disadvantaged.Percent), 2))
+tags_source['{{{ECODIS_PERCENTILE_EISD_COMP}}}'] <- ordinal(100*round(ecdf_ecodis(100-ecodis_2024[District.Name=="EDGEWOOD ISD" & County.Name=="BEXAR COUNTY"]$Not.Economically.Disadvantaged.Percent), 2))
+tags_source['{{{ECODIS_PERCENTILE_CISD_COMP}}}'] <- ordinal(100*round(ecdf_ecodis(100-ecodis_2024[District.Name=="COMFORT ISD"]$Not.Economically.Disadvantaged.Percent), 2))
+tags_source['{{{ECODIS_PERCENT_EISD}}}'] <- 100-ecodis_2024[District.Name=="EDGEWOOD ISD" & County.Name=="BEXAR COUNTY"]$Not.Economically.Disadvantaged.Percent %>% round
+tags_source['{{{ECODIS_PERCENT_BISD}}}'] <- 100-ecodis_2024[District.Name=="BOERNE ISD"]$Not.Economically.Disadvantaged.Percent %>% round
+tags_source['{{{ECODIS_PERCENT_CISD}}}'] <- 100-ecodis_2024[District.Name=="COMFORT ISD"]$Not.Economically.Disadvantaged.Percent %>% round
+
+
+# Is Boerne ISD one of the lowest funded school districts per-student in Texas?
+ecodis_comp_districts <- ecodis_2024[Not.Economically.Disadvantaged.Percent > 70 &
+                                     Not.Economically.Disadvantaged.Percent < 90]$District.Name
+ecdf_funding_per_student <- ecdf(finance_summary[YEAR==2024]$`GEN FUNDS-TOTAL OPERATING REVENUE`/finance_summary[YEAR==2024]$`FALL SURVEY ENROLLMENT`)
+ecdf_funding_per_student_pop <- ecdf(finance_summary[YEAR==2024 & 
+                                                     `FALL SURVEY ENROLLMENT` > comp_size['bottom'] &
+                                                     `FALL SURVEY ENROLLMENT` < comp_size['top'],
+                                                     `GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`])
+ecdf_funding_per_student_ecodis <- ecdf(finance_summary[YEAR==2024 & 
+                                                        `DISTRICT NAME` %in% ecodis_comp_districts,
+                                                        `GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`])
+ecdf_funding_per_student_ecodis_and_pop <- ecdf(finance_summary[YEAR==2024 & 
+                                                                `FALL SURVEY ENROLLMENT` > comp_size['bottom'] &
+                                                                `FALL SURVEY ENROLLMENT` < comp_size['top'] &
+                                                                `DISTRICT NAME` %in% ecodis_comp_districts,
+                                                                `GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`])
+tags_source['{{{FUNDING_PERCENTILE_BISD_COMP}}}'] <- ordinal(round(100*ecdf_funding_per_student(finance_summary[YEAR==2024 & `DISTRICT NAME` == "BOERNE ISD",`GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`]),2))
+tags_source['{{{FUNDING_PERCENTILE_BISD_COMP_POP}}}'] <- ordinal(round(100*ecdf_funding_per_student_pop(finance_summary[YEAR==2024 & `DISTRICT NAME` == "BOERNE ISD",`GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`]),2))
+tags_source['{{{FUNDING_PERCENTILE_BISD_COMP_ECODIS}}}'] <- ordinal(round(100*ecdf_funding_per_student_ecodis(finance_summary[YEAR==2024 & `DISTRICT NAME` == "BOERNE ISD",`GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`]),2))
+tags_source['{{{FUNDING_PERCENTILE_BISD_COMP_ECODIS_AND_POP}}}'] <- ordinal(round(100*ecdf_funding_per_student_ecodis_and_pop(finance_summary[YEAR==2024 & `DISTRICT NAME` == "BOERNE ISD",`GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`]),2))
+
+#Compared to all districts in the state, how do districts neighboring Boerne ISD rank in per-student funding?
+tags_source['{{{FUNDING_PERCENTILE_BANDERA_COMP}}}'] <- ordinal(round(100*ecdf_funding_per_student(finance_summary[YEAR==2024 & `DISTRICT NAME` == "BANDERA ISD",`GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`]),2))   
+tags_source['{{{FUNDING_PERCENTILE_BLANCO_COMP}}}'] <- ordinal(round(100*ecdf_funding_per_student(finance_summary[YEAR==2024 & `DISTRICT NAME` == "BLANCO ISD",`GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`]),2))   
+tags_source['{{{FUNDING_PERCENTILE_COMAL_COMP}}}'] <- ordinal(round(100*ecdf_funding_per_student(finance_summary[YEAR==2024 & `DISTRICT NAME` == "COMAL ISD",`GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`]),2))   
+tags_source['{{{FUNDING_PERCENTILE_COMFORT_COMP}}}'] <- ordinal(round(100*ecdf_funding_per_student(finance_summary[YEAR==2024 & `DISTRICT NAME` == "COMFORT ISD",`GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`]),2))   
+tags_source['{{{FUNDING_PERCENTILE_NORTHEAST_COMP}}}'] <- ordinal(round(100*ecdf_funding_per_student(finance_summary[YEAR==2024 & `DISTRICT NAME` == "NORTH EAST ISD",`GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`]),2))   
+tags_source['{{{FUNDING_PERCENTILE_NORTHSIDE_COMP}}}'] <- ordinal(round(100*ecdf_funding_per_student(finance_summary[YEAR==2024 & `DISTRICT NAME` == "NORTHSIDE ISD (BEXAR)",`GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`]),2))   
+
+#If Boerne ISD had the estimated tax revenue from the proposed VATRE in 2024, how would its relative per-student funding have changed?
+tags_source['{{{FUNDING_PERCENTILE_BISD_COMP_COUNTERFACTUAL_2024}}}'] <- ordinal(round(100*ecdf_funding_per_student(finance_summary[YEAR==2024 & `DISTRICT NAME` == "BOERNE ISD",(`GEN FUNDS-TOTAL OPERATING REVENUE`+4800000)/`FALL SURVEY ENROLLMENT`]),2))
+
+# What would Boerne ISD’s tax rate have to be to obtain per student funding comparable to a smaller neighboring district like Comfort ISD?
+copper_penny_yield_2024 <- 49.28
+cisd_rev_per_student <- finance_summary[YEAR==2024 & `DISTRICT NAME`=="COMFORT ISD",`GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`]
+bisd_rev_per_student <- finance_summary[YEAR==2024 & `DISTRICT NAME`=="BOERNE ISD",`GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`]
+bisd_2024_enrollment <- finance_summary[YEAR==2024 & `DISTRICT NAME`=="BOERNE ISD"]$`FALL SURVEY ENROLLMENT`
+bisd_additional_required_revenue <- (cisd_rev_per_student - bisd_rev_per_student)*bisd_2024_enrollment
+bisd_additional_tax_rate <- bisd_additional_required_revenue/(copper_penny_yield_2024 * bisd_2024_enrollment)
+
+tags_source['{{{GF_REVENUE_PER_STUDENT_BISD}}}'] <- dollar(bisd_rev_per_student)
+tags_source['{{{GF_REVENUE_PER_STUDENT_CISD}}}'] <- dollar(cisd_rev_per_student)
+tags_source['{{{BISD_TAX_INCREASE_CISD}}}'] <- dollar(bisd_additional_tax_rate/100)
+tags_source['{{{BISD_2024_TAX_RATE}}}'] <- levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`TOTAL TAX RATE`
+tags_source['{{{BISD_2024_CISD_COMP_TAX_RATE}}}'] <- dollar(levies_2024[`TAXING UNIT NAME`=="BOERNE ISD"]$`TOTAL TAX RATE` + bisd_additional_tax_rate/100)
+
+# What does Boerne ISD spend money on?
+tags_source['{{{TOTAL_PAYROLL_BISD}}}'] <- dollar(finance_summary[YEAR==2024 & `DISTRICT NAME`=="BOERNE ISD"]$`GEN FUNDS-TOTAL PAYROLL EXPENDITURES`)
+tags_source['{{{GEN_FUNDS_OP_REVENUE_BISD}}}'] <- dollar(finance_summary[YEAR==2024 & `DISTRICT NAME`=="BOERNE ISD"]$`GEN FUNDS-TOTAL OPERATING REVENUE`)
+tags_source['{{{PAYROLL_PERCENT_BISD}}}'] <- round(finance_summary[YEAR==2024 & `DISTRICT NAME`=="BOERNE ISD", `GEN FUNDS-TOTAL PAYROLL EXPENDITURES`/`GEN FUNDS-TOTAL OPERATING REVENUE`]*100)
+
+# How do Boerne ISD teacher salaries compare to neighboring districts?
+tags_source['{{{SALARY_TEACHER_BOERNEISD}}}'] <- dollar(staff_salaries[`District Name`=="BOERNE ISD"]$Teachers)
+tags_source['{{{SALARY_TEACHER_BOERNEISD_DELTA}}}'] <- dollar(round(mean(staff_salaries$Teachers) - staff_salaries[`District Name`=="BOERNE ISD"]$Teachers)) 
+tmp <- gsub(" ISD","",staff_salaries[Teachers < staff_salaries[`District Name`=="BOERNE ISD"]$Teachers]$`District Name`) %>% str_to_title
+tags_source['{{{SALARY_TEACHER_HIGHER}}}'] <- knitr::combine_words(tmp)
+tmp <- gsub(" ISD","",staff_salaries[Teachers > staff_salaries[`District Name`=="BOERNE ISD"]$Teachers]$`District Name`) %>% str_to_title
+tags_source['{{{SALARY_TEACHER_LOWER}}}'] <- knitr::combine_words(tmp)
+
+# How do Boerne ISD administrator salaries compare to neighboring districts?
+tags_source['{{{SALARY_ADMINISTRATOR_BOERNEISD}}}'] <- dollar(staff_salaries[`District Name`=="BOERNE ISD"]$`All Administrators`)
+tags_source['{{{SALARY_ADMINISTRATOR_BOERNEISD_DELTA}}}'] <- dollar(round(mean(staff_salaries$`All Administrators`) - staff_salaries[`District Name`=="BOERNE ISD"]$`All Administrators`)) 
+tmp <- gsub(" ISD","",staff_salaries[`All Administrators` < staff_salaries[`District Name`=="BOERNE ISD"]$`All Administrators`]$`District Name`) %>% str_to_title
+tags_source['{{{SALARY_ADMINISTRATOR_HIGHER}}}'] <- knitr::combine_words(tmp)
+tmp <- gsub(" ISD","",staff_salaries[`All Administrators` > staff_salaries[`District Name`=="BOERNE ISD"]$`All Administrators`]$`District Name`) %>% str_to_title
+tags_source['{{{SALARY_ADMINISTRATOR_LOWER}}}'] <- knitr::combine_words(tmp)
+
+tags_source['{{{SALARY_PRINCIPAL_BOERNEISD}}}'] <- dollar(staff_salaries[`District Name`=="BOERNE ISD"]$Principals)
+tags_source['{{{SALARY_PRINCIPAL_BOERNEISD_DELTA}}}'] <- dollar(-1*round(mean(staff_salaries$Principals) - staff_salaries[`District Name`=="BOERNE ISD"]$Principals)) 
+tmp <- gsub(" ISD","",staff_salaries[Principals < staff_salaries[`District Name`=="BOERNE ISD"]$Principals]$`District Name`) %>% str_to_title
+tags_source['{{{SALARY_PRINCIPAL_HIGHER}}}'] <- knitr::combine_words(tmp)
+tmp <- gsub(" ISD","",staff_salaries[Principals > staff_salaries[`District Name`=="BOERNE ISD"]$Principals]$`District Name`) %>% str_to_title
+tags_source['{{{SALARY_PRINCIPAL_LOWER}}}'] <- knitr::combine_words(tmp)
+
+tags_source['{{{SALARY_ASSISTANT_PRINCIPAL_BOERNEISD}}}'] <- dollar(staff_salaries[`District Name`=="BOERNE ISD"]$`Assistant Principals`)
+tags_source['{{{SALARY_ASSISTANT_PRINCIPAL_BOERNEISD_DELTA}}}'] <- dollar(-1*round(mean(staff_salaries$`Assistant Principals`) - staff_salaries[`District Name`=="BOERNE ISD"]$`Assistant Principals`)) 
+tmp <- gsub(" ISD","",staff_salaries[`Assistant Principals` < staff_salaries[`District Name`=="BOERNE ISD"]$`Assistant Principals`]$`District Name`) %>% str_to_title
+tags_source['{{{SALARY_ASSISTANT_PRINCIPAL_HIGHER}}}'] <- knitr::combine_words(tmp)
+tmp <- gsub(" ISD","",staff_salaries[`Assistant Principals` > staff_salaries[`District Name`=="BOERNE ISD"]$`Assistant Principals`]$`District Name`) %>% str_to_title
+tags_source['{{{SALARY_ASSISTANT_PRINCIPAL_LOWER}}}'] <- knitr::combine_words(tmp)
+
+tags_source['{{{SALARY_SUPERINTENDENT_BOERNEISD}}}'] <- dollar(staff_salaries[`District Name`=="BOERNE ISD"]$Superintendent)
+tags_source['{{{SALARY_SUPERINTENDENT_BOERNEISD_DELTA}}}'] <- dollar(round(mean(staff_salaries$Superintendent) - staff_salaries[`District Name`=="BOERNE ISD"]$Superintendent)) 
+tmp <- gsub(" ISD","",staff_salaries[Superintendent < staff_salaries[`District Name`=="BOERNE ISD"]$Superintendent]$`District Name`) %>% str_to_title
+tags_source['{{{SALARY_SUPERINTENDENT_HIGHER}}}'] <- knitr::combine_words(tmp)
+tmp <- gsub(" ISD","",staff_salaries[Superintendent > staff_salaries[`District Name`=="BOERNE ISD"]$Superintendent]$`District Name`) %>% str_to_title
+tags_source['{{{SALARY_SUPERINTENDENT_LOWER}}}'] <- knitr::combine_words(tmp)
+
+
+# How has Boerne ISD's teacher turnover rate changed in the last 10 years?
+
+tags_source['{{{BISD_TURNOVER_2016_2023}}}'] <- round(turnover_teacher[`DISTRICT NUMBER`=="130901" &
+                                                                       year %in% seq(2016,2023),
+                                                                       mean(TURNOVER)],1)
+tags_source['{{{BISD_TURNOVER_2015}}}'] <- round(turnover_teacher[`DISTRICT NUMBER`=="130901" &
+                                                                       year == 2015,
+                                                                       TURNOVER],1)
+tags_source['{{{BISD_TURNOVER_2024}}}'] <- round(turnover_teacher[`DISTRICT NUMBER`=="130901" &
+                                                                       year == 2024,
+                                                                       TURNOVER],1)
+
+
+
+
+# BISD and Neighboring District's Teacher Turnover Rates 2015-2024
+
+neighbor_turnover <- turnover_teacher[`DISTRICT NUMBER`%in%neighbor_districts$CDN]
+setkey(neighbor_turnover, `DISTRICT NUMBER`)
+setkey(neighbor_districts,CDN)
+neighbor_turnover <- copy(neighbor_turnover[neighbor_districts][,.(year,`DISTRICT NAME`,TURNOVER)])
+tmp <- neighbor_turnover[,.(`DISTRICT NAME`,rank(TURNOVER)),by=year]
+tags_source['{{{TURNOVER_TEACHER_HIGHER}}}'] <- knitr::combine_words(str_to_title(gsub(" ISD","",tmp[year==2024 & V2 < tmp[year==2024 & `DISTRICT NAME`=="BOERNE ISD"]$V2]$`DISTRICT NAME`)))
+tags_source['{{{TURNOVER_TEACHER_LOWER}}}'] <- knitr::combine_words(str_to_title(gsub(" ISD","",tmp[year==2024 & V2 > tmp[year==2024 & `DISTRICT NAME`=="BOERNE ISD"]$V2]$`DISTRICT NAME`)))
+
+
+
+# finance_summary[YEAR==2024 & `DISTRICT NAME`=="LAKE TRAVIS ISD"]
+
+
+# ecodis_comp_districts[!(District.Name %in% finance_summary[YEAR==2024]$`DISTRICT NAME`)]
+
+# sort(unique(finance_summary$`DISTRICT NAME`))
+
+# n.under.9000 <- finance_summary[YEAR==2024 & `FALL SURVEY ENROLLMENT` < 9000,.N]
+# n.over.12000 <- finance_summary[YEAR==2024 & `FALL SURVEY ENROLLMENT` > 12000,.N]
+# n.total <- finance_summary[YEAR==2024,.N]
+# n.under.1000 <- finance_summary[YEAR==2024 & `FALL SURVEY ENROLLMENT` < 1000,.N]
+
+# CDN_comp_size <- finance_summary[YEAR==2024 & 
+#                                  `FALL SURVEY ENROLLMENT` > comp_size['bottom'] &
+#                                  `FALL SURVEY ENROLLMENT` < comp_size['top'] ]$`DISTRICT NUMBER`
+
+# CDN_comp_ecodis <- ecodis_2024[Not.Economically.Disadvantaged.Percent > 70 &
+#                                Not.Economically.Disadvantaged.Percent < 90 &
+#                                Charter.Status == "TRADITIONAL ISD/CSD"]$District.Number
+
+
+# ecodis_2024[District.Name=="BOERNE ISD"]
+
+# BISD_district_num %in% CDN_comp_ecodis
+
+# comp_districts <- finance_summary[YEAR==2024 & 
+#                                   `DISTRICT NUMBER` %in% intersect(CDN_comp_size,CDN_comp_ecodis),
+#                                   .(`DISTRICT NUMBER`,
+#                                     `DISTRICT NAME`,
+#                                     `FALL SURVEY ENROLLMENT`,
+#                                     `ALL FUNDS-TOTAL OPERATING REVENUE`,
+#                                     `GEN FUNDS-TOTAL OPERATING REVENUE`,
+#                                     `GEN FUNDS-TOTAL DISBURSEMENTS`,
+#                                     `ALL FUNDS-TOTAL DISBURSEMENTS`)]
+# comp_districts[,`GF PER STUDENT`:=`GEN FUNDS-TOTAL OPERATING REVENUE`/`FALL SURVEY ENROLLMENT`]
+# comp_districts[order(`GF PER STUDENT`)][1:10]
+
+
+# ecdf_funding <- ecdf(comp_districts$`GF PER STUDENT`)
+# ecdf_funding(comp_districts[`DISTRICT NUMBER`==BISD_district_num]$`GF PER STUDENT`)
+
+
+
+# ecodis_2024$Charter.Status
+
+
+
+# tmp <- levies_2024[`TAXING UNIT NAME` %in% unique(finance_summary[`DISTRICT NUMBER` %in% CDN_comp_ecodis]$`DISTRICT NAME`)]
+# ecdf(tmp$`LEVY PER STUDENT`)(tmp[`TAXING UNIT NAME`=="BOERNE ISD"]$`LEVY PER STUDENT`)
+
+# tmp[,quantile(`FALL SURVEY ENROLLMENT`,na.rm=TRUE)]
+
+# comp_districts <- finance_summary[YEAR==2024 & 
+#                                   `FALL SURVEY ENROLLMENT` > 8000 &
+#                                   `FALL SURVEY ENROLLMENT` < 13000 ,
+#                                   .(`DISTRICT NUMBER`,
+#                                     `DISTRICT NAME`,
+#                                     `FALL SURVEY ENROLLMENT`,
+#                                     `ALL FUNDS-TOTAL OPERATING REVENUE`,
+#                                     `GEN FUNDS-TOTAL OPERATING REVENUE`,
+#                                     `GEN FUNDS-TOTAL DISBURSEMENTS`,
+#                                     `ALL FUNDS-TOTAL DISBURSEMENTS`)]
+
+
+# a <- finance_summary[`DISTRICT NAME`=="DIVIDE ISD" & YEAR==2024]$`FALL SURVEY ENROLLMENT`
+# b <- finance_summary[`DISTRICT NAME`=="DIVIDE ISD" & YEAR==2024]$`ALL FUNDS-TOTAL OPERATING REVENUE`
+# dollar(b/a)
+# a <- finance_summary[`DISTRICT NAME`=="CENTER POINT ISD" & YEAR==2024]$`FALL SURVEY ENROLLMENT`
+# b <- finance_summary[`DISTRICT NAME`=="CENTER POINT ISD" & YEAR==2024]$`ALL FUNDS-TOTAL OPERATING REVENUE`
+# dollar(b/a)
+# a <- finance_summary[`DISTRICT NAME`=="COMFORT ISD" & YEAR==2024]$`FALL SURVEY ENROLLMENT`
+# b <- finance_summary[`DISTRICT NAME`=="COMFORT ISD" & YEAR==2024]$`ALL FUNDS-TOTAL OPERATING REVENUE`
+# dollar(b/a)
+# a <- finance_summary[`DISTRICT NAME`=="BOERNE ISD" & YEAR==2024]$`FALL SURVEY ENROLLMENT`
+# b <- finance_summary[`DISTRICT NAME`=="BOERNE ISD" & YEAR==2024]$`ALL FUNDS-TOTAL OPERATING REVENUE`
+# dollar(b/a)
+
+
+
+
+# finance_summary[`DISTRICT NAME`=="WESTLAKE ACADEMY CHARTER SCHOOL"]
+
+# names(ecodis_2024)
+# trimws(ecodis_2024$District.Name)
+# ecdf_ecodis <- ecdf(ecodis_2024$Not.Economically.Disadvantaged.Percent)
+# ecodis_2024[District.Name=="BOERNE ISD"]$Not.Economically.Disadvantaged.Percent
+
+###
+### Load Questions
+###
+
+# Load qs
+BISD_VATRE_questions <- as_list(read_xml(file.path(path.data,"FAQ_BoerneISD_VATRE.xml")))[[1]]
+BISD_VATRE_questions <- lapply(BISD_VATRE_questions, function(x) unlist(x))
+names(BISD_VATRE_questions) <- paste0("Q",1:length(BISD_VATRE_questions))
+
+
+###
+### Substitute Tags
+###
+
+for (i in 1:length(BISD_VATRE_questions)) {
+
+	tags_dest <- unlist(str_extract_all(BISD_VATRE_questions[[i]]['answer'], 
+									  "(\\{\\{\\{\\w+\\}\\}\\})", 
+									  simplify=FALSE))
+	if (length(tags_dest)>0) {
+		for (t in tags_dest) {
+			BISD_VATRE_questions[[i]]['answer'] <- gsub(t,
+	  												    tags_source[t],
+												        BISD_VATRE_questions[[i]]['answer'],
+												        fixed=TRUE)
+		}	
+	}
+
+    tags_dest <- unlist(str_extract_all(BISD_VATRE_questions[[i]]['details'], 
+                                      "(\\{\\{\\{\\w+\\}\\}\\})", 
+                                      simplify=FALSE))
+    if (length(tags_dest)>0) {
+        for (t in tags_dest) {
+            BISD_VATRE_questions[[i]]['details'] <- gsub(t,
+                                                        tags_source[t],
+                                                        BISD_VATRE_questions[[i]]['details'],
+                                                        fixed=TRUE)
+        }   
+    }
+
+
+}
+
+
+display_plot <- function(p) {
+	paste(
+		'<div style="padding: 30px;">',
+		htmltools::tagList(p),
+		'</div>'
+	)
+}
+
+display_question <- function(q,id,tabwidth=800,rows=10) {
+	out <- paste(
+        # paste0('<span id="',id,'_start" style="scroll-margin-top: 100px;"></span>'),
+		paste0('<h3 id="',id,'_start" style="scroll-margin-top: 100px;">',id,': ',q['title'],'</h3>'),
+		'<div class="answer_wrapper">',
+		trimws(gsub('\\s+', ' ', q['answer'])),
+		ifelse(is.null(plots[[id]]), '', display_plot(plots[[id]])),
+		sep = "\n"
+	)
+	if(!(is.na(q['details']))) {
+		out <- paste(out,
+			'<p style="margin-top: 5px;">',
+			paste0('<a class="collapsed" data-toggle="collapse" href="#',id,'">'),
+			'<span class="if-collapsed">Show Details</span>',
+			'<span class="if-not-collapsed">Hide Details</span>',
+			'</a>',
+			'</p>',
+			paste0('<div class="collapse" id="',id,'">'),
+			'<div class="card card-body answer-details">',
+	    	trimws(gsub('\\s+', ' ', q['details'])),
+			ifelse(is.null(tables[[id]]),'',print_table_html(tables[[id]], paste0("table_", id, sep=""), width=tabwidth, pagesize=rows)),
+			'</div>',
+			'</div>',
+			sep = "\n"			
+		)
+	}
+
+	out <- paste(out, '</div><br/>', sep = "\n")
+
+	cat(out)
+}
+
+
+
+
+
+```
+
+
+```{r plots}
+
+```
+
+
+```{r, results='asis'}
+
+topic <- ''
+i <- 0
+
+for(q in BISD_VATRE_questions) {
+    i <- i + 1
+    if(q['topic'] != topic) {
+        topic <- q['topic']
+        cat('<h2>')
+        cat(topic)
+        cat('</h2>')
+    }
+    cat('<a href="#',paste0("Q",i),'_start"><h4>',paste0("Q",i),': ',q['title'],'</h4></a>',sep="")
+}
+cat('<hr/>')
+
+
+topic <- ''
+i <- 0
+
+for(q in BISD_VATRE_questions) {
+	i <- i + 1
+  	if(q['topic'] != topic) {
+  		topic <- q['topic']
+  		cat('<h1>')
+  		cat(topic)
+  		cat('</h1><hr/>')
+  	}
+  	display_question(q, paste0("Q",i))
+}
+
+
+
+
+# for(q in BISD_VATRE_questions) {
+# 	i <- i + 1
+# 	if(is.null(figures[[i]]) & is.null(tables[[i]])) {
+# 		display_question(q, paste0("Q",i))
+# 	} else if (!is.null(figures[[i]]) & is.null(tables[[i]])) {
+# 		display_question(q, paste0("Q",i),p=figures[[i]])
+# 	} else if (is.null(figures[[i]]) & !is.null(tables[[i]])) {
+# 		display_question(q, paste0("Q",i),tab=tables[[i]],rows=nrow(tables[[i]]))
+# 	} else {
+# 		display_question(q, paste0("Q",i),p=figures[[i]],tab=tables[[i]],rows=nrow(tables[[i]]))
+# 	}
+# }
+
+```
+
+
+</div>

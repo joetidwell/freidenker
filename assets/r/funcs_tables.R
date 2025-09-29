@@ -1,3 +1,8 @@
+scroll_right_js <- "function(el, x) {
+  var container = el.querySelector('.rt-table');
+  container.scrollLeft = container.scrollWidth;
+}"
+
 print_table <- function(data, element_id, width=900, pagesize=5) {
 	htmltools::browsable(
 	  tagList(
@@ -18,14 +23,18 @@ print_table <- function(data, element_id, width=900, pagesize=5) {
 			  bordered 				= TRUE,
 			  highlight 			= TRUE,
 				width 					= width
-				),
+			),
 
 	    tags$button(
 	      tagList(fontawesome::fa("download"), "Download as CSV"),
 	      onclick = sprintf("Reactable.downloadDataCSV('%s', '%s.csv')", 
 												  element_id,
 												  element_id)
-	    )
+	    ),
+			
+			tags$br(),
+      tags$hr(),
+			tags$br()
 	  )
 	)
 }
@@ -61,3 +70,5 @@ print_table_html <- function(data, element_id, width=900, pagesize=5) {
 
 	htmlPreserve(tags)
 }
+
+

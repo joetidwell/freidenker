@@ -15,51 +15,60 @@ path.data <- file.path('data')
 
 #### Description
 
-- Summary
-	- A `.csv` formatted file, provided by the Texas Education Agency (TEA), that provides high-level contact information and general characteristics (e.g. district name, enrollment, county, district type, etc.) for all Texas public school districts. Current as of 2023 school year.
-- Source
-	- “School Data.” Texas Education Agency, Texas Education Agency, 29 Aug. 2024, [tea.texas.gov/reports-and-data/school-data](https://tea.texas.gov/reports-and-data/school-data). 
+-   Summary
+    -   A `.csv` formatted file, provided by the Texas Education Agency (TEA), that provides high-level contact information and general characteristics (e.g. district name, enrollment, county, district type, etc.) for all Texas public school districts. Current as of 2025 school year.
+-   Source
+    -   “AskTED.” Texas Education Agency, [tealprod.tea.state.tx.us](https://tealprod.tea.state.tx.us/tea.askted.web/Forms/Home.aspx). Accessed 14 Aug. 2025.
+    
+    
 
 ```{r directory, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, eval=TRUE}
 # Read original source file
-directory <- read.csv(file.path(path.data,'district_directory.csv')) %>%
+directory <- read.csv(file.path(path.data,'district_directory_2025.csv')) %>%
 	data.table
 
 # Display interactive table
-print_table(directory, 'TEA_district_directory_2023')
+print_table(directory, 'TEA_district_directory_2025')
+
 ```
 
 ### Texas School District Average and Weighted Daily Attendance
 
 #### Description
 
-- Summary
-	- A `.xlsx` formatted file, provided by the Texas Education Agency (TEA), that provides the annual average daily attendance (ADA) and weighted average daily attendance (WADA) for all Texas public school districts for academic years 2006-2023.
-		- **ADA**: "[T]he number of students in average daily attendance, or the sum of attendance for each day of the minimum number of days of instruction as described under the TEC, §25.081(a), divided by the minimum number of days of instruction."^[Average Daily Attendance (ADA) and Weighted Ada (WADA), [tea.texas.gov/finance-and-grants/state-funding/foundation-school-program/fsp-manuals/ada-vs-wada-one-pager-2017.pdf](https://tea.texas.gov/finance-and-grants/state-funding/foundation-school-program/fsp-manuals/ada-vs-wada-one-pager-2017.pdf). Accessed 31 Aug. 2024.]
-		- **WADA**: "[T]he weighted average daily attendance figure used in several state funding formulas to calculate the amount of state and local funds a district is entitled to. ...A district's WADA is calculated by subtracting a district’s Transportation Allotment, High School Allotment, New Instructional Facilities Allotment (NIFA) and 50% of the CEI adjustment from the district's Tier I entitlement. The resulting amount is then divided by the district's basic allotment amount to arrive at a district's WADA."^[Average Daily Attendance (ADA) and Weighted Ada (WADA), [tea.texas.gov/finance-and-grants/state-funding/foundation-school-program/fsp-manuals/ada-vs-wada-one-pager-2017.pdf](https://tea.texas.gov/finance-and-grants/state-funding/foundation-school-program/fsp-manuals/ada-vs-wada-one-pager-2017.pdf). Accessed 31 Aug. 2024.]
-- Source
-	- “State Funding Reports and Data.” Texas Education Agency, Texas Education Agency, 1 Aug. 2024, [tea.texas.gov/finance-and-grants/state-funding/state-funding-reports-and-data](https://tea.texas.gov/sites/default/files/ada-and-wada.xlsx). 
-- Data
+-   Summary
+    -   A `.xlsx` formatted file, provided by the Texas Education Agency (TEA), that provides the annual average daily attendance (ADA) and weighted average daily attendance (WADA) for all Texas public school districts for academic years 2006-2024.
+        -   **ADA**: "[T]he number of students in average daily attendance, or the sum of attendance for each day of the minimum number of days of instruction as described under the TEC, §25.081(a), divided by the minimum number of days of instruction."[^1]
+        -   **WADA**: "[T]he weighted average daily attendance figure used in several state funding formulas to calculate the amount of state and local funds a district is entitled to. ...A district's WADA is calculated by subtracting a district’s Transportation Allotment, High School Allotment, New Instructional Facilities Allotment (NIFA) and 50% of the CEI adjustment from the district's Tier I entitlement. The resulting amount is then divided by the district's basic allotment amount to arrive at a district's WADA."[^2]
+-   Source
+    -   “State Funding Reports and Data.” Texas Education Agency, [tea.texas.gov/finance-and-grants/state-funding/state-funding-reports-and-data](https://tea.texas.gov/finance-and-grants/state-funding/state-funding-reports-and-data/region-ada-report-2005-2024.xlsx). Accessed 14 Aug. 2025.
+-   Data
+
+[^1]: Average Daily Attendance (ADA) and Weighted Ada (WADA), [tea.texas.gov/finance-and-grants/state-funding/state-funding-manuals/ada-and-wada-one-pager.pdf](https://tea.texas.gov/finance-and-grants/state-funding/state-funding-manuals/ada-and-wada-one-pager.pdf). Accessed 14 Aug. 2025.
+
+[^2]: Average Daily Attendance (ADA) and Weighted Ada (WADA), [tea.texas.gov/finance-and-grants/state-funding/state-funding-manuals/ada-and-wada-one-pager.pdf](https://tea.texas.gov/finance-and-grants/state-funding/state-funding-manuals/ada-and-wada-one-pager.pdf). Accessed 14 Aug. 2025.
 
 ```{r ada_wada, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, eval=TRUE}
 # Read original source file
-ada_wada <- read_excel(file.path(path.data,'ada-and-wada.xlsx')) %>% data.table
+ada_wada <- read_excel(file.path(path.data,'region-ada-report-2005-2024.xlsx')) %>% data.table
 
 # Remove \n and \r characters from field names
 names(ada_wada) <- gsub("\\r\\n", " ", names(ada_wada))
 
 # Display interactive table
-print_table(ada_wada, 'ADA_and_WADA_2006_to_2023')
+print_table(ada_wada, 'ADA_and_WADA_2006_to_2024')
 ```
 
 ### Historical Texas School District Tax Rates
 
-- Summary
-	- A `.xlsx` formatted file, provided by the Texas Education Agency (TEA), that provides the annual Maintenance and Operations (M&O) and Interest and Sinking (I&S) tax rates for all Texas public school districts for academic years 2006-2023.
-		- **M&O / I&S Taxes**: "A district's property tax rate consists of a maintenance and operations (M&O) tax rate and, if applicable, an interest and sinking (I&S) tax rate. The M&O tax rate provides funds for maintenance and operations. The I&S tax rate provides funds for payments on the debt that finances a district's facilities. The calculation of state funding for school districts is tied to tax effort; thus, tax rates provide an essential component in the state's school finance formulas."^[“School District Property Values and Tax Rates.” Texas Education Agency, Texas Education Agency, 9 Aug. 2024, [tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates](https://tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates#:~:text=A%20district's%20property%20tax%20rate,that%20finances%20a%20district's%20facilities).]
-- Source
-	- “School District Property Values and Tax Rates.” Texas Education Agency, Texas Education Agency, 9 Aug. 2024, [tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates](https://tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates). 
-- Data
+-   Summary
+    -   A `.xlsx` formatted file, provided by the Texas Education Agency (TEA), that provides the annual Maintenance and Operations (M&O) and Interest and Sinking (I&S) tax rates for all Texas public school districts for academic years 2006-2023.
+        -   **M&O / I&S Taxes**: "A district's property tax rate consists of a maintenance and operations (M&O) tax rate and, if applicable, an interest and sinking (I&S) tax rate. The M&O tax rate provides funds for maintenance and operations. The I&S tax rate provides funds for payments on the debt that finances a district's facilities. The calculation of state funding for school districts is tied to tax effort; thus, tax rates provide an essential component in the state's school finance formulas."[^3]
+-   Source
+    -   “School District Property Values and Tax Rates.” Texas Education Agency, Texas Education Agency, [tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates](https://tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates). Accessed 9 Aug. 2024.
+-   Data
+
+[^3]: “School District Property Values and Tax Rates.” Texas Education Agency, Texas Education Agency, [tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates](https://tea.texas.gov/finance-and-grants/state-funding/additional-finance-resources/school-district-property-values-and-tax-rates#:~:text=A%20district's%20property%20tax%20rate,that%20finances%20a%20district's%20facilities). Accessed 9 Aug. 2024.
 
 ```{r tax, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, eval=TRUE}
 # Read original source file
@@ -73,20 +82,24 @@ print_table(tax_rates, 'ISD_tax_rates_2006_to_2023')
 
 ### Historical Texas School District Tax Levies
 
-- Summary
-	- A series of `.xlsx` formatted files, provided by the Texas Comptroller, that provides tax rates, taxable values, and calculated levies for 2017-2023. _Data for additional years prior to 2017 would be helpful to conduct better analysis_.
-- Sources
-	- “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2023-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2023-school-district-rates-levies.xlsx). 1 Sept. 2024. 
-	- “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2022-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2022-school-district-rates-levies.xlsx). 1 Sept. 2024. 
-	- “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2021-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2021-school-district-rates-levies.xlsx). 1 Sept. 2024. 
-	- “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2020-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2020-school-district-rates-levies.xlsx). 1 Sept. 2024. 
-	- “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2019-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2019-school-district-rates-levies.xlsx). 1 Sept. 2024. 
-	- “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2018-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2018-school-district-rates-levies.xlsx). 1 Sept. 2024. 
-	- “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2017-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2017-school-district-rates-levies.xlsx). 1 Sept. 2024. 
-- Data
+-   Summary
+    -   A series of `.xlsx` formatted files, provided by the Texas Comptroller, that provides tax rates, taxable values, and calculated levies for 2017-2024. *Data for additional years prior to 2017 would be helpful to conduct better analysis*.
+-   Sources
+    -   “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2024-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2024-school-district-rates-levies.xlsx). Accessed 14 Aug. 2025.
+    -   “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2023-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2023-school-district-rates-levies.xlsx). Accessed 1 Sept. 2024.
+    -   “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2022-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2022-school-district-rates-levies.xlsx). Accessed 1 Sept. 2024.
+    -   “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2021-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2021-school-district-rates-levies.xlsx). Accessed 1 Sept. 2024.
+    -   “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2020-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2020-school-district-rates-levies.xlsx). Accessed 1 Sept. 2024.
+    -   “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2019-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2019-school-district-rates-levies.xlsx). Accessed 1 Sept. 2024.
+    -   “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2018-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2018-school-district-rates-levies.xlsx). Accessed 1 Sept. 2024.
+    -   “Tax Rates and Leviers.” Texas Comptroller, [comptroller.texas.gov/taxes/property-tax/docs/2017-school-district-rates-levies.xlsx](https://comptroller.texas.gov/taxes/property-tax/docs/2017-school-district-rates-levies.xlsx). Accessed 1 Sept. 2024.
+-   Data
 
 ```{r levies, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, eval=TRUE}
 # Read original source files
+levies_2024 <- read_excel(file.path(path.data,
+					  												'2024-school-district-rates-levies.xlsx')) %>%
+	data.table
 levies_2023 <- read_excel(file.path(path.data,
 					  												'2023-school-district-rates-levies.xlsx')) %>%
 	data.table
@@ -110,48 +123,64 @@ levies_2017 <- read_excel(file.path(path.data,
 	data.table
 
 # Display interactive tables
+br()
+h4("2024 School District Tax Levies")
+print_table(levies_2024, 'ISD_tax_levies_2024')
+h4("2023 School District Tax Levies")
 print_table(levies_2023, 'ISD_tax_levies_2023')
+h4("2022 School District Tax Levies")
 print_table(levies_2022, 'ISD_tax_levies_2022')
+h4("2021 School District Tax Levies")
 print_table(levies_2021, 'ISD_tax_levies_2021')
+h4("2020 School District Tax Levies")
 print_table(levies_2020, 'ISD_tax_levies_2020')
+h4("2019 School District Tax Levies")
 print_table(levies_2019, 'ISD_tax_levies_2019')
+h4("2018 School District Tax Levies")
 print_table(levies_2018, 'ISD_tax_levies_2018')
+h4("2017 School District Tax Levies")
 print_table(levies_2017, 'ISD_tax_levies_2017')
 
 
 ```
 
-
 ### Historical Texas School District Financial Data
 
-- Summary
-	- A `.xlsx` formatted file, provided by the Texas Education Agency (TEA), that provides summarized financial data from the Public Education Information Management System (PEIMS) for all Texas public schools for academic years 2007-2023.
-		- **PEIMS**: "The Public Education Information Management System (PEIMS) encompasses all data requested and received by TEA about public education, including student demographic and academic performance, personnel, financial, and organizational information."^[“Public Education Information Management System.” Texas Education Agency, Texas Education Agency, 18 Aug. 2019, [tea.texas.gov/reports-and-data/data-submission/peims](https://tea.texas.gov/reports-and-data/data-submission/peims). ]
-- Source
-	- “PEIMS Financial Data Downloads.” PEIMS Financial Data Downloads | Texas Education Agency, Texas Education Agency, 6 May 2024, [tea.texas.gov/finance-and-grants/state-funding/state-funding-reports-and-data/peims-financial-data-downloads](https://tea.texas.gov/finance-and-grants/state-funding/state-funding-reports-and-data/peims-financial-data-downloads).
-- Data
+-   Summary
+    -   A `.xlsx` formatted file, provided by the Texas Education Agency (TEA), that provides summarized financial data from the Public Education Information Management System (PEIMS) for all Texas public schools for academic years 2008-2024.
+        -   **PEIMS**: "The Public Education Information Management System (PEIMS) encompasses all data requested and received by TEA about public education, including student demographic and academic performance, personnel, financial, and organizational information."[^4]
+-   Source
+    -   “PEIMS Financial Data Downloads.” PEIMS Financial Data Downloads | Texas Education Agency, [tea.texas.gov/finance-and-grants/state-funding/state-funding-reports-and-data/peims-financial-data-downloads](https://tea.texas.gov/finance-and-grants/state-funding/state-funding-reports-and-data/peims-financial-data-downloads). Accessed 14 Aug. 2025.
+-   Data
+
+[^4]: “Public Education Information Management System.” Texas Education Agency, Texas Education Agency, [tea.texas.gov/reports-and-data/data-submission/peims](https://tea.texas.gov/reports-and-data/data-submission/peims). Accessed 14 Aug. 2025.
 
 ```{r finance, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, eval=TRUE}
 # Read original source file
-peims_finance <- read_excel(file.path(path.data,
-																	'2007-2023-summarized-financial-data-0.xlsx')) %>%
-	data.table
+finance_summary_2008_to_2024 <- read_excel(file.path(path.data,
+                                                     '2008-2024-summarized-financial-data-03-17-2025.xlsx')) %>%
+  data.table
+finance_summary_2007_to_2023 <- read_excel(file.path(path.data,
+                                                     '2007-2023-summarized-financial-data-0.xlsx')) %>%
+  data.table
+finance_summary <- rbind(finance_summary_2007_to_2023,finance_summary_2008_to_2024[YEAR==2024])
+finance_summary[,`DISTRICT NUMBER`:=gsub("'","",`DISTRICT NUMBER`)]
 
 # Display interactive table
-print_table(peims_finance, 'ISD_financial_data_2007_to_2023')
+print_table(finance_summary, 'ISD_financial_data_2007_to_2024')
 ```
 
 ### Fast Growth School Districts
 
-- Summary
-	- A .
-		- **Fast-Growth School District**: "To be identified as a fast-growth school district, the following criteria must be met:
-			- Enrollment of at least 2,500 students during the previous school year; and
-			- Enrollment growth over the last five years of at least 10%; or
-			- A net increase of 3,500 or more students."^[Armstrong, Emily. “Become a Member.” Become a Member, [www.fastgrowthtexas.org/become-a-member](https://www.fastgrowthtexas.org/become-a-member). Accessed 31 Aug. 2024. ] 
-- Source
-	- Armstrong, Emily. “Fast Growth Districts.” Fast Growth Districts, [www.fastgrowthtexas.org/fast-growth-districts](https://www.fastgrowthtexas.org/fast-growth-districts). Accessed 30 Aug. 2024. 
-- Data
+-   Summary
+    -   **Fast-Growth School District**: "To be identified as a fast-growth school district, the following criteria must be met:
+        -   Enrollment of at least 2,500 students during the previous school year; and
+        -   Enrollment growth over the last five years of at least 10%; or
+        -   A net increase of 3,500 or more students."[^5]
+-   Source
+    -   Fast Growth School Coalition. “Membership.” Fast Growth Districts, [www.fastgrowthtexas.org/fast-growth-districts](https://www.fastgrowthtexas.org/fast-growth-districts). Accessed 14 Aug. 2025.
+-   Data
+
 
 ```{r fast_growth, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, eval=TRUE}
 # Read original source file
@@ -161,7 +190,3 @@ fast_growth <- read.csv(file.path(path.data,'fast_growth_districts.csv')) %>%
 # Display interactive table
 print_table(fast_growth, 'fast_growth')
 ```
-
-
-
-

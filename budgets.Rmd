@@ -132,9 +132,9 @@ Budget Information Quality Scores and direct sources (e.g. links to pdf download
 <div style="font-size: 1.25em;">
 
 - Budgets: [Website](https://www.co.kendall.tx.us/167/Budgets)
-- FY 2025 Budget: [PDF](https://www.co.kendall.tx.us/DocumentCenter/View/2236/Adopted-Budget-FY25?bidId=)
+- FY 2026 Proposed Budget: [PDF](https://www.kendallcountytx.gov/ArchiveCenter/ViewFile/Item/1084)
 - Annual Financial Reports: [Website](https://www.co.kendall.tx.us/Archive.aspx?AMID=38) 
-- FY 2023 Annual Financial Report: [PDF](https://www.co.kendall.tx.us/ArchiveCenter/ViewFile/Item/889)
+- FY 2023 Annual Financial Report: [PDF](https://www.co.kendall.tx.us/ArchiveCenter/ViewFile/Item/1050)
 
 </div>
 </details>
@@ -155,6 +155,7 @@ Budget Information Quality Scores and direct sources (e.g. links to pdf download
 	- *Includes revenue and expenses by fund and function*
 - **1/2** - Format
 	- *Well formatted text-searchable pdf*
+	- *An excel file is available, but contains broken external data links, so it's unusable. External data links are also a security risk.*
 
 </details>
 <details>
@@ -163,9 +164,9 @@ Budget Information Quality Scores and direct sources (e.g. links to pdf download
 <div style="font-size: 1.25em;">
 
 - Budgets: [Website](https://www.boerneisd.net/Page/9305)
-- 2024-2025 Adopted Budget: [PDF](https://www.boerneisd.net/site/handlers/filedownload.ashx?moduleinstanceid=14684&dataid=46721&FileName=Adopted%20Budget%202024%20-%202025%20v2.pdf)
+- 2025-2026 Adopted Budget: [PDF](https://resources.finalsite.net/images/v1750168487/boerneisdnet/sydkcdhqjhkb7hl4818u/AdoptedBudget2025-2026.pdf)
 - Annual Financial Reports: [Website](https://www.boerneisd.net/Page/9309)
-- FY 2023 Annual Financial Report: [PDF](https://www.boerneisd.net/site/handlers/filedownload.ashx?moduleinstanceid=14708&dataid=45410&FileName=ACFR-2023%2011-09-23%20draft.pdf)
+- FY 2024 Annual Financial Report: [PDF](https://resources.finalsite.net/images/v1737752977/boerneisdnet/a7h7a1ewo87mzlhkudak/FINAL-ACFRYE2024.pdf)
 
 </div>
 
@@ -182,7 +183,7 @@ Budget Information Quality Scores and direct sources (e.g. links to pdf download
 - **2/2** - Accessibility
 	- *Direct link to budgets returned as second result for Google search term "Comfort ISD budget"*
 - **0/2** - Transparency
-	- *Current adopted budget not available. Available budgets contain minimal detail: 3/4 of a single page long, refers to various funds by code rather than name (e.g. '199' versus 'General Fund'), no revenue detail. Missing 2022 Annual Financial Report.*
+	- *Budget contains minimal detail: 3/4 of a single page long, refers to various funds by code rather than name (e.g. '199' versus 'General Fund'), no revenue detail.*
 - **1/2** - Format
 	- *text-searchable pdf*
 	- *html table in webpage*
@@ -193,10 +194,10 @@ Budget Information Quality Scores and direct sources (e.g. links to pdf download
 
 <div style="font-size: 1.25em;">
 
-- Budgets: [Website](https://www.comfort.txed.net/33306_3)
-- 2023-2024 Adopted Budget: [PDF](https://files.smartsites.parentsquare.com/4592/2023-2024_adopted_budget.pdf)
-- Annual Financial Reports: [Website](https://www.comfort.txed.net/33305_3)
-- FY 2023 Annual Financial Report: [Website](https://www.comfort.txed.net/11395_4)
+- Budgets: [Website](https://comfortisd.net/33306_3)
+- 2025-2026 Adopted Budget: [PDF](https://files.smartsites.parentsquare.com/4592/25-26_adopted_budget.pdf)
+- Annual Financial Reports: [Website](https://comfortisd.net/33305_3)
+- FY 2024 Annual Financial Report: [Website](https://comfortisd.net/11395_4)
 
 </div>
 
@@ -223,9 +224,9 @@ Budget Information Quality Scores and direct sources (e.g. links to pdf download
 <div style="font-size: 1.25em;">
 
 - Budgets: [Website](https://www.ci.boerne.tx.us/304/City-Budget)
-- 2024-2025 Budget: [Web Application](https://city-boerne-tx-budget-book.cleargov.com/17188/introduction/transmittal-letter)
+- Proposed FY 2025-2026 Budget: [Web Application](https://city-boerne-tx-budget-book.cleargov.com/19818/introduction/transmittal-letter)
 - Annual Financial Reports: [Website](https://www.ci.boerne.tx.us/305/Comprehensive-Annual-Financial-Report) 
-- FY 2023 Annual Financial Report: [PDF](https://www.ci.boerne.tx.us/DocumentCenter/View/23880/City-of-Boerne-Texas-ACFR-YE-9-30-23)
+- FY 2024 Annual Financial Report: [PDF](https://www.ci.boerne.tx.us/DocumentCenter/View/24936/2024-Annual-Comprehensive-Financial-Report?bidId=)
 
 </div>
 </details>
@@ -239,10 +240,9 @@ Budget Information Quality Scores and direct sources (e.g. links to pdf download
 - **2/2** - Accessibility
 	- *Direct link to budgets returned as top result for Google search term "City of Fair Oaks Ranch budget"*
 - **2/2** - Transparency
-	- *Detailed information by department available through web application*
+	- *Detailed information by department available*
 - **1/2** - Format
 	- *Well formatted text-searchable pdf* 
-  - *Same well-designed web application as City of Boerne*
 
 </details>
 <details>
@@ -251,10 +251,9 @@ Budget Information Quality Scores and direct sources (e.g. links to pdf download
 <div style="font-size: 1.25em;">
 
 - Budgets: [Website](https://www.fairoaksranchtx.org/142/Budget)
-- 2024-2025 Budget: [Web Application](https://city-fair-oaks-ranch-tx-budget-book.cleargov.com/15343/introduction/title-page)
 - 2024-2025 Budget: [PDF](https://www.fairoaksranchtx.org/DocumentCenter/View/5915/Adopted-FY-2024-25-Budget?bidId=)
 - Annual Financial Reports: [Website](https://www.fairoaksranchtx.org/513/Financial-Transparency) 
-- FY 2023 Annual Financial Report: [PDF](https://fairoaksranchtx.org/DocumentCenter/View/5347/City-of-Fair-Oaks-Ranch-ACFR-YE-9-30-23?bidId=)
+- FY 2024 Annual Financial Report: [PDF](https://www.fairoaksranchtx.org/DocumentCenter/View/6223/ACFR-YE-093024?bidId=)
 
 </div>
 </details>

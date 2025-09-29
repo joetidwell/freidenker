@@ -14,13 +14,15 @@
 	</question> 	
 	<question>
 		<title>How Much Does Boerne ISD Levy in Property Taxes?</title>
-		<answer>For 2023 (2023-2024 school year), Boerne ISD adopted a combined M&amp;O and I&amp;S tax rate of ${{{2023_COMBINED_RATE}}} per $100 and had a taxable market value of ${{{2023_MARKET_VALUE}}}, which resulted in a total tax levy of ${{{2023_LEVY}}}, or ${{{2023_LEVY_PER_STUDENT}}} per enrolled student.</answer>
+		<answer><![CDATA[
+      For 2024 (2024-2025 school year), Boerne ISD adopted a combined M&amp;O and I&amp;S tax rate of ${{{2024_COMBINED_RATE}}} per $100 and had a taxable market value of ${{{2024_MARKET_VALUE}}}, which resulted in a total tax levy of ${{{2024_LEVY}}}, or ${{{2024_LEVY_PER_STUDENT}}} per enrolled student.
+    ]]></answer>
 		<details><![CDATA[
 			<ul>
 				<li>Data Sources
 					<ul>
 						<li>Enrollment: [Texas Public School Directory](data_texas_public_school_directory.html)</li>
-						<li>2023 Tax Rates and Levies: [Texas Public School Tax Levies](data_texas_public_school_tax_levies.html)</li>
+						<li>2024 Tax Rates and Levies: [Texas Public School Tax Levies](data_texas_public_school_tax_levies.html)</li>
 					</ul>
 				</li>
 			</ul>
@@ -29,7 +31,7 @@
 	<question>
 		<title>How Has Boerne ISD's Tax Rate Changed Over Time?</title>
 		<answer><![CDATA[
-      Boerne ISD's combined tax rate decreased from {{{2005_TAX_RATE}}} per $100 in 2005 to {{{2023_TAX_RATE}}} per $100 in 2023.
+      Boerne ISD's combined tax rate decreased from {{{2005_TAX_RATE}}} per $100 in 2005 to {{{2024_TAX_RATE}}} per $100 in 2024.
     ]]></answer>
 		<details><![CDATA[
       <ul>
@@ -45,7 +47,7 @@
   <question>
     <title>How Does Boerne ISD's Tax Rate Compare to Neighboring Districts?</title>
     <answer><![CDATA[
-    	Since 2005, Boerne ISD's tax rate has ranked, on average (median), {{{MEDIAN_TAX_RANK}}} out of 7 for itself and its neighboring 6 districts, with 1 being the highest tax rate and 7 the lowest. Boerne ISD ranked {{{2023_TAX_RANK}}} out of 7 for 2023.
+    	Since 2005, Boerne ISD's tax rate has ranked, on average (median), {{{MEDIAN_TAX_RANK}}} out of 7 for itself and its neighboring 6 districts, with 1 being the highest tax rate and 7 the lowest. Boerne ISD ranked {{{2024_TAX_RANK}}} out of 7 for 2024.
     	]]></answer>
     <details><![CDATA[
       <ul>
@@ -61,7 +63,7 @@
 	<question>
 		<title>How Has Boerne ISD's Revenue Per-Student Changed Over Time?</title>
 		<answer><![CDATA[
-      In inflation adjusted dollars (2023 base year), Boerne ISD's revenue (General Funds) decreased from {{{2007_REVENUE_PER_STUDENT}}} per student in 2007 to {{{2023_REVENUE_PER_STUDENT}}} per student in 2023.
+      In inflation adjusted dollars (2024 base year), Boerne ISD's revenue (General Funds) decreased from {{{2008_REVENUE_PER_STUDENT}}} per student in 2008 to {{{2024_REVENUE_PER_STUDENT}}} per student in 2024.
     ]]></answer>
 		<details><![CDATA[
       <ul>
@@ -85,7 +87,7 @@
 	</question>
 	<question>
 		<title>How Much Does Boerne ISD Pay to the State of Texas in Recapture?</title>
-		<answer><![CDATA[Recapture since 2007: {{{TOTAL_RECAPTURE_2007_2023}}}<br/>Average (median) proportion of BISD annual Total Operating Revenue (General Fund): {{{AVG_RECAPTURE_PROP_BUDGET}}}]]></answer>
+		<answer><![CDATA[Recapture since 2007: {{{TOTAL_RECAPTURE_2007_2024}}}<br/>Average (median) proportion of BISD annual Total Operating Revenue (General Fund): {{{AVG_RECAPTURE_PROP_BUDGET}}}]]></answer>
 		<details><![CDATA[
 			<ul>
         <li>Data Sources

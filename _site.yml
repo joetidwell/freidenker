@@ -35,12 +35,14 @@ navbar:
           href: elections.html
     - text: "FAQs"
       menu:
+        - text: "2025 Nov Election Tax Measures"
+          href: FAQ_VATRE_BISD.html
         - text: "Taxes"
           menu:
             - text: "Boerne ISD"
-              href: FAQ_Tax_BISD.html
+              # href: FAQ_Tax_BISD.html
             - text: "Comfort ISD"
-              href: FAQ_Tax_CISD.html
+              # href: FAQ_Tax_CISD.html
             - text: "City of Boerne"
             - text: "City of Fair Oaks Ranch"
             - text: "Kendall County"

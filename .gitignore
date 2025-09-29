@@ -17,3 +17,4 @@ _site/
 
 # MacOS
 .DS_store
+.Rproj.user

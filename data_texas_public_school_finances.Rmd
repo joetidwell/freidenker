@@ -21,12 +21,20 @@ path.data <- file.path('data')
 
 ```{r finance, warning=FALSE, message=FALSE, echo=FALSE, cache=TRUE, eval=TRUE}
 # Read original source file
-peims_finance <- read_excel(file.path(path.data,
-																	'2007-2023-summarized-financial-data-0.xlsx')) %>%
-	data.table
+
+finance_summary_2008_to_2024 <- read_excel(file.path(path.data,
+                                                     '2008-2024-summarized-financial-data-03-17-2025.xlsx')) %>%
+  data.table
+finance_summary_2007_to_2023 <- read_excel(file.path(path.data,
+                                                     '2007-2023-summarized-financial-data-0.xlsx')) %>%
+  data.table
+finance_summary <- rbind(finance_summary_2007_to_2023,finance_summary_2008_to_2024[YEAR==2024])
+finance_summary[,`DISTRICT NUMBER`:=gsub("'","",`DISTRICT NUMBER`)]
+
+
 
 # Display interactive table
-print_table(peims_finance, 'ISD_financial_data_2007_to_2023')
+print_table(finance_summary, 'ISD_financial_data_2007_to_2024')
 ```
 
 
